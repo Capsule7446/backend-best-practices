@@ -5,8 +5,8 @@
 
 .DESCRIPTION
   从 .claude-plugin/plugin.json 读取插件名与版本号，只收集插件运行所需的文件
-  （清单 / 文档 / skills / commands），排除 .git、CI、构建脚本与临时产物，
-  输出到 dist/<name>-<version>.zip。
+  （清单 / 文档 / skills / commands / workflows / references），排除 .git、CI、
+  构建脚本与临时产物，输出到 dist/<name>-<version>.zip。
 
   zip 内为单一顶层文件夹 <name>/，解压即得一个可直接作为本地插件目录使用的文件夹
   （其中含 .claude-plugin/plugin.json）。
@@ -40,6 +40,8 @@ $include = @(
     '.claude-plugin',
     'skills',
     'commands',
+    'workflows',
+    'references',
     'README.md',
     'LICENSE'
 )

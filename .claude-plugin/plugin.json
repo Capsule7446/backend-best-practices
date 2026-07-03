@@ -1,22 +1,13 @@
 {
   "name": "backend-best-practices",
   "version": "0.1.0",
-  "description": "Opinionated, language-agnostic backend implementation principles turned into executable Claude Code skills: API contracts, data integrity, error handling, observability, security, testing, and performance. Each skill is a checklist-driven SOP with anti-patterns and a review gate, not a passive knowledge base.",
+  "description": "改造自 domain-driven-design 插件：把后端最佳实现理念固化为 Agent 可重复执行、可门禁、可回溯的开发工序（占位，待改造）。当前内容仍为 DDD 母体，作为改造素材。",
   "author": {
     "name": "Pauly"
   },
   "keywords": [
     "backend",
     "best-practices",
-    "api-design",
-    "data-integrity",
-    "transactions",
-    "error-handling",
-    "observability",
-    "reliability",
-    "security",
-    "testing",
-    "performance",
     "language-agnostic"
   ]
 }
