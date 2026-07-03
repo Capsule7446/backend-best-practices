@@ -1,0 +1,75 @@
+# 架构：三层职责分离
+
+本插件把开发工序拆成三层，各层职责严格互斥。核心原则：**SKILL 是纯能力，WORKFLOW 是唯一统筹者，COMMAND 是薄入口。**
+
+---
+
+## 1. SKILL = 纯能力
+
+一个 SKILL 就是一个纯函数：给定输入，产出输出。**它不知道谁调用它、上一步是谁、下一步是谁、门禁是什么、要不要回溯。**
+
+正文固定四段（顺序固定），可选加一段自包含示例：
+
+1. **做什么（Purpose）**——这个能力本身，一句话讲清。
+2. **需要什么参数（Parameters）**——按**数据形状**描述输入（"需要一份含 {…} 的工件"），标必需/可选。**禁止**写"来自 X skill"。
+3. **怎么做（Procedure）**——执行该能力的方法步骤。
+4. **返回什么（Returns）**——产出工件及其结构；附一句"合格产物"的自检标准（只针对自己的产物，不涉及流程门禁）。
+5. **（可选）示例**——一份自包含的 输入→输出 示例，不引用任何其他 skill。
+
+frontmatter（砍掉 stage/driver/回溯，只留发现所需）：
+
+```yaml
+---
+name: <capability>
+description: "<做什么，一句话；不写触发时机>"
+risk: safe|caution
+category: <discovery|strategic|tactical|validation|specification|implementation|reverse>
+inputs: "<输入工件/参数，简述>"
+outputs: "<产出工件，简述>"
+tags: "[...]"
+---
+```
+
+**移除清单**：`使用时机`（相对流程的）、`回溯触发`、`stage`、`driver`、`source`、一切指向他 skill 的引用与"被回溯触发"字样。
+
+---
+
+## 2. WORKFLOW = 统筹（文件交接）
+
+WORKFLOW 是**唯一**知道顺序、门禁、回溯的地方。skill 之间通过**文件**传递工件，由 workflow 主流程把控。
+
+### 文件交接协议
+
+- workflow 建一个运行工作区 `<workdir>/`（默认 `./run/`，或用户指定）。
+- 每个 skill 产出**一个主工件文件**，由 workflow 统一编号命名：`01-<cap>.md`、`02-<cap>.md`……
+- **调用契约**：workflow 调用某 skill 时，传入「输入文件路径（一个或多个）+ 输出文件路径」。skill 读入 → 纯计算 → 写出。skill 不自己决定文件名、不感知编号。
+- workflow 维护一个运行清单 `_manifest.md`（或 `run.json`）：记录各阶段状态、门禁结果、回溯记录。
+
+### 门禁与回溯（只在 workflow）
+
+- **门禁**：workflow 读某阶段的产物文件，按门禁标准核对；不过则不放行进入下一步。
+- **回溯**：不过时，workflow 按自己的回溯规则**重跑某个上游 skill**（可携带修正说明作为额外输入）。skill 只是被再次调用，**它自己不知道这是一次回溯**。
+- 需要停下与用户确认的强门禁，也由 workflow 决定在哪停。
+
+---
+
+## 3. COMMAND = 薄入口
+
+只解析参数、调用目标，不含编排逻辑：
+
+- **单能力入口**：`/<plugin>:<cap> <args>` → 调用某个 skill，产出工件。
+- **流程入口**：`/<plugin>:<name> <args>` → 启动一条 workflow。
+
+---
+
+## 4. 一图看清数据流
+
+```
+COMMAND ──启动──> WORKFLOW
+                    │  建 <workdir>/、维护 _manifest
+                    ├─ 调 SKILL_A (in: 用户输入, out: 01-a.md)
+                    ├─ 门禁? 读 01-a.md 核对 ── 不过 ─> 重跑 SKILL_A(带修正)
+                    ├─ 调 SKILL_B (in: 01-a.md, out: 02-b.md)
+                    └─ …
+SKILL 只看到：给我的输入文件 → 我的输出文件。对流程一无所知。
+```
