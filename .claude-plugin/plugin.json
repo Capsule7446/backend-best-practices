@@ -1,0 +1,22 @@
+{
+  "name": "backend-best-practices",
+  "version": "0.1.0",
+  "description": "Opinionated, language-agnostic backend implementation principles turned into executable Claude Code skills: API contracts, data integrity, error handling, observability, security, testing, and performance. Each skill is a checklist-driven SOP with anti-patterns and a review gate, not a passive knowledge base.",
+  "author": {
+    "name": "Pauly"
+  },
+  "keywords": [
+    "backend",
+    "best-practices",
+    "api-design",
+    "data-integrity",
+    "transactions",
+    "error-handling",
+    "observability",
+    "reliability",
+    "security",
+    "testing",
+    "performance",
+    "language-agnostic"
+  ]
+}
