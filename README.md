@@ -1,0 +1,114 @@
+# backend-best-practices
+
+> 把一套开发方法论从"靠资深架构师的经验"，变成"Agent 可重复执行、可门禁、可回溯"的工序插件——**SKILL 纯能力、WORKFLOW 统筹、COMMAND 薄入口**三层分明。
+
+> 改造自 `domain-driven-design` 母体：当前工序内容仍以 DDD 建模链路为素材，后端最佳实践的内容再主题化是后续独立一步。本文只描述**三层架构与工序骨架**。
+
+---
+
+## 三层架构（职责严格互斥）
+
+| 层 | 职责 | 位置 |
+| :--- | :--- | :--- |
+| **SKILL** | **纯能力**：做什么 / 需要什么参数 / 怎么做 / 返回什么。零上下游、零阶段、零回溯、零编排——一个纯函数。 | `skills/*/SKILL.md` |
+| **WORKFLOW** | **唯一统筹者**：把 SKILL 整合成开发流程，工件**经文件交接**（编号工件 + `_manifest`），门禁与回溯只在这里。 | `workflows/*.md` |
+| **COMMAND** | **薄入口**：解析参数、启动一条 workflow 或调用一个 skill，不含逻辑。 | `commands/*.md` |
+
+> 完整契约（SKILL 四段模板、文件交接协议、两级自检）见 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)。
+
+### 两级自检
+
+- **① SKILL 返回格式自检**：产出是否符合自己声明的返回格式（字段齐、形状对）。SKILL 只对自己负责。
+- **② WORKFLOW 门禁**：产出是否满足流程需求（量化阈值、完整性、放行/回溯）。SKILL 不掺和。
+
+---
+
+## 15 个能力（纯能力，按认知阶段归类）
+
+`ddd-mode-router` 已**下沉为 workflow 入口的路由步骤**，不再是 skill。能力全清单与 I/O 见 [`docs/CAPABILITIES.md`](docs/CAPABILITIES.md)。
+
+| 阶段（category）| 能力 |
+| :--- | :--- |
+| discovery | `ddd-scope` / `ddd-discover` |
+| strategic | `ddd-subdomains` / `ddd-contexts` / `ddd-context-map` |
+| tactical | `ddd-aggregates` / `ddd-domain-interactions` |
+| validation | `ddd-model-review` |
+| specification | `ddd-spec-bridge` |
+| implementation | `ddd-port-scaffold` / `ddd-adapter-impl` / `ddd-acceptance` |
+| reverse（改造）| `ddd-code-survey` / `ddd-seam-finder` / `ddd-strangler-plan` |
+
+每个能力目录含 `SKILL.md`（默认加载的纯能力四段）+ 按需加载的附加文件（`examples.md` 等）。
+
+---
+
+## 两条工作流
+
+两条链路在 workflow 入口路由分叉，在**局部战术建模处汇流**复用同一批纯能力。workflow 独占顺序、文件交接、门禁、回溯。
+
+### A. Greenfield（0→1 新建）
+
+```mermaid
+flowchart LR
+  R[路由/workflow入口] --> S[ddd-scope] --> D[ddd-discover]
+  D --> SD[ddd-subdomains] --> CX[ddd-contexts] --> CM[ddd-context-map]
+  CM --> AG[ddd-aggregates] --> DI[ddd-domain-interactions]
+  DI --> MR[ddd-model-review]
+  MR -->|通过| SB[ddd-spec-bridge]
+  MR -.回溯.-> AG
+  SB --> PS[ddd-port-scaffold] --> AI[ddd-adapter-impl] --> AC[ddd-acceptance]
+```
+
+### B. Brownfield（既有项目改造）
+
+```mermaid
+flowchart LR
+  R[路由/workflow入口] --> CS[ddd-code-survey] --> SF[ddd-seam-finder] --> SP[ddd-strangler-plan]
+  SP --> slice{逐切片}
+  slice --> CT[补特征化测试] --> AG[ddd-aggregates 局部] --> DI[ddd-domain-interactions]
+  DI --> MR[ddd-model-review] -->|通过| SB[ddd-spec-bridge]
+  SB --> PS[ddd-port-scaffold] --> AI[ddd-adapter-impl] --> AC[ddd-acceptance] --> slice
+```
+
+文件交接与门禁细节见 [`workflows/workflow-greenfield.md`](workflows/workflow-greenfield.md) / [`workflows/workflow-brownfield.md`](workflows/workflow-brownfield.md)。
+
+---
+
+## 命令（薄入口）
+
+| 命令 | 动作 |
+| :--- | :--- |
+| `/backend-best-practices:ddd-new <描述>` | 启动 `workflow-greenfield` |
+| `/backend-best-practices:ddd-refactor <代码路径>` | 启动 `workflow-brownfield` |
+| `/backend-best-practices:ddd-review <工件>` | 调用 `ddd-model-review` |
+| `/backend-best-practices:ddd-spec <战术工件>` | 调用 `ddd-spec-bridge` |
+| `/backend-best-practices:ddd-scaffold <规范> --lang=<语言>` | 调用 `ddd-port-scaffold` |
+
+---
+
+## 接口优先 = 语言无关
+
+落地层分三步保持语言无关：`ddd-spec-bridge` 产出语言中立端口契约 → `ddd-port-scaffold` 按**语言剖面**实例化接口骨架 → `ddd-adapter-impl` 在接口背后实现。换语言 = 换剖面，建模工件零改动。语言剖面映射见 [`references/language-profiles.md`](references/language-profiles.md)。
+
+---
+
+## 目录结构
+
+```
+backend-best-practices/
+├── .claude-plugin/plugin.json     插件清单
+├── README.md                      本文（三层架构与工序骨架）
+├── docs/
+│   ├── ARCHITECTURE.md            三层契约 + 文件交接协议 + 两级自检（真源）
+│   └── CAPABILITIES.md            15 能力的纯 I/O 清单
+├── skills/                        15 个纯能力（SKILL.md + 按需附加文件）
+├── commands/                      5 个薄入口
+├── workflows/                     2 条 workflow（统筹 + 文件交接）
+└── references/
+    └── language-profiles.md       语言剖面映射表
+```
+
+---
+
+## 溯源
+
+改造自 [`domain-driven-design`](https://github.com/Capsule7446/Domain-Driven-Design) 母体，重构为"SKILL 纯能力 / WORKFLOW 文件交接统筹 / COMMAND 薄入口"三层分离架构。
