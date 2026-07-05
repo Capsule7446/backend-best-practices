@@ -2,7 +2,7 @@
 
 > 把一套开发方法论从"靠资深架构师的经验"，变成"Agent 可重复执行、可门禁、可回溯"的工序插件——**SKILL 纯能力、WORKFLOW 统筹、COMMAND 薄入口**三层分明。
 
-> 改造自 `domain-driven-design` 母体：当前工序内容仍以 DDD 建模链路为素材，后端最佳实践的内容再主题化是后续独立一步。本文只描述**三层架构与工序骨架**。
+> 改造自 `domain-driven-design` 母体：当前保留 DDD 建模链路，并新增 **CQRS Read Model / 业务聚合视图** 能力，用最小复杂度保护 Domain、解耦查询展示。
 
 ---
 
@@ -23,7 +23,7 @@
 
 ---
 
-## 15 个能力（纯能力，按认知阶段归类）
+## 能力（纯能力，按认知阶段归类）
 
 `ddd-mode-router` 已**下沉为 workflow 入口的路由步骤**，不再是 skill。能力全清单与 I/O 见 [`docs/CAPABILITIES.md`](docs/CAPABILITIES.md)。
 
@@ -36,12 +36,14 @@
 | specification | `ddd-spec-bridge` |
 | implementation | `ddd-port-scaffold` / `ddd-adapter-impl` / `ddd-acceptance` |
 | reverse（改造）| `ddd-code-survey` / `ddd-seam-finder` / `ddd-strangler-plan` |
+| query/read-model | `cqrs-fit-check` / `cqrs-domain-read-decoupling` / `cqrs-aggregation-view-design` / `cqrs-read-model-design` / `cqrs-read-model-sync` |
+| validation | `cqrs-review` |
 
 每个能力目录含 `SKILL.md`（默认加载的纯能力四段）+ 按需加载的附加文件（`examples.md` 等）。
 
 ---
 
-## 两条工作流
+## 工作流
 
 两条链路在 workflow 入口路由分叉，在**局部战术建模处汇流**复用同一批纯能力。workflow 独占顺序、文件交接、门禁、回溯。
 
@@ -71,6 +73,34 @@ flowchart LR
 
 文件交接与门禁细节见 [`workflows/workflow-greenfield.md`](workflows/workflow-greenfield.md) / [`workflows/workflow-brownfield.md`](workflows/workflow-brownfield.md)。
 
+### C. CQRS Read Model（读模型/聚合视图）
+
+```mermaid
+flowchart LR
+  FC[cqrs-fit-check] -->|use/partial| AV[cqrs-aggregation-view-design]
+  FC -->|avoid| ALT[DTO / Query Service]
+  AV --> DR[cqrs-domain-read-decoupling]
+  DR --> RM[cqrs-read-model-design]
+  RM --> SY[cqrs-read-model-sync]
+  SY --> RV[cqrs-review]
+```
+
+文件交接与门禁细节见 [`workflows/workflow-read-model-greenfield.md`](workflows/workflow-read-model-greenfield.md)、[`workflows/workflow-read-model-brownfield.md`](workflows/workflow-read-model-brownfield.md)、[`workflows/workflow-read-model-review.md`](workflows/workflow-read-model-review.md)。
+
+### D. System Model + View Reading（既有系统深度读码）
+
+```mermaid
+flowchart LR
+  CS[ddd-code-survey] --> EV[ddd-discover]
+  EV --> SD[ddd-subdomains] --> CX[ddd-contexts] --> CM[ddd-context-map]
+  CM --> AG[ddd-aggregates] --> DI[ddd-domain-interactions] --> MR[ddd-model-review]
+  MR --> DR[cqrs-domain-read-decoupling] --> AV[cqrs-aggregation-view-design]
+  AV --> RM[cqrs-read-model-design] --> SY[cqrs-read-model-sync] --> RV[cqrs-review]
+  RV --> REPORT[system-reading-report]
+```
+
+用于把当前系统代码解释成业务模型、领域边界、聚合行为、业务视图、读模型和刷新策略。细节见 [`workflows/workflow-system-model-view-read.md`](workflows/workflow-system-model-view-read.md)。
+
 ---
 
 ## 命令（薄入口）
@@ -82,6 +112,10 @@ flowchart LR
 | `/backend-best-practices:ddd-review <工件>` | 调用 `ddd-model-review` |
 | `/backend-best-practices:ddd-spec <战术工件>` | 调用 `ddd-spec-bridge` |
 | `/backend-best-practices:ddd-scaffold <规范> --lang=<语言>` | 调用 `ddd-port-scaffold` |
+| `/backend-best-practices:cqrs-read-model-new <需求>` | 启动 `workflow-read-model-greenfield` |
+| `/backend-best-practices:cqrs-read-model-refactor <代码路径或现状>` | 启动 `workflow-read-model-brownfield` |
+| `/backend-best-practices:cqrs-read-model-review <工件>` | 启动 `workflow-read-model-review` |
+| `/backend-best-practices:system-model-view-read <代码路径>` | 启动 `workflow-system-model-view-read` |
 
 ---
 
@@ -99,12 +133,14 @@ backend-best-practices/
 ├── README.md                      本文（三层架构与工序骨架）
 ├── docs/
 │   ├── ARCHITECTURE.md            三层契约 + 文件交接协议 + 两级自检（真源）
-│   └── CAPABILITIES.md            15 能力的纯 I/O 清单
-├── skills/                        15 个纯能力（SKILL.md + 按需附加文件）
-├── commands/                      5 个薄入口
-├── workflows/                     2 条 workflow（统筹 + 文件交接）
+│   └── CAPABILITIES.md            能力纯 I/O 清单
+├── skills/                        纯能力（SKILL.md + 按需附加文件）
+├── commands/                      薄入口
+├── workflows/                     workflow（统筹 + 文件交接）
+├── examples/                      CQRS 读模型示例
 └── references/
-    └── language-profiles.md       语言剖面映射表
+    ├── language-profiles.md       语言剖面映射表
+    └── *read-model*.md            CQRS 读模型参考
 ```
 
 ---
