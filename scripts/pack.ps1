@@ -38,10 +38,12 @@ if ([string]::IsNullOrWhiteSpace($name) -or [string]::IsNullOrWhiteSpace($versio
 # 要打进 zip 的内容（文件或目录），相对仓库根
 $include = @(
     '.claude-plugin',
+    'docs',
     'skills',
     'commands',
     'workflows',
     'references',
+    'examples',
     'README.md',
     'LICENSE'
 )

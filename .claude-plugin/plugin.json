@@ -1,13 +1,15 @@
 {
   "name": "backend-best-practices",
   "version": "0.1.0",
-  "description": "改造自 domain-driven-design 插件：把后端最佳实现理念固化为 Agent 可重复执行、可门禁、可回溯的开发工序（占位，待改造）。当前内容仍为 DDD 母体，作为改造素材。",
+  "description": "后端最佳实践插件：把 DDD 建模、CQRS 读模型、聚合视图、同步刷新和架构审查固化为 Agent 可重复执行、可门禁、可回溯的开发工序。",
   "author": {
     "name": "Pauly"
   },
   "keywords": [
     "backend",
     "best-practices",
+    "cqrs",
+    "read-model",
     "language-agnostic"
   ]
 }
