@@ -2,7 +2,7 @@
 
 > 把一套开发方法论从"靠资深架构师的经验"，变成"Agent 可重复执行、可门禁、可回溯"的工序插件——**SKILL 纯能力、WORKFLOW 统筹、COMMAND 薄入口**三层分明。
 
-> 改造自 `domain-driven-design` 母体：当前保留 DDD 建模链路，并新增 **CQRS Read Model / 业务聚合视图** 能力，用最小复杂度保护 Domain、解耦查询展示。
+> 改造自 `domain-driven-design` 母体：当前保留 DDD 建模链路，并新增 **CQRS Read Model / 业务聚合视图** 与 **Design Patterns / 多语言模式实现** 能力，用最小复杂度保护 Domain、解耦查询展示，并把高品质设计经验固化成常驻能力。
 
 ---
 
@@ -38,6 +38,8 @@
 | reverse（改造）| `ddd-code-survey` / `ddd-seam-finder` / `ddd-strangler-plan` |
 | query/read-model | `cqrs-fit-check` / `cqrs-domain-read-decoupling` / `cqrs-aggregation-view-design` / `cqrs-read-model-design` / `cqrs-read-model-sync` |
 | validation | `cqrs-review` |
+| design-patterns | `design-pattern-fit-check` / `design-pattern-implementation` |
+| validation | `design-pattern-review` |
 
 每个能力目录含 `SKILL.md`（默认加载的纯能力四段）+ 按需加载的附加文件（`examples.md` 等）。
 
@@ -101,6 +103,17 @@ flowchart LR
 
 用于把当前系统代码解释成业务模型、领域边界、聚合行为、业务视图、读模型和刷新策略。细节见 [`workflows/workflow-system-model-view-read.md`](workflows/workflow-system-model-view-read.md)。
 
+### E. Design Pattern（设计模式选择/实现/审查）
+
+```mermaid
+flowchart LR
+  FC[design-pattern-fit-check] -->|use| IM[design-pattern-implementation]
+  FC -->|simplify/avoid| ALT[普通函数 / 组合 / DI / 语言原生机制]
+  IM --> RV[design-pattern-review]
+```
+
+按 GoF 三大类整理创建型、结构型、行为型全部 23 个模式，但落地时保持语言无关：先判断变化轴，再输出模式蓝图，最后按 Java / TypeScript / Python / Go / C# / Kotlin / Rust 等语言生成惯用实现。细节见 [`workflows/workflow-design-pattern.md`](workflows/workflow-design-pattern.md)、[`references/design-pattern-catalog.md`](references/design-pattern-catalog.md)。
+
 ---
 
 ## 命令（薄入口）
@@ -116,12 +129,13 @@ flowchart LR
 | `/backend-best-practices:cqrs-read-model-refactor <代码路径或现状>` | 启动 `workflow-read-model-brownfield` |
 | `/backend-best-practices:cqrs-read-model-review <工件>` | 启动 `workflow-read-model-review` |
 | `/backend-best-practices:system-model-view-read <代码路径>` | 启动 `workflow-system-model-view-read` |
+| `/backend-best-practices:design-pattern <设计问题或代码路径> --lang=<语言>` | 启动 `workflow-design-pattern` |
 
 ---
 
 ## 接口优先 = 语言无关
 
-落地层分三步保持语言无关：`ddd-spec-bridge` 产出语言中立端口契约 → `ddd-port-scaffold` 按**语言剖面**实例化接口骨架 → `ddd-adapter-impl` 在接口背后实现。换语言 = 换剖面，建模工件零改动。语言剖面映射见 [`references/language-profiles.md`](references/language-profiles.md)。
+落地层分三步保持语言无关：`ddd-spec-bridge` 产出语言中立端口契约 → `ddd-port-scaffold` 按**语言剖面**实例化接口骨架 → `ddd-adapter-impl` 在接口背后实现。设计模式也先产出语言无关角色/协作蓝图，再按目标语言惯用机制实现，避免把 Java 类图强绑定到所有语言。语言剖面映射见 [`references/language-profiles.md`](references/language-profiles.md)、[`references/design-pattern-language-profiles.md`](references/design-pattern-language-profiles.md)。
 
 ---
 
@@ -140,6 +154,8 @@ backend-best-practices/
 ├── examples/                      CQRS 读模型示例
 └── references/
     ├── language-profiles.md       语言剖面映射表
+    ├── design-pattern-catalog.md  GoF 23 个设计模式目录
+    ├── design-pattern-language-profiles.md 多语言模式落地剖面
     └── *read-model*.md            CQRS 读模型参考
 ```
 

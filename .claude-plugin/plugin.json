@@ -1,7 +1,7 @@
 {
   "name": "backend-best-practices",
   "version": "0.1.0",
-  "description": "后端最佳实践插件：把 DDD 建模、CQRS 读模型、聚合视图、同步刷新和架构审查固化为 Agent 可重复执行、可门禁、可回溯的开发工序。",
+  "description": "后端最佳实践插件：把 DDD 建模、CQRS 读模型、设计模式、聚合视图、同步刷新和架构审查固化为 Agent 可重复执行、可门禁、可回溯的开发工序。",
   "author": {
     "name": "Pauly"
   },
@@ -9,6 +9,11 @@
     "backend",
     "best-practices",
     "cqrs",
+    "design-patterns",
+    "gof",
+    "creational-patterns",
+    "structural-patterns",
+    "behavioral-patterns",
     "read-model",
     "language-agnostic"
   ]
