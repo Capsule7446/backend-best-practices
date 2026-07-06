@@ -55,9 +55,11 @@
 2. ddd-refactor
 3. cqrs-read-model-refactor
 4. design-pattern
-5. ddd-review / cqrs-read-model-review / design-pattern-review
+5. ddd-review / cqrs-read-model-review / design-pattern 内置审查
 6. ddd-spec / ddd-scaffold
 ```
+
+说明：`design-pattern-review` 是 `workflow-design-pattern` 内部使用的审查能力，当前没有独立命令入口；需要审查设计模式方案时，从 `design-pattern` 命令进入即可。
 
 ### 1. 先读懂系统
 
@@ -236,7 +238,7 @@ ddd-code-survey
 | 生命周期状态判断很多 | `design-pattern`，常见候选 `state` |
 | 外部/遗留接口污染内部模型 | `design-pattern` 或 `ddd-refactor`，常见候选 `adapter` / ACL |
 | 复杂子系统需要统一入口 | `design-pattern`，常见候选 `facade` |
-| PR 只想做设计审查 | `ddd-review` / `cqrs-read-model-review` / `design-pattern-review` |
+| PR 只想做设计审查 | `ddd-review` / `cqrs-read-model-review` / `design-pattern` 内置审查 |
 
 ### 增量优化模板
 
