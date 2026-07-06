@@ -2,7 +2,7 @@
 
 把后端最佳实践拆成**纯能力**：只看 输入→输出，剥掉一切上下游/阶段/回溯引用。流程顺序、门禁与回溯由 workflow 负责。
 
-> 命名：保留 `ddd-*` 能力，同时新增 `cqrs-*` 读模型能力。
+> 命名：保留 `ddd-*` 能力，新增 `cqrs-*` 读模型能力，并新增 `design-pattern-*` 设计模式能力。
 
 ## DDD 纯能力表
 
@@ -34,6 +34,37 @@
 | 19 | cqrs-read-model-design | 把视图转成具体读模型 | 聚合视图 + 真源 + 查询模式 + 性能目标 | 模型类型、字段映射、索引、查询契约、所有权 |
 | 20 | cqrs-read-model-sync | 选择读模型刷新策略 | 读模型 + 真源 + 新鲜度 + 读写频率 + 基础设施 | 同步策略、刷新时机、失败处理、重建策略、风险和回退 |
 | 21 | cqrs-review | 审查读模型方案 | 适配判断 + 视图 + 读模型 + 同步策略 + API/迁移设计 | pass/needs_changes/fail、分级发现、最小修正、下一步 |
+
+## Design Pattern 纯能力表
+
+| # | 能力 | 做什么 | 输入（数据形状）| 返回（数据形状）|
+| :-- | :-- | :-- | :-- | :-- |
+| 22 | design-pattern-fit-check | 从创建型/结构型/行为型模式中选择最小可行模式 | 设计问题 + 代码上下文 + 变化轴 + 约束 + 目标语言 | Markdown 适配说明、首选模式、候选模式、不推荐模式、可选 structured_summary |
+| 23 | design-pattern-abstract-factory | 抽象工厂最佳实践 | 产品族变化 + 配套对象约束 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 24 | design-pattern-builder | 建造者最佳实践 | 复杂构造 + 参数/校验/默认值 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 25 | design-pattern-factory-method | 工厂方法最佳实践 | 创建扩展点 + 产品抽象 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 26 | design-pattern-prototype | 原型最佳实践 | 克隆模板 + 拷贝边界 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 27 | design-pattern-singleton | 单例最佳实践 | 进程级唯一资源 + 生命周期约束 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 28 | design-pattern-adapter | 适配器最佳实践 | 不兼容接口 + 外部/遗留系统 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 29 | design-pattern-bridge | 桥接最佳实践 | 双变化维度 + 抽象/实现分离 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 30 | design-pattern-composite | 组合最佳实践 | 树结构 + 个体/组合统一处理 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 31 | design-pattern-decorator | 装饰器最佳实践 | 可组合增强 + 稳定接口 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 32 | design-pattern-facade | 外观最佳实践 | 复杂子系统 + 简化入口 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 33 | design-pattern-flyweight | 享元最佳实践 | 大量重复对象 + 不可变共享 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 34 | design-pattern-proxy | 代理最佳实践 | 访问控制/远程/缓存/懒加载 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 35 | design-pattern-chain-of-responsibility | 责任链最佳实践 | 处理链 + 顺序/短路语义 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 36 | design-pattern-command | 命令最佳实践 | 可排队/审计/撤销请求 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 37 | design-pattern-interpreter | 解释器最佳实践 | 小语言/DSL + 表达式树 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 38 | design-pattern-iterator | 迭代器最佳实践 | 自定义集合/分页/流式访问 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 39 | design-pattern-mediator | 中介者最佳实践 | 多对象复杂协作 + 解耦参与者 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 40 | design-pattern-memento | 备忘录最佳实践 | 快照/撤销/恢复 + 状态封装 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 41 | design-pattern-observer | 观察者最佳实践 | 一对多通知 + 订阅者隔离 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 42 | design-pattern-state | 状态模式最佳实践 | 生命周期状态 + 状态相关行为 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 43 | design-pattern-strategy | 策略最佳实践 | 可替换算法 + 稳定上下文 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 44 | design-pattern-template-method | 模板方法最佳实践 | 固定流程骨架 + 可变步骤 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 45 | design-pattern-visitor | 访问者最佳实践 | 稳定对象结构 + 新增操作 + 目标语言 | Markdown 设计说明、语言差异附件、案例附件、可选 structured_summary |
+| 46 | design-pattern-implementation | 将模式转成语言无关蓝图并生成目标语言惯用实现 | 模式决策 + 具体模式指南 + 业务角色 + 目标语言 + 约束 + 现有接口 | Markdown 实现说明、蓝图、角色映射、目标语言实现、可选 structured_summary |
+| 47 | design-pattern-review | 审查模式是否必要、角色是否清楚、实现是否惯用 | 模式方案/代码 + 目标语言 + 设计目标 + 测试 | Markdown 审查报告、分级发现、更简单替代方案、可选 structured_summary |
 
 ## 两个耦合点的处置
 
