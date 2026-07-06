@@ -50,34 +50,42 @@ description: "GoF Visitor（访问者）设计模式能力。用于在 对象结
 
 ## 返回什么
 
+默认返回一份 **Markdown 设计说明**，而不是固定 YAML 文件。说明必须包含：
+
+1. 模式思想
+2. 适用场景
+3. 不适用场景
+4. 角色与职责
+5. 最佳实践范式
+6. 目标语言实现提示
+7. 案例摘要
+8. 测试点
+9. 权衡与风险
+
+当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加一个可选的 `structured_summary` 小节即可：
+
 ~~~yaml
-pattern: Visitor
-category: 行为型
-intent: 在不修改对象结构类的情况下添加新操作。
-applicability:
+structured_summary:
+  pattern: Visitor（访问者）
+  category:
   use_when:
-    - 对象结构稳定，但需要频繁新增操作，如 AST、报表导出、规则树分析。
+    - item
   avoid_when:
-    - 对象类型经常新增时 Visitor 维护成本高。
-roles:
-  - name:
-    responsibility:
-best_practice_blueprint:
-  stable_part:
-  variable_part:
-  collaboration:
-language_choice:
+    - item
+  roles:
+    - name:
+      responsibility:
   target_language:
-  idioms:
-example_summary:
-tests:
-  - case:
-    verifies:
-tradeoffs:
-  - item:
+  implementation_idioms:
+    - item
+  tests:
+    - case:
+      verifies:
+  tradeoffs:
+    - item
 ~~~
 
-> **返回格式自检**：必须包含思想、适用场景、最佳实践蓝图、角色协作、目标语言差异提示和案例摘要；不得把某一种语言的类图当成唯一实现。
+> **返回自检**：正文必须先是可读的 Markdown 设计说明；`structured_summary` 只作为串接摘要，不得替代完整说明。
 
 ---
 

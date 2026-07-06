@@ -50,34 +50,42 @@ description: "GoF Command（命令）设计模式能力。用于在 异步任务
 
 ## 返回什么
 
+默认返回一份 **Markdown 设计说明**，而不是固定 YAML 文件。说明必须包含：
+
+1. 模式思想
+2. 适用场景
+3. 不适用场景
+4. 角色与职责
+5. 最佳实践范式
+6. 目标语言实现提示
+7. 案例摘要
+8. 测试点
+9. 权衡与风险
+
+当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加一个可选的 `structured_summary` 小节即可：
+
 ~~~yaml
-pattern: Command
-category: 行为型
-intent: 把请求封装为对象或消息，使其可排队、记录、撤销或重试。
-applicability:
+structured_summary:
+  pattern: Command（命令）
+  category:
   use_when:
-    - 异步任务、审计日志、撤销、重试、事务脚本。
+    - item
   avoid_when:
-    - 只是一次普通同步调用时不要强行对象化。
-roles:
-  - name:
-    responsibility:
-best_practice_blueprint:
-  stable_part:
-  variable_part:
-  collaboration:
-language_choice:
+    - item
+  roles:
+    - name:
+      responsibility:
   target_language:
-  idioms:
-example_summary:
-tests:
-  - case:
-    verifies:
-tradeoffs:
-  - item:
+  implementation_idioms:
+    - item
+  tests:
+    - case:
+      verifies:
+  tradeoffs:
+    - item
 ~~~
 
-> **返回格式自检**：必须包含思想、适用场景、最佳实践蓝图、角色协作、目标语言差异提示和案例摘要；不得把某一种语言的类图当成唯一实现。
+> **返回自检**：正文必须先是可读的 Markdown 设计说明；`structured_summary` 只作为串接摘要，不得替代完整说明。
 
 ---
 

@@ -50,34 +50,42 @@ description: "GoF Builder（建造者）设计模式能力。用于在 构造参
 
 ## 返回什么
 
+默认返回一份 **Markdown 设计说明**，而不是固定 YAML 文件。说明必须包含：
+
+1. 模式思想
+2. 适用场景
+3. 不适用场景
+4. 角色与职责
+5. 最佳实践范式
+6. 目标语言实现提示
+7. 案例摘要
+8. 测试点
+9. 权衡与风险
+
+当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加一个可选的 `structured_summary` 小节即可：
+
 ~~~yaml
-pattern: Builder
-category: 创建型
-intent: 把复杂对象的构造步骤与最终表示分离。
-applicability:
+structured_summary:
+  pattern: Builder（建造者）
+  category:
   use_when:
-    - 构造参数多、默认值多、校验复杂，或同一构造过程需要生成不同表示。
+    - item
   avoid_when:
-    - 简单 DTO 或只有两三个参数时不要引入。
-roles:
-  - name:
-    responsibility:
-best_practice_blueprint:
-  stable_part:
-  variable_part:
-  collaboration:
-language_choice:
+    - item
+  roles:
+    - name:
+      responsibility:
   target_language:
-  idioms:
-example_summary:
-tests:
-  - case:
-    verifies:
-tradeoffs:
-  - item:
+  implementation_idioms:
+    - item
+  tests:
+    - case:
+      verifies:
+  tradeoffs:
+    - item
 ~~~
 
-> **返回格式自检**：必须包含思想、适用场景、最佳实践蓝图、角色协作、目标语言差异提示和案例摘要；不得把某一种语言的类图当成唯一实现。
+> **返回自检**：正文必须先是可读的 Markdown 设计说明；`structured_summary` 只作为串接摘要，不得替代完整说明。
 
 ---
 

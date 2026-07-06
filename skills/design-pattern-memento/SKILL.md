@@ -50,34 +50,42 @@ description: "GoF Memento（备忘录）设计模式能力。用于在 撤销、
 
 ## 返回什么
 
+默认返回一份 **Markdown 设计说明**，而不是固定 YAML 文件。说明必须包含：
+
+1. 模式思想
+2. 适用场景
+3. 不适用场景
+4. 角色与职责
+5. 最佳实践范式
+6. 目标语言实现提示
+7. 案例摘要
+8. 测试点
+9. 权衡与风险
+
+当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加一个可选的 `structured_summary` 小节即可：
+
 ~~~yaml
-pattern: Memento
-category: 行为型
-intent: 在不暴露内部结构的前提下捕获并恢复对象状态。
-applicability:
+structured_summary:
+  pattern: Memento（备忘录）
+  category:
   use_when:
-    - 撤销、草稿、快照、流程回滚。
+    - item
   avoid_when:
-    - 状态巨大、含外部资源或恢复成本不可控时谨慎使用。
-roles:
-  - name:
-    responsibility:
-best_practice_blueprint:
-  stable_part:
-  variable_part:
-  collaboration:
-language_choice:
+    - item
+  roles:
+    - name:
+      responsibility:
   target_language:
-  idioms:
-example_summary:
-tests:
-  - case:
-    verifies:
-tradeoffs:
-  - item:
+  implementation_idioms:
+    - item
+  tests:
+    - case:
+      verifies:
+  tradeoffs:
+    - item
 ~~~
 
-> **返回格式自检**：必须包含思想、适用场景、最佳实践蓝图、角色协作、目标语言差异提示和案例摘要；不得把某一种语言的类图当成唯一实现。
+> **返回自检**：正文必须先是可读的 Markdown 设计说明；`structured_summary` 只作为串接摘要，不得替代完整说明。
 
 ---
 

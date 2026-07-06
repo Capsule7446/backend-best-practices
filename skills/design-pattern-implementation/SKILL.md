@@ -25,34 +25,42 @@ description: "把选定设计模式转成语言无关蓝图，并按 Java、Type
 
 ## 返回什么
 
+默认返回一份 **Markdown 设计说明**，而不是固定 YAML 文件。说明必须包含：
+
+1. 模式思想
+2. 适用场景
+3. 不适用场景
+4. 角色与职责
+5. 最佳实践范式
+6. 目标语言实现提示
+7. 案例摘要
+8. 测试点
+9. 权衡与风险
+
+当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加一个可选的 `structured_summary` 小节即可：
+
 ~~~yaml
-pattern:
-category:
-intent:
-language_neutral_blueprint:
+structured_summary:
+  pattern: Design Pattern Implementation（模式实现）
+  category:
+  use_when:
+    - item
+  avoid_when:
+    - item
   roles:
     - name:
       responsibility:
-  collaborations:
-    - from:
-      to:
-      message:
-target_language:
-implementation:
-  files:
-    - path:
-      purpose:
-      code:
-tests:
-  - case:
-    verifies:
-tradeoffs:
-  - item:
-evolution_notes:
-  - note:
+  target_language:
+  implementation_idioms:
+    - item
+  tests:
+    - case:
+      verifies:
+  tradeoffs:
+    - item
 ~~~
 
-> **返回格式自检**：实现必须能回溯到模式角色；目标语言代码不得强行保留不惯用的 Java 结构；每个新增抽象都要有变化轴支撑。
+> **返回自检**：正文必须先是可读的 Markdown 设计说明；`structured_summary` 只作为串接摘要，不得替代完整说明。
 
 ---
 

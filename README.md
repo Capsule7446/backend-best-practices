@@ -112,7 +112,7 @@ flowchart LR
   IM --> RV[design-pattern-review]
 ```
 
-按 GoF 三大类整理创建型、结构型、行为型全部 23 个模式，每个模式都是独立 SKILL，且每个目录包含 `language-differences.md` 与 `examples.md` 附件。落地时保持语言无关：先判断变化轴，再路由到具体模式能力，最后按 Java / TypeScript / Python / Go / C# / Kotlin / Rust 等语言生成惯用实现。细节见 [`workflows/workflow-design-pattern.md`](workflows/workflow-design-pattern.md)、[`references/design-pattern-catalog.md`](references/design-pattern-catalog.md)。
+按 GoF 三大类整理创建型、结构型、行为型全部 23 个模式，每个模式都是独立 SKILL，且每个目录包含 `language-differences.md` 与 `examples.md` 附件。具体模式默认输出 Markdown 设计说明；需要 workflow 串接时才追加可选 `structured_summary`。落地时保持语言无关：先判断变化轴，再路由到具体模式能力，最后按 Java / TypeScript / Python / Go / C# / Kotlin / Rust 等语言生成惯用实现。细节见 [`workflows/workflow-design-pattern.md`](workflows/workflow-design-pattern.md)、[`references/design-pattern-catalog.md`](references/design-pattern-catalog.md)。
 
 ---
 

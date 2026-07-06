@@ -23,8 +23,8 @@
 | 门禁 | 位置 | 放行条件 |
 | :-- | :-- | :-- |
 | G0 适配 | `01-design-pattern-fit.md` 后 | `use` 必须有真实变化轴；`simplify/avoid` 必须有更简单方案 |
-| G1 模式指南 | `02-pattern-guide.md` 后 | 必须包含思想、适用场景、最佳实践范式、多语言附件和案例附件 |
-| G2 审查 | `04-design-pattern-review.md` 后 | 无 critical/high；实现符合目标语言习惯；新增抽象有明确职责 |
+| G1 模式指南 | `02-pattern-guide.md` 后 | 主体必须是 Markdown 设计说明，包含思想、适用场景、最佳实践范式、多语言附件和案例附件；可附 `structured_summary` 供串接 |
+| G2 审查 | `04-design-pattern-review.md` 后 | Markdown 审查报告无 critical/high；实现符合目标语言习惯；新增抽象有明确职责 |
 
 ## 3. 模式路由表
 
@@ -50,6 +50,6 @@
 
 - 模式服务变化轴，不服务“看起来专业”。
 - 三类模式都必须可选，但一次设计只保留最小必要组合；每个 GoF 模式都有独立 SKILL 承载细节。
-- 具体模式 SKILL 只产出本模式思想、最佳实践、多语言差异和案例；workflow 决定调用顺序。
+- 具体模式 SKILL 以 Markdown 设计说明为主，不强制固定 YAML；需要串接时才追加 `structured_summary`。
 - 输出实现时先给语言无关蓝图，再给目标语言代码。
 - 不把 Java 类继承结构强加给 TypeScript、Python、Go、Rust 等语言。

@@ -24,22 +24,34 @@ description: "审查设计模式使用是否必要、角色是否清楚、实现
 
 ## 返回什么
 
+默认返回一份 **Markdown 审查报告**，而不是固定 YAML 文件。报告必须包含：
+
+1. 总体结论：pass / needs_changes / fail
+2. 模式适配度
+3. 分级发现
+4. 证据
+5. 修正建议
+6. 更简单替代方案
+7. 目标语言惯用性说明
+8. 必改项
+
+当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加一个可选的 `structured_summary` 小节即可：
+
 ~~~yaml
-verdict: pass | needs_changes | fail
-pattern:
-fit_score: 0-100
-findings:
-  - severity: critical | high | medium | low
-    issue:
-    evidence:
-    fix:
-simpler_alternatives:
-  - alternative:
-    when_to_prefer:
-language_idiom_notes:
-  - note:
-required_changes:
-  - change:
+structured_summary:
+  verdict: pass | needs_changes | fail
+  pattern:
+  fit_score: 0-100
+  findings:
+    - severity: critical | high | medium | low
+      issue:
+      evidence:
+      fix:
+  simpler_alternatives:
+    - alternative:
+      when_to_prefer:
+  required_changes:
+    - change:
 ~~~
 
-> **返回格式自检**：`fail` 必须给可执行替代方案；每条 high/critical 必须有证据；不得把“没按某语言经典写法”误判为错误。
+> **返回自检**：正文必须先是可读的 Markdown 审查报告；`fail` 必须给可执行替代方案；每条 high/critical 必须有证据；不得把“没按某语言经典写法”误判为错误。
