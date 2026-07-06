@@ -63,7 +63,7 @@ jobs:
           CONFIG__FALLBACK_MODELS: '["gpt-5.4"]'
           CONFIG__CUSTOM_MODEL_MAX_TOKENS: "128000"
           CONFIG__RESPONSE_LANGUAGE: zh-CN
-          PR_REVIEWER__EXTRA_INSTRUCTIONS: 请用中文进行 PR Review，重点关注潜在 bug、安全风险、边界条件、测试缺失和可维护性。
+          PR_REVIEWER__EXTRA_INSTRUCTIONS: 请用中文进行 PR Review。此 repo 提供后端架构、DDD、CQRS 实践与技能包，重点检查示例和指令是否会误导实现、DDD/CQRS 边界是否清晰、读写模型同步与一致性风险、跨语言建议准确性、测试/文档覆盖和可维护性。
           PR_DESCRIPTION__EXTRA_INSTRUCTIONS: 请用中文总结 PR 变更。
           PR_CODE_SUGGESTIONS__EXTRA_INSTRUCTIONS: 请用中文给出代码改进建议。
           github_action_config.auto_review: "true"
