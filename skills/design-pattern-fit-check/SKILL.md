@@ -1,11 +1,6 @@
 ---
 name: design-pattern-fit-check
 description: "把设计问题映射到 GoF 设计模式，按创建型、结构型、行为型三类给出最小可行模式选择，避免为套模式而套模式。"
-risk: safe
-category: discovery
-inputs: "设计问题 / 代码上下文 / 变化轴 / 约束 / 目标语言或技术栈"
-outputs: "模式适配决策 / 候选模式 / 首选模式 / 不推荐模式 / 采用理由"
-tags: "[design-patterns, gof, creational, structural, behavioral, language-agnostic]"
 ---
 
 # Design Pattern Fit Check（模式适配判断）
@@ -30,7 +25,7 @@ tags: "[design-patterns, gof, creational, structural, behavioral, language-agnos
 
 ## 返回什么
 
-```yaml
+~~~yaml
 decision: use | simplify | avoid
 problem_type: creational | structural | behavioral | mixed
 primary_pattern:
@@ -52,7 +47,7 @@ minimal_design:
 language_notes:
   target_language:
   idioms:
-```
+~~~
 
 > **返回格式自检**：`decision=use` 必须指出真实变化轴；不得只因“经典”而推荐模式；`simplify/avoid` 必须给更简单替代方案。
 

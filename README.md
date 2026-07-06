@@ -38,7 +38,7 @@
 | reverse（改造）| `ddd-code-survey` / `ddd-seam-finder` / `ddd-strangler-plan` |
 | query/read-model | `cqrs-fit-check` / `cqrs-domain-read-decoupling` / `cqrs-aggregation-view-design` / `cqrs-read-model-design` / `cqrs-read-model-sync` |
 | validation | `cqrs-review` |
-| design-patterns | `design-pattern-fit-check` / `design-pattern-implementation` |
+| design-patterns | `design-pattern-fit-check` / 23 个 `design-pattern-<pattern>` 独立模式能力 / `design-pattern-implementation` |
 | validation | `design-pattern-review` |
 
 每个能力目录含 `SKILL.md`（默认加载的纯能力四段）+ 按需加载的附加文件（`examples.md` 等）。
@@ -112,7 +112,7 @@ flowchart LR
   IM --> RV[design-pattern-review]
 ```
 
-按 GoF 三大类整理创建型、结构型、行为型全部 23 个模式，但落地时保持语言无关：先判断变化轴，再输出模式蓝图，最后按 Java / TypeScript / Python / Go / C# / Kotlin / Rust 等语言生成惯用实现。细节见 [`workflows/workflow-design-pattern.md`](workflows/workflow-design-pattern.md)、[`references/design-pattern-catalog.md`](references/design-pattern-catalog.md)。
+按 GoF 三大类整理创建型、结构型、行为型全部 23 个模式，每个模式都是独立 SKILL，且每个目录包含 `language-differences.md` 与 `examples.md` 附件。落地时保持语言无关：先判断变化轴，再路由到具体模式能力，最后按 Java / TypeScript / Python / Go / C# / Kotlin / Rust 等语言生成惯用实现。细节见 [`workflows/workflow-design-pattern.md`](workflows/workflow-design-pattern.md)、[`references/design-pattern-catalog.md`](references/design-pattern-catalog.md)。
 
 ---
 
@@ -130,6 +130,7 @@ flowchart LR
 | `/backend-best-practices:cqrs-read-model-review <工件>` | 启动 `workflow-read-model-review` |
 | `/backend-best-practices:system-model-view-read <代码路径>` | 启动 `workflow-system-model-view-read` |
 | `/backend-best-practices:design-pattern <设计问题或代码路径> --lang=<语言>` | 启动 `workflow-design-pattern` |
+| `/backend-best-practices:design-pattern-<pattern> <设计问题或代码路径> --lang=<语言>` | 固定某个 GoF 模式并启动 `workflow-design-pattern` |
 
 ---
 
@@ -154,7 +155,7 @@ backend-best-practices/
 ├── examples/                      CQRS 读模型示例
 └── references/
     ├── language-profiles.md       语言剖面映射表
-    ├── design-pattern-catalog.md  GoF 23 个设计模式目录
+    ├── design-pattern-catalog.md  GoF 23 个设计模式总览
     ├── design-pattern-language-profiles.md 多语言模式落地剖面
     └── *read-model*.md            CQRS 读模型参考
 ```

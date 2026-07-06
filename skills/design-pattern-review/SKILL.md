@@ -1,11 +1,6 @@
 ---
 name: design-pattern-review
 description: "审查设计模式使用是否必要、角色是否清楚、实现是否符合目标语言习惯，并发现过度设计、模式误用和可测试性问题。"
-risk: safe
-category: validation
-inputs: "设计模式方案 / 代码片段 / 目标语言 / 设计约束 / 测试"
-outputs: "审查结论 / 分级发现 / 修正建议 / 更简单替代方案"
-tags: "[design-patterns, review, over-engineering, maintainability, language-agnostic]"
 ---
 
 # Design Pattern Review（模式审查）
@@ -29,7 +24,7 @@ tags: "[design-patterns, review, over-engineering, maintainability, language-agn
 
 ## 返回什么
 
-```yaml
+~~~yaml
 verdict: pass | needs_changes | fail
 pattern:
 fit_score: 0-100
@@ -45,6 +40,6 @@ language_idiom_notes:
   - note:
 required_changes:
   - change:
-```
+~~~
 
 > **返回格式自检**：`fail` 必须给可执行替代方案；每条 high/critical 必须有证据；不得把“没按某语言经典写法”误判为错误。
