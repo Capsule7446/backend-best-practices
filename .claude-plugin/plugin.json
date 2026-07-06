@@ -1,20 +1,55 @@
 {
   "name": "backend-best-practices",
   "version": "0.1.0",
-  "description": "后端最佳实践插件：把 DDD 建模、CQRS 读模型、设计模式、聚合视图、同步刷新和架构审查固化为 Agent 可重复执行、可门禁、可回溯的开发工序。",
+  "description": "后端最佳实践插件：把 DDD 建模、CQRS 读模型、GoF 设计模式、系统读码和架构审查固化为 Agent 可重复执行、可门禁、可回溯的开发工序。",
   "author": {
-    "name": "Pauly"
+    "name": "Pauly",
+    "email": "paullai0201@gmail.com"
   },
+  "homepage": "https://github.com/Capsule7446/backend-best-practices",
+  "repository": "https://github.com/Capsule7446/backend-best-practices",
+  "license": "MIT",
   "keywords": [
     "backend",
     "best-practices",
+    "architecture",
+    "architecture-review",
+    "system-reading",
+    "ddd",
+    "domain-driven-design",
+    "bounded-context",
+    "aggregate",
+    "ports-and-adapters",
     "cqrs",
+    "read-model",
+    "aggregation-view",
+    "sync-strategy",
     "design-patterns",
     "gof",
     "creational-patterns",
     "structural-patterns",
     "behavioral-patterns",
-    "read-model",
     "language-agnostic"
-  ]
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Backend Best Practices",
+    "shortDescription": "DDD、CQRS 读模型、设计模式和架构审查工作流。",
+    "longDescription": "把后端架构经验拆成可复用的 SKILL、WORKFLOW 和 COMMAND：支持 DDD greenfield/brownfield、CQRS 读模型设计、系统模型与业务视图读码、GoF 设计模式选择/实现/审查，并通过文件交接、门禁和回溯保持流程可控。",
+    "developerName": "Pauly",
+    "category": "Development",
+    "capabilities": [
+      "Code Analysis",
+      "Architecture Review",
+      "Refactoring Planning",
+      "Code Generation"
+    ],
+    "websiteURL": "https://github.com/Capsule7446/backend-best-practices",
+    "defaultPrompt": [
+      "阅读这个后端项目并输出系统模型与业务视图",
+      "评估这个模块是否适合用 CQRS 读模型重构",
+      "判断这个设计问题适合哪个 GoF 设计模式"
+    ],
+    "brandColor": "#2563EB"
+  }
 }
