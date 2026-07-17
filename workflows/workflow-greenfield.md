@@ -54,7 +54,7 @@
 
 | 序 | 调用能力 | 输入文件 | 输出文件 | 门禁 |
 | :-- | :-- | :-- | :-- | :-- |
-| c14 | ddd-spec-bridge | `contexts/<ctx>/02,04,05,06?,08,11?-*.md` | `contexts/<ctx>/14-spec.md` | |
+| c14 | ddd-spec-bridge | `contexts/<ctx>/02,04,05,06?,08,11?,12?-*.md` | `contexts/<ctx>/14-spec.md` | |
 | p01 | design-pattern-opportunity-scan | `contexts/<ctx>/14-spec.md` + 既有代码/骨架 | `contexts/<ctx>/patterns/01-scan.md` | |
 | p02 | design-pattern-fit-check | `patterns/01-scan.md` 中单个 concern | `contexts/<ctx>/patterns/02-fit-<concern>.md` | 条件执行（`concerns` 非空，逐 concern）|
 | p03 | design-pattern-implementation | `patterns/02-fit-<concern>.md` | `contexts/<ctx>/patterns/03-blueprint-<concern>.md` | 条件执行（`decision=use`）|
@@ -87,7 +87,7 @@
 | G2 模型 | `03-model-review.md` 后 | 不变量表达率 ≥ 60%；无阻断级一致性问题；每条目标有建模覆盖；无未决回溯项 | 停下与用户确认 |
 | G3 应用设计 | `07-application-review.md` 后 | 无硬门禁命中（清单见 `references/application-review-rubric.md`）；按 rubric 设计态判定 ≥ conditional_pass；每个写命令有唯一 UC；`GOAL→CMD→UC→AGG→INV→EVT→AC` 追踪闭合 | |
 | G4 读侧 | `13-read-review.md` 后 | 每个 VIEW 在 `views` 矩阵有结论；`avoid` 视图也有视图契约、查询方案与权限；`use` 视图字段有来源、有同步与重建策略；无 critical/high；无默认事件溯源/微服务/双库 | |
-| G5 契约与模式 | `14-spec.md` 与 `patterns/*` 后 | 规范自洽（用例/端口/事件/读侧互引都在规范内定义）；每个 `PAT` 有真实 `change_axis` 与更简单替代对比；`concerns` 为空时无任何模式工件 | 停下与用户确认 |
+| G5 契约与模式 | `14-spec.md` 与 `patterns/*` 后 | 规范自洽（用例/端口/事件/读侧互引都在规范内定义）；每个 `PAT` 有真实 `change_axis` 与更简单替代对比；`concerns` 为空时除 `patterns/01-scan.md`（扫描证据）外无 fit/蓝图/审查工件 | 停下与用户确认 |
 | G6 骨架 | `15-scaffold.md` 后 | 端口契约可在目标语言完整表达；依赖只向内且应用层只依赖端口抽象；骨架零实现；接口/方法保留不变量与用例编号的契约追踪注释 | 确认落地语言 |
 | G7 实现与验收 | `21..23-*.md` 后 | 实现态 application review 按 rubric 达 **pass**；架构依赖测试通过（领域零基础设施、应用零具体 SDK、入口不直连仓储）；acceptance 全部 INV/AC/测试义务通过并有 test_file+test_name 证据；有读模型时读侧验收通过 | |
 
@@ -133,6 +133,6 @@
 - **工件即文件**：严格按 §1/§2 的输入/输出文件传递（工件信封：`artifact_schema_version` + Markdown 正文 + `structured_summary`）；SKILL 不自行决定文件名。
 - **Application 是必备层**：所有写命令必须经 UC/Handler；Controller 直调仓储或聚合在 G7 架构测试中阻断。
 - **业务视图是必经设计，CQRS 是可选实现**：`avoid` 只是不建独立读模型，视图契约、查询方案与权限照常交付。
-- **模式是条件支线**：没有变化轴时 `concerns` 为空、零模式工件，这是正确结果而非缺失。
+- **模式是条件支线**：没有变化轴时 `concerns` 为空，只留扫描证据、不产 fit/蓝图/审查工件，这是正确结果而非缺失。
 - **语言延后绑定**：落地语言在 G6 前才需确定。
 - **回溯是常态**：按 §4 重跑上游并在 `_manifest.md` 记录原因，不算失败。
