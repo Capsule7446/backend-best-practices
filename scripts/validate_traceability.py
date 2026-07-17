@@ -151,22 +151,33 @@ def main() -> int:
             if uc in query_ucs or re.search(r"kind:\s*query", chunk):
                 continue
             kinds = {m.group(1) for m in ID_RE.finditer(chunk)}
-            if "INV" not in kinds:
-                warnings.append(
-                    f"WARNING: {rel(p)}: `{uc}` 区块内未引用任何 INV——写侧追踪链（UC→INV）缺环"
+            if "INV" not in kinds:  # 追踪链是硬约束：缺环即 ERROR（合法缺席须显式 n/a）
+                errors.append(
+                    f"ERROR: {rel(p)}: `{uc}` 区块内未引用任何 INV——写侧追踪链（UC→INV）缺环"
                 )
             if "AC" not in kinds:
-                warnings.append(
-                    f"WARNING: {rel(p)}: `{uc}` 区块内未引用任何 AC——验收追踪（UC→AC）缺环"
+                errors.append(
+                    f"ERROR: {rel(p)}: `{uc}` 区块内未引用任何 AC——验收追踪（UC→AC）缺环"
                 )
 
-    # --- 3b. 读侧链：每个 VIEW 必须进 fit 矩阵（精确 ID 成员判断）-----------
-    fit_ids: set[str] = set()
+    # --- 3b. 读侧链：每个 VIEW 必须在 fit 矩阵中拥有有效 decision ------------
+    # "拥有结论" = VIEW 出现在结构化行，且该行或其后 3 行内有 decision: use|partial|avoid
+    #（兼容 YAML 条目 id 与 decision 分行的形态）；散文/待办里的提及不算。
+    DECISION_RE = re.compile(r"decision\s*[:：]\s*(use|partial|avoid)")
+    fit_ids_with_decision: set[str] = set()
     has_fit_file = False
     for p, t in texts.items():
-        if any(pat in p.name for pat in FIT_PATTERNS):
-            has_fit_file = True
-            fit_ids.update(m.group(0) for m in ID_RE.finditer(t))
+        if not any(pat in p.name for pat in FIT_PATTERNS):
+            continue
+        has_fit_file = True
+        lines = t.splitlines()
+        for i, line in enumerate(lines):
+            hits = [m.group(0) for m in ID_RE.finditer(line) if m.group(1) == "VIEW"]
+            if not hits or not STRUCTURED_LINE_RE.match(line):
+                continue
+            window = "\n".join(lines[i : i + 4])
+            if DECISION_RE.search(window):
+                fit_ids_with_decision.update(hits)
     view_ids = sorted(
         id_ for id_ in seen_in if id_.startswith("VIEW-") and in_home(id_)
     )
@@ -174,8 +185,10 @@ def main() -> int:
         errors.append("ERROR: 存在 VIEW 定义但工作区没有任何 fit 矩阵工件（read-fit/fit-check）")
     else:
         for v in view_ids:
-            if v not in fit_ids:
-                errors.append(f"ERROR: 视图 `{v}` 没有出现在 fit 矩阵工件中——读侧链（VIEW→fit 结论）断裂")
+            if v not in fit_ids_with_decision:
+                errors.append(
+                    f"ERROR: 视图 `{v}` 在 fit 矩阵工件中没有有效 decision（use|partial|avoid）——读侧链断裂"
+                )
 
     # --- 汇总 ---------------------------------------------------------------
     for line in errors:
