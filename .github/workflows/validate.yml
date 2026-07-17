@@ -1,0 +1,26 @@
+name: validate
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate skills
+        run: python scripts/validate_skills.py
+
+      - name: Validate workflow graph
+        if: ${{ !cancelled() }}
+        run: python scripts/validate_workflow_graph.py
+
+      - name: Validate plugin manifest
+        if: ${{ !cancelled() }}
+        run: python scripts/validate_plugin.py

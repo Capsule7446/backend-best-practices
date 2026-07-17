@@ -23,6 +23,7 @@
 | 判断是否适合设计模式 | `design-pattern` |
 | 固定某个 GoF 模式落地 | `design-pattern-<pattern>` |
 | 审查领域模型 | `ddd-review` |
+| 审查应用层（用例/编排/事务/幂等）| `ddd-application-review` |
 | 生成接口优先的契约和骨架 | `ddd-spec` / `ddd-scaffold` |
 
 常用命令：
@@ -33,6 +34,7 @@
 /backend-best-practices:ddd-new <需求描述>
 /backend-best-practices:cqrs-read-model-refactor <代码路径或现状>
 /backend-best-practices:cqrs-read-model-review <工件>
+/backend-best-practices:ddd-application-review <应用层工件或代码路径>
 /backend-best-practices:design-pattern <设计问题或代码路径> --lang=<语言>
 /backend-best-practices:design-pattern-<pattern> <设计问题或代码路径> --lang=<语言>
 ```
@@ -310,6 +312,26 @@ run/
     01-code-survey.md
     ...
     15-system-reading-report.md
+  ddd-new/
+    shared/
+      00-routing.md
+      01-scope.md
+      ...
+      05-context-map.md
+    contexts/
+      ordering/
+        01-aggregates.md
+        ...
+        07-application-review.md
+        08-views.md
+        ...
+        14-spec.md
+        patterns/
+        15-scaffold.md
+        ...
+        23-acceptance.md
+    delivery/
+      acceptance-report.md
   refactor/
     01-survey.md
     02-seams.md
@@ -318,8 +340,10 @@ run/
       00-characterization.md
       01-aggregates.md
       ...
+      15-acceptance.md
   read-model/
-    01-fit-check.md
+    01-views.md
+    02-fit-check.md
     ...
   design-pattern/
     01-design-pattern-fit.md

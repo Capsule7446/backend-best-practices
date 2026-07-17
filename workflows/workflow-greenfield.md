@@ -1,59 +1,103 @@
 # Workflow：Greenfield（0→1 新建）
 
 > 统筹者。本文件是**唯一**掌握顺序、文件交接、门禁与回溯的地方；被调用的 SKILL 都是纯能力，对流程一无所知。由 `/backend-best-practices:ddd-new` 触发。
+> 交付链路：战略 DDD → 战术 Domain → **Application 用例编排** → **业务视图/读侧** → 统一契约 → （条件）设计模式 → 分层实现 → 验收。
 
 ## 0. 入口路由（原 mode-router 职责，已并入本层）
 
-workflow 启动时先自行完成分流，不再有独立的 router skill：
-
 1. **判定驱动**：无既有实现/愿重写 → greenfield（本流程）；有可运行代码且目标是渐进改造 → 转 `workflow-brownfield`。
 2. **采集最小上下文**：一句可被业务方认可的问题陈述、关键参与方、硬约束（合规/时限/团队）。缺阻塞项先问清，不猜。
-3. **登记落地语言**：记录 `--lang`（默认延后到 G3 前再定）。
-4. **建运行工作区**：创建 `<workdir>/`（默认 `./run/`），写入 `00-routing.md` 与 `_manifest.md`。
+3. **登记落地语言**：记录 `--lang`（默认延后到 G6 前再定）。
+4. **建运行工作区**：创建 `<workdir>/`（默认 `./run/ddd-new/`），写入 `shared/00-routing.md` 与 `_manifest.md`。
 
-## 1. 工作区与文件交接
-
-每个 SKILL 只被告知「读哪些输入文件、写哪个输出文件」；文件名与编号由本 workflow 统一分配。
+## 1. 共享战略段（工件在 `shared/`）
 
 | 序 | 调用能力 | 输入文件 | 输出文件 | 门禁 |
 | :-- | :-- | :-- | :-- | :-- |
-| 00 | （路由，本层）| 用户诉求 | `00-routing.md` | |
-| 01 | ddd-scope | `00-routing.md` | `01-scope.md` | |
-| 02 | ddd-discover | `01-scope.md` | `02-discover.md` | |
-| 03 | ddd-subdomains | `01-scope.md`,`02-discover.md` | `03-subdomains.md` | |
-| 04 | ddd-contexts | `02-discover.md`,`03-subdomains.md` | `04-contexts.md` | |
-| 05 | ddd-context-map | `04-contexts.md` | `05-context-map.md` | **G1** |
-| 06 | ddd-aggregates | `04-contexts.md`,`05-context-map.md`,`02-discover.md` | `06-aggregates.md` | |
-| 07 | ddd-domain-interactions | `06-aggregates.md`,`05-context-map.md` | `07-interactions.md` | |
-| 08 | ddd-model-review | `03..07-*.md`（全战略+战术）| `08-review.md` | **G2** |
-| 09 | ddd-spec-bridge | `06-aggregates.md`,`07-interactions.md` | `09-spec.md` | |
-| 10 | ddd-port-scaffold | `09-spec.md` + 语言剖面 | `10-ports.md` | **G3** |
-| 11 | ddd-adapter-impl | `10-ports.md`,`09-spec.md` | `11-impl.md` | |
-| 12 | ddd-acceptance | `09-spec.md`,`11-impl.md` | `12-acceptance.md` | |
+| 00 | （路由，本层）| 用户诉求 | `shared/00-routing.md` | |
+| 01 | ddd-scope | `shared/00-routing.md` | `shared/01-scope.md` | |
+| 02 | ddd-discover | `shared/01-scope.md` | `shared/02-discover.md` | |
+| 03 | ddd-subdomains | `shared/01-scope.md`,`shared/02-discover.md` | `shared/03-subdomains.md` | |
+| 04 | ddd-contexts | `shared/02-discover.md`,`shared/03-subdomains.md` | `shared/04-contexts.md` | |
+| 05 | ddd-context-map | `shared/04-contexts.md` | `shared/05-context-map.md` | **G1** |
 
-workflow 每步后更新 `_manifest.md`：阶段状态、门禁结果、回溯记录。
+## 2. 逐上下文循环（每个上下文 `<ctx>` 用独立子工作区 `contexts/<ctx>/`）
 
-## 2. 门禁（读产物文件核对；这是"两级自检"的第②级）
+`shared/04-contexts.md` 的上下文清单驱动循环，核心域优先。
 
-SKILL 只保证自己产物**格式**合格；能否放行由本层判定：
+### 2.1 战术建模与 Application 设计
 
-| 门禁 | 位置 | 放行条件（读对应文件核对）| 停顿 |
+| 序 | 调用能力 | 输入文件 | 输出文件 | 门禁 |
+| :-- | :-- | :-- | :-- | :-- |
+| c01 | ddd-aggregates | `shared/04-contexts.md`,`shared/05-context-map.md`,`shared/02-discover.md` | `contexts/<ctx>/01-aggregates.md` | |
+| c02 | ddd-domain-interactions | `contexts/<ctx>/01-aggregates.md`,`shared/05-context-map.md` | `contexts/<ctx>/02-interactions.md` | |
+| c03 | ddd-model-review | `shared/03..05-*.md`,`contexts/<ctx>/01..02-*.md` | `contexts/<ctx>/03-model-review.md` | **G2** |
+| c04 | ddd-application-use-cases | `shared/02-discover.md`,`contexts/<ctx>/01..02-*.md` | `contexts/<ctx>/04-use-cases.md` | |
+| c05 | ddd-application-orchestration | `contexts/<ctx>/04-use-cases.md`,`contexts/<ctx>/01-aggregates.md` | `contexts/<ctx>/05-orchestration.md` | |
+| c06 | ddd-process-manager-design | `contexts/<ctx>/05-orchestration.md`（长流程候选）,`contexts/<ctx>/02-interactions.md` | `contexts/<ctx>/06-process-managers.md` | 条件执行（有长流程候选）|
+| c07 | ddd-application-review | `contexts/<ctx>/04,05,06?-*.md` | `contexts/<ctx>/07-application-review.md` | **G3** |
+
+### 2.2 业务视图与读侧（视图先行，逐视图定读侧方案）
+
+| 序 | 调用能力 | 输入文件 | 输出文件 | 门禁 |
+| :-- | :-- | :-- | :-- | :-- |
+| c08 | cqrs-aggregation-view-design | `shared/01-scope.md`（视图需求种子）,`shared/02-discover.md`（查询/视图目录）,`contexts/<ctx>/01-aggregates.md` | `contexts/<ctx>/08-views.md` | |
+| c09 | cqrs-fit-check | `contexts/<ctx>/08-views.md`,`contexts/<ctx>/01-aggregates.md` | `contexts/<ctx>/09-read-fit.md` | |
+| c10 | cqrs-domain-read-decoupling | `contexts/<ctx>/08-views.md`,`contexts/<ctx>/01-aggregates.md` | `contexts/<ctx>/10-domain-read-decoupling.md` | |
+| c11 | cqrs-read-model-design | `contexts/<ctx>/08..10-*.md` | `contexts/<ctx>/11-read-models.md` | 条件执行（`views` 中存在 `use`）|
+| c12 | cqrs-read-model-sync | `contexts/<ctx>/11-read-models.md`,`contexts/<ctx>/05-orchestration.md`（事件/Outbox 衔接）| `contexts/<ctx>/12-read-model-sync.md` | 条件执行（同上）|
+| c13 | cqrs-review | `contexts/<ctx>/08,09,10,11?,12?-*.md` | `contexts/<ctx>/13-read-review.md` | **G4** |
+
+`c09`（`09-read-fit.md`）输出逐视图矩阵：`decision=avoid` 的视图仍须在 `08-views.md` 拥有视图契约与权限，走简单查询方案；仅 `decision=use` 的视图进入 c11/c12。
+
+### 2.3 统一契约与（条件）设计模式支线
+
+| 序 | 调用能力 | 输入文件 | 输出文件 | 门禁 |
+| :-- | :-- | :-- | :-- | :-- |
+| c14 | ddd-spec-bridge | `contexts/<ctx>/02,04,05,06?,08,11?,12?-*.md` | `contexts/<ctx>/14-spec.md` | |
+| p01 | design-pattern-opportunity-scan | `contexts/<ctx>/14-spec.md`（+ 既有代码/骨架，0→1 首轮可缺席，仅基于契约扫描）| `contexts/<ctx>/patterns/01-scan.md` | |
+| p02 | design-pattern-fit-check | `patterns/01-scan.md` 中单个 concern | `contexts/<ctx>/patterns/02-fit-<concern>.md` | 条件执行（`concerns` 非空，逐 concern）|
+| p03 | design-pattern-implementation | `patterns/02-fit-<concern>.md` | `contexts/<ctx>/patterns/03-blueprint-<concern>.md` | 条件执行（`decision=use`）|
+| — | （G5 核对，本层）| `14-spec.md` + `patterns/*` | 更新 `_manifest.md` | **G5** |
+
+`p01` 输出 `concerns` 为空 → 直接过 G5（无模式是正当结果）。`p02` 判 `simplify/avoid` → 该 concern 结案，不产蓝图。`p03` 蓝图不写真实代码——由 2.4 中 `owner_layer` 对应的实现步骤消费。
+
+### 2.4 骨架、分层实现与验收
+
+| 序 | 调用能力 | 输入文件 | 输出文件 | 门禁 |
+| :-- | :-- | :-- | :-- | :-- |
+| c15 | ddd-port-scaffold | `contexts/<ctx>/14-spec.md` + 语言剖面 | `contexts/<ctx>/15-scaffold.md` | **G6** |
+| c16 | ddd-domain-impl | `15-scaffold.md`,`14-spec.md`（+ `patterns/03-*` 中 `owner_layer=domain` 的蓝图）| `contexts/<ctx>/16-domain-impl.md` | |
+| c17 | ddd-application-impl | `15-scaffold.md`,`14-spec.md`,`05-orchestration.md`,`08-views.md`（`avoid` 视图的查询契约）（+ `patterns/03-*` 中 `owner_layer=application` 的蓝图）| `contexts/<ctx>/17-application-impl.md` | |
+| c18 | ddd-outbound-adapter-impl | `15-scaffold.md`,`14-spec.md`（+ `patterns/03-*` 中 `owner_layer=adapter` 的蓝图）| `contexts/<ctx>/18-outbound-impl.md` | |
+| c19 | cqrs-read-model-impl | `08-views.md`,`09-read-fit.md`,`11?,12?-*.md`,`15-scaffold.md`（+ `patterns/03-*` 中 `owner_layer=read` 的蓝图）| `contexts/<ctx>/19-read-impl.md` | 条件执行（存在 `use` 视图）|
+| c20 | ddd-inbound-adapter-impl | `15-scaffold.md`,`04-use-cases.md` | `contexts/<ctx>/20-inbound-impl.md` | |
+| p04 | design-pattern-review | `patterns/03-*` + 对应层实现工件 | `contexts/<ctx>/patterns/04-review.md` | 条件执行（有蓝图）|
+| c21 | ddd-application-review | `contexts/<ctx>/04,05,06?-*.md` + `17-application-impl.md` + 测试证据 | `contexts/<ctx>/21-application-review-impl.md` | **G7** 之一 |
+| c22 | cqrs-read-model-acceptance | `11..12-*.md`,`19-read-impl.md` | `contexts/<ctx>/22-read-acceptance.md` | 条件执行（存在 `use` 视图）|
+| c23 | ddd-acceptance | `14-spec.md`,`16,17,18,19?,20-*.md` | `contexts/<ctx>/23-acceptance.md` | **G7** |
+
+`avoid` 视图的查询交付路径：查询契约（`08-views.md`）由 c17 落成 Query Handler / View DTO（权限下推）、c18 落成 Query Port 的读存储访问；其验收由 c23 的查询类测试义务（无副作用、权限过滤、分页/排序、空结果）承担——`avoid` 不建独立读模型，但查询实现与验收不缺席。
+
+全部上下文完成后，本层汇总 `delivery/acceptance-report.md`（各上下文门禁结果、追踪链核对、遗留项）。
+
+## 3. 门禁（读产物文件核对；这是"两级自检"的第②级）
+
+| 门禁 | 位置 | 放行条件 | 停顿 |
 | :-- | :-- | :-- | :-- |
-| G1 战略 | `05-context-map.md` 后 | 上下文边界与契约所有权获用户确认；核心域已声明且每个核心上下文有 ACL/隔离 | 停下与用户确认 |
-| G2 模型 | `08-review.md` 后 | 不变量表达率 ≥ 60%；无阻断级一致性问题；每条目标有建模覆盖；无未决回溯项 | 停下与用户确认 |
-| G3 落地 | `10-ports.md` 后 | 端口契约可在目标语言完整表达；依赖只向内；骨架零实现；接口/方法保留不变量编号与一致性策略的契约追踪注释 | 确认落地语言 |
+| G1 战略 | `shared/05-context-map.md` 后 | 上下文边界与契约所有权获用户确认；核心域已声明且每个核心上下文有 ACL/隔离 | 停下与用户确认 |
+| G2 模型 | `03-model-review.md` 后 | 不变量表达率 ≥ 60%；无阻断级一致性问题；每条目标有建模覆盖；无未决回溯项 | 停下与用户确认 |
+| G3 应用设计 | `07-application-review.md` 后 | 无硬门禁命中（清单见 `references/application-review-rubric.md`）；按 rubric 设计态判定 ≥ conditional_pass；每个写命令有唯一 UC；`GOAL→CMD→UC→AGG→INV→EVT→AC` 追踪闭合 | |
+| G4 读侧 | `13-read-review.md` 后 | 每个 VIEW 在 `09-read-fit.md` 的 `views` 矩阵有结论；`avoid` 视图也有视图契约、查询方案与权限；`use` 视图字段有来源、有同步与重建策略；无 critical/high；无默认事件溯源/微服务/双库 | |
+| G5 契约与模式 | `14-spec.md` 与 `patterns/*` 后 | 规范自洽（用例/端口/事件/读侧互引都在规范内定义）；每个 `PAT` 有真实 `change_axis` 与更简单替代对比；`concerns` 为空时除 `patterns/01-scan.md`（扫描证据）外无 fit/蓝图/审查工件 | 停下与用户确认 |
+| G6 骨架 | `15-scaffold.md` 后 | 端口契约可在目标语言完整表达；依赖只向内——应用层可依赖 Domain 内核，对外部资源只依赖端口抽象；骨架零实现；接口/方法保留不变量与用例编号的契约追踪注释 | 确认落地语言 |
+| G7 实现与验收 | `21..23-*.md` 后 | 实现态 application review 按 rubric 达 **pass**；架构依赖测试通过（领域零基础设施、应用零具体 SDK、入口不直连仓储）；acceptance 全部 INV/AC/测试义务通过并有 test_file+test_name 证据；有读模型时读侧验收通过 | |
 
-### G2：如何消费 `ddd-model-review`
+### 门禁如何消费审查类工件
 
-`ddd-model-review` 只输出五维评分、问题清单、发现清单与结论；本 workflow 负责读取 `08-review.md`，把客观发现映射到是否放行、是否停下确认、是否重跑上游能力。不得要求 `ddd-model-review` 决定回溯目标。
+审查类能力（`ddd-model-review`、`ddd-application-review`、`cqrs-review`、`design-pattern-review`）只输出客观发现与证据，**不打总分、不定回溯**。本 workflow 读取其证据表：G3/G7 按 `references/application-review-rubric.md` 计分判定；发现到回溯目标的映射由 §4 决定。
 
-### G3：如何消费 `ddd-port-scaffold`
-
-`ddd-port-scaffold` 只生成目标语言接口骨架与契约追踪注释；本 workflow 负责判定这些骨架是否满足落地门禁。若缺少不变量编号、一致性策略、依赖方向说明，或出现业务实现逻辑，则 G3 不放行。
-
-## 3. 回溯矩阵（本层独有；SKILL 不含回溯信息）
-
-门禁不过时，本层按下表**重跑对应上游 SKILL**（把修正说明作为额外输入文件传入）。`ddd-model-review` 只提供客观发现，映射到哪一步由本表决定：
+## 4. 回溯矩阵（本层独有；SKILL 不含回溯信息）
 
 | 触发条件（来自产物/门禁）| 重跑 |
 | :-- | :-- |
@@ -71,12 +115,26 @@ SKILL 只保证自己产物**格式**合格；能否放行由本层判定：
 | 某目标无建模覆盖 | ddd-discover / ddd-scope |
 | 契约语义无法中立化 | ddd-domain-interactions |
 | 不变量无法写成可观测断言 | ddd-aggregates |
+| 写命令无法映射到唯一 UC | ddd-application-use-cases |
+| 编排步骤含业务判断 / 直改实体 | ddd-application-orchestration（改委派）+ ddd-aggregates（规则入聚合）|
+| 幂等未覆盖崩溃窗口 | ddd-application-orchestration |
+| 存在"已提交但事件丢失"窗口 | ddd-application-orchestration |
+| 长流程不可恢复 / 补偿无终点 | ddd-process-manager-design |
+| 视图字段无来源 / Domain 被展示字段污染 | cqrs-aggregation-view-design / cqrs-domain-read-decoupling |
+| `avoid` 视图直接暴露 Entity | cqrs-domain-read-decoupling |
+| 读模型刷新/重建策略缺失 | cqrs-read-model-sync |
+| 模式无真实变化轴 / 过度设计 | design-pattern-opportunity-scan（降级 simplify/avoid）|
+| 蓝图角色与代码位置对不上 | design-pattern-implementation |
 | 端口契约目标语言无法表达 | ddd-spec-bridge |
 | 反复并发竞态 | ddd-aggregates |
+| 实现态 rubric fail | 对应层实现步骤 + 触发维度的上游设计能力 |
 
-## 4. 编排纪律
+## 5. 编排纪律
 
-- **非一口气跑完**：在 G1/G2 停下与用户确认关键工件。
-- **工件即文件**：严格按 §1 的输入/输出文件传递，不在阶段间丢信息；SKILL 不自行决定文件名。
-- **语言延后绑定**：落地语言在 G3 前才需确定。
-- **回溯是常态**：按 §3 重跑上游并在 `_manifest.md` 记录原因，不算失败。
+- **非一口气跑完**：在 G1/G2/G5 停下与用户确认关键工件。
+- **工件即文件**：严格按 §1/§2 的输入/输出文件传递（工件信封：`artifact_schema_version` + Markdown 正文 + `structured_summary`）；SKILL 不自行决定文件名。
+- **Application 是必备层**：所有写命令必须经 UC/Handler；Controller 直调仓储或聚合在 G7 架构测试中阻断。
+- **业务视图是必经设计，CQRS 是可选实现**：`avoid` 只是不建独立读模型，视图契约、查询方案与权限照常交付。
+- **模式是条件支线**：没有变化轴时 `concerns` 为空，只留扫描证据、不产 fit/蓝图/审查工件，这是正确结果而非缺失。
+- **语言延后绑定**：落地语言在 G6 前才需确定。
+- **回溯是常态**：按 §4 重跑上游并在 `_manifest.md` 记录原因，不算失败。
