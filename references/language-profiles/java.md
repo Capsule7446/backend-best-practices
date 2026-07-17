@@ -1,6 +1,6 @@
 # Java 语言剖面
 
-> 供 `backend-best-practices:ddd-port-scaffold` / `backend-best-practices:ddd-adapter-impl` 及 Application/读侧相关 skill 使用。索引与未收录语言问卷见 [../language-profiles.md](../language-profiles.md)。
+> 供 `ddd-port-scaffold` 与各分层实现能力（`ddd-domain-impl` / `ddd-application-impl` / `ddd-inbound-adapter-impl` / `ddd-outbound-adapter-impl` / `cqrs-read-model-impl`）使用。索引与未收录语言问卷见 [../language-profiles.md](../language-profiles.md)。
 
 ## Domain（领域内核）
 
