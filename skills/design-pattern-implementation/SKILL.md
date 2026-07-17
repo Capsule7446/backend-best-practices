@@ -7,7 +7,7 @@ description: "把选定设计模式转成语言无关蓝图，并按 Java、Type
 
 ## 做什么
 
-将已选设计模式落成可维护实现：先输出语言无关结构，再按目标语言生成符合当地习惯的代码或伪代码。
+将已选设计模式落成**实现蓝图**：先输出语言无关结构，再按目标语言给出符合当地习惯的代码或伪代码示意。产物是设计说明文档——当模式落在某个分层代码库中时，真实代码由该层的实现能力按本蓝图落地，避免两个能力修改同一段代码。
 
 ## 需要什么参数
 
@@ -37,30 +37,31 @@ description: "把选定设计模式转成语言无关蓝图，并按 Java、Type
 8. 测试点
 9. 权衡与风险
 
-当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加一个可选的 `structured_summary` 小节即可：
+当结果需要交给 workflow 或后续 SKILL 串接时，在文末追加 `structured_summary` 小节：
 
 ~~~yaml
 structured_summary:
-  pattern: Design Pattern Implementation（模式实现）
-  category:
-  use_when:
+  pattern:
+  owner_layer: domain | application | read | adapter | standalone
+  stable_boundary:
+  extension_points:
     - item
-  avoid_when:
+  role_mapping:
+    - { role:, maps_to: }
+  allowed_dependencies:
     - item
-  roles:
-    - name:
-      responsibility:
   target_language:
   implementation_idioms:
     - item
-  tests:
-    - case:
-      verifies:
+  target_code_paths:
+    - item
+  test_obligations:
+    - { case:, verifies: }
   tradeoffs:
     - item
 ~~~
 
-> **返回自检**：正文必须先是可读的 Markdown 设计说明；`structured_summary` 只作为串接摘要，不得替代完整说明。
+> **返回自检**：正文必须先是可读的 Markdown 设计说明；`owner_layer` 必填（独立小工具场景用 `standalone`）；每个模式角色在 `role_mapping` 中映射到业务概念或代码位置；`test_obligations` 至少含"新增一个代表性变体时稳定代码无需改动"的扩展性验证；`structured_summary` 只作为串接摘要，不得替代完整说明。
 
 ---
 
