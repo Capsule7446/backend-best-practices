@@ -55,7 +55,7 @@
 | 序 | 调用能力 | 输入文件 | 输出文件 | 门禁 |
 | :-- | :-- | :-- | :-- | :-- |
 | c14 | ddd-spec-bridge | `contexts/<ctx>/02,04,05,06?,08,11?,12?-*.md` | `contexts/<ctx>/14-spec.md` | |
-| p01 | design-pattern-opportunity-scan | `contexts/<ctx>/14-spec.md` + 既有代码/骨架 | `contexts/<ctx>/patterns/01-scan.md` | |
+| p01 | design-pattern-opportunity-scan | `contexts/<ctx>/14-spec.md`（+ 既有代码/骨架，0→1 首轮可缺席，仅基于契约扫描）| `contexts/<ctx>/patterns/01-scan.md` | |
 | p02 | design-pattern-fit-check | `patterns/01-scan.md` 中单个 concern | `contexts/<ctx>/patterns/02-fit-<concern>.md` | 条件执行（`concerns` 非空，逐 concern）|
 | p03 | design-pattern-implementation | `patterns/02-fit-<concern>.md` | `contexts/<ctx>/patterns/03-blueprint-<concern>.md` | 条件执行（`decision=use`）|
 | — | （G5 核对，本层）| `14-spec.md` + `patterns/*` | 更新 `_manifest.md` | **G5** |

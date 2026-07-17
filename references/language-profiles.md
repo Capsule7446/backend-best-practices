@@ -1,6 +1,6 @@
 # 语言剖面（Language Profiles）
 
-> 供 `backend-best-practices:ddd-port-scaffold` / `backend-best-practices:ddd-adapter-impl` 及 Application/读侧相关 skill 使用。把语言中立的构造（Domain / Application / Read / 出入站适配器 / 组合根）映射到各面向接口语言。
+> 供 `ddd-port-scaffold` 与各分层实现能力（`ddd-domain-impl` / `ddd-application-impl` / `ddd-inbound-adapter-impl` / `ddd-outbound-adapter-impl` / `cqrs-read-model-impl`）使用。把语言中立的构造（Domain / Application / Read / 出入站适配器 / 组合根）映射到各面向接口语言。
 > **渐进披露：确定目标语言后，只加载 `language-profiles/<lang>.md` 一个文件，不要全部载入。**
 
 ## 如何选剖面
