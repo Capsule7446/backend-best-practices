@@ -50,6 +50,8 @@
 
 ## 5. 编排纪律
 
+- 本 workflow 是**独立入口**（局部设计问题直达）；在 greenfield/brownfield 主流程内，模式支线由主 workflow 直接调用同批纯 SKILL（scan → fit → 蓝图 → 层内实现 → review），不嵌套本 workflow。
+- 蓝图（`03-design-pattern-implementation.md`）按 `owner_layer` 标注归属；落在分层代码库时，真实代码由该层实现能力按蓝图落地。
 - 模式服务变化轴，不服务“看起来专业”。
 - 三类模式都必须可选，但一次设计只保留最小必要组合；每个 GoF 模式都有独立 SKILL 承载细节。
 - 具体模式 SKILL 以 Markdown 设计说明为主，不强制固定 YAML；需要串接时才追加 `structured_summary`。

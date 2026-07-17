@@ -22,9 +22,9 @@
 | 07 | ddd-domain-interactions | `06-aggregates.md`,`05-context-map.md` | `07-domain-interactions.md` | |
 | 08 | ddd-model-review | `03..07-*.md` | `08-ddd-review.md` | G2 |
 | 09 | cqrs-domain-read-decoupling | `01-code-survey.md`,`04-contexts.md`,`06-aggregates.md` | `09-domain-read-decoupling.md` | |
-| 10 | cqrs-fit-check | `01-code-survey.md`,`09-domain-read-decoupling.md` | `10-cqrs-fit-check.md` | |
-| 11 | cqrs-aggregation-view-design | `01-code-survey.md`,`09-domain-read-decoupling.md`,`10-cqrs-fit-check.md` | `11-business-views.md` | |
-| 12 | cqrs-read-model-design | `11-business-views.md`,`09-domain-read-decoupling.md` | `12-read-models.md` | |
+| 10 | cqrs-aggregation-view-design | `01-code-survey.md`,`09-domain-read-decoupling.md` | `10-business-views.md` | |
+| 11 | cqrs-fit-check | `10-business-views.md`,`09-domain-read-decoupling.md` | `11-read-fit.md` | |
+| 12 | cqrs-read-model-design | `10-business-views.md`,`09-domain-read-decoupling.md` | `12-read-models.md` | |
 | 13 | cqrs-read-model-sync | `12-read-models.md`,`01-code-survey.md` | `13-read-model-sync.md` | |
 | 14 | cqrs-review | `09..13-*.md` | `14-cqrs-review.md` | G3 |
 | 15 | （综合解读，本层）| `01..14-*.md` | `15-system-reading-report.md` | G4 |
@@ -66,7 +66,7 @@
 
 ## 5. 编排纪律
 
-- 读码模式下 `10-cqrs-fit-check` 的 `decision` 是**对现状读侧设计的适配评估**（现状过度/不足设计），不用于中断流程；11-15 照常执行，评估结论并入 `15` 报告的风险与建议。
+- 读码模式下 `11-read-fit.md` 的逐视图矩阵是**对现状读侧设计的适配评估**（哪些视图过度设计、哪些不足），不用于中断流程；12-15 照常执行（解释现状，系统无独立读结构时如实说明），评估结论并入 `15` 报告的风险与建议。
 - 不把代码目录结构当业务模型。
 - 不把 ORM Entity 直接等同于 Aggregate。
 - 不把 API Response 直接等同于 Read Model。
