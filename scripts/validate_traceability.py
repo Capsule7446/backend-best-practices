@@ -133,10 +133,27 @@ def main() -> int:
         # 查询用例（kind: query 或登记在 query_use_cases 行）不守不变量，
         # 其契约与验收由读侧链承担——跳过写侧 UC→INV/AC 检查。
         query_ucs: set[str] = set()
-        for line in text.splitlines():
-            if "query_use_cases" in line or re.search(r"kind:\s*query", line):
+        t_lines = text.splitlines()
+        for li, line in enumerate(t_lines):
+            if re.search(r"kind:\s*query", line):
                 query_ucs.update(
                     m.group(0) for m in ID_RE.finditer(line) if m.group(1) == "UC"
+                )
+            if "query_use_cases" not in line:
+                continue
+            # 同行（flow 列表）+ 后续缩进列表项（block 列表）都收
+            query_ucs.update(
+                m.group(0) for m in ID_RE.finditer(line) if m.group(1) == "UC"
+            )
+            base_indent = len(line) - len(line.lstrip())
+            for nxt in t_lines[li + 1:]:
+                if not nxt.strip():
+                    break
+                indent = len(nxt) - len(nxt.lstrip())
+                if indent <= base_indent or not nxt.lstrip().startswith("-"):
+                    break
+                query_ucs.update(
+                    m.group(0) for m in ID_RE.finditer(nxt) if m.group(1) == "UC"
                 )
         # 区块以结构化定义锚点（`id: UC-…`）切分——文件开头的追踪矩阵/登记表
         # 先列出 UC 不会制造错位区块；重复定义取首个锚点。无任何锚点时退回
@@ -193,10 +210,11 @@ def main() -> int:
             hits = [m.group(0) for m in ID_RE.finditer(line) if m.group(1) == "VIEW"]
             if not hits or not STRUCTURED_LINE_RE.match(line):
                 continue
-            # 窗口 = 本行 + 后续至多 3 行，但遇到下一个 VIEW 条目即截断——
-            # 防止无 decision 的视图"借"到相邻条目的结论。
+            # 窗口 = 本行起扫描到条目边界（下一个含 VIEW 的行）为止，
+            # 上限 30 行防失控——既不让无 decision 的视图"借"到相邻条目的结论，
+            # 也不因条目内字段较多（id 与 decision 相隔数行）而误报。
             window_lines = [line]
-            for j in range(i + 1, min(i + 4, len(lines))):
+            for j in range(i + 1, min(i + 30, len(lines))):
                 nxt = lines[j]
                 if any(m.group(1) == "VIEW" for m in ID_RE.finditer(nxt)):
                     break

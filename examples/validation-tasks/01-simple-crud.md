@@ -15,7 +15,8 @@
 | 每个写命令（新增/编辑/删除书签）有唯一 UC 与 Input Port | use-cases 工件 |
 | 列表/详情查询有视图契约（字段、筛选、排序、owner 权限）| views 工件 |
 | 查询走 View DTO / Query Service，未直接暴露领域实体 | read-fit + 实现工件 |
-| 书签归属约束按插件授权分层落位：Domain 强制"归属不可非法变更/越权操作"（对应 rubric H5——绕过 Handler 亦不可产生非法操作），用例级授权只做粗判 | aggregates + use-cases |
+| 归属为 Domain 不变量：owner 不可被篡改/替换，聚合方法以传入的 owner 校验操作资格（绕过 Handler 亦不可产生非法状态，对应 rubric H5）| aggregates |
+| "当前调用者能否操作该书签"的访问控制在 Application 用例授权执行（身份来自可信安全上下文）——领域规则与访问控制两者分置且都存在，缺一即 fail | use-cases 授权分层表 |
 | 单一 bounded context（或明确说明为何拆分）| contexts 工件 |
 
 ### 不应出现
