@@ -5,9 +5,9 @@
 ## 0. 入口
 
 1. 采集设计目标、现有代码/目标结构、变化轴、约束和目标语言。
-2. 建运行工作区 `<workdir>/`（默认 `./run/`），写入 `_manifest.md`。
+2. 建运行工作区 `<workdir>/`（默认 `./run/design-pattern/`），写入 `_manifest.md`。
 3. 若命令已固定模式（如 `design-pattern-state`），把它作为强候选，但仍需校验适配性。
-4. 先判断是否需要模式；若 `decision=avoid/simplify`，停止完整流程，只输出替代方案。
+4. 先判断是否需要模式；若 `decision=simplify/avoid`，不进入 02-04，以 `01-design-pattern-fit.md`（必须含 `simpler_alternative`）为最终产物，在 `_manifest.md` 记录结案。`simplify/avoid` 是正当结论，不算流程失败。
 
 ## 1. 文件交接
 
@@ -15,6 +15,8 @@
 | :-- | :-- | :-- | :-- | :-- |
 | 01 | design-pattern-fit-check | 用户诉求/代码路径 | `01-design-pattern-fit.md` | G0 |
 | 02 | selected `design-pattern-<pattern>` | 用户诉求,`01-design-pattern-fit.md` | `02-pattern-guide.md` | G1 |
+
+02 的 selected pattern 取 `01-design-pattern-fit.md` 中 `structured_summary.primary_pattern`；若命令入口已固定模式，则校验两者一致，不一致时停下让用户裁决。
 | 03 | design-pattern-implementation | 用户诉求,`01-design-pattern-fit.md`,`02-pattern-guide.md` | `03-design-pattern-implementation.md` | |
 | 04 | design-pattern-review | `01..03-*.md` + 代码/方案 | `04-design-pattern-review.md` | G2 |
 
@@ -22,7 +24,7 @@
 
 | 门禁 | 位置 | 放行条件 |
 | :-- | :-- | :-- |
-| G0 适配 | `01-design-pattern-fit.md` 后 | `use` 必须有真实变化轴；`simplify/avoid` 必须有更简单方案 |
+| G0 适配 | `01-design-pattern-fit.md` 后 | `structured_summary` 存在且含 `decision`（缺失视为格式不合格，重跑 01）；`decision=use` 必须有真实 `change_axis` 与 `primary_pattern`；`decision=simplify/avoid` 必须有 `simpler_alternative` |
 | G1 模式指南 | `02-pattern-guide.md` 后 | 主体必须是 Markdown 设计说明，包含思想、适用场景、最佳实践范式、多语言附件和案例附件；可附 `structured_summary` 供串接 |
 | G2 审查 | `04-design-pattern-review.md` 后 | Markdown 审查报告无 critical/high；实现符合目标语言习惯；新增抽象有明确职责 |
 
