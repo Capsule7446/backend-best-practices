@@ -138,10 +138,19 @@ def main() -> int:
                 query_ucs.update(
                     m.group(0) for m in ID_RE.finditer(line) if m.group(1) == "UC"
                 )
+        # 区块以结构化定义锚点（`id: UC-…`）切分——文件开头的追踪矩阵/登记表
+        # 先列出 UC 不会制造错位区块；重复定义取首个锚点。无任何锚点时退回
+        # 首次出现位置切分（兼容非 id: 形态的工件）。无锚点的 UC 只做
+        # "引用即定义"检查，不做区块链检查。
+        anchor_re = re.compile(r"(?m)^\s*-?\s*id\s*[:：]\s*(UC-[A-Z0-9][A-Z0-9-]*)")
         first_pos: dict[str, int] = {}
-        for m in ID_RE.finditer(text):
-            if m.group(1) == "UC" and m.group(0) not in first_pos:
-                first_pos[m.group(0)] = m.start()
+        for m in anchor_re.finditer(text):
+            if m.group(1) not in first_pos:
+                first_pos[m.group(1)] = m.start()
+        if not first_pos:
+            for m in ID_RE.finditer(text):
+                if m.group(1) == "UC" and m.group(0) not in first_pos:
+                    first_pos[m.group(0)] = m.start()
         if not first_pos:
             continue
         ordered = sorted(first_pos.items(), key=lambda kv: kv[1])
