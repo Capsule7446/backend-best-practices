@@ -35,7 +35,7 @@
 | c04 | ddd-application-use-cases | `shared/02-discover.md`,`contexts/<ctx>/01..02-*.md` | `contexts/<ctx>/04-use-cases.md` | |
 | c05 | ddd-application-orchestration | `contexts/<ctx>/04-use-cases.md`,`contexts/<ctx>/01-aggregates.md` | `contexts/<ctx>/05-orchestration.md` | |
 | c06 | ddd-process-manager-design | `contexts/<ctx>/05-orchestration.md`（长流程候选）,`contexts/<ctx>/02-interactions.md` | `contexts/<ctx>/06-process-managers.md` | 条件执行（有长流程候选）|
-| c07 | ddd-application-review | `contexts/<ctx>/04..06-*.md` | `contexts/<ctx>/07-application-review.md` | **G3** |
+| c07 | ddd-application-review | `contexts/<ctx>/04,05,06?-*.md` | `contexts/<ctx>/07-application-review.md` | **G3** |
 
 ### 2.2 业务视图与读侧（视图先行，逐视图定读侧方案）
 
@@ -46,7 +46,7 @@
 | c10 | cqrs-domain-read-decoupling | `contexts/<ctx>/08-views.md`,`contexts/<ctx>/01-aggregates.md` | `contexts/<ctx>/10-domain-read-decoupling.md` | |
 | c11 | cqrs-read-model-design | `contexts/<ctx>/08..10-*.md` | `contexts/<ctx>/11-read-models.md` | 条件执行（`views` 中存在 `use`）|
 | c12 | cqrs-read-model-sync | `contexts/<ctx>/11-read-models.md`,`contexts/<ctx>/05-orchestration.md`（事件/Outbox 衔接）| `contexts/<ctx>/12-read-model-sync.md` | 条件执行（同上）|
-| c13 | cqrs-review | `contexts/<ctx>/08..12-*.md` | `contexts/<ctx>/13-read-review.md` | **G4** |
+| c13 | cqrs-review | `contexts/<ctx>/08,09,10,11?,12?-*.md` | `contexts/<ctx>/13-read-review.md` | **G4** |
 
 `c09` 输出逐视图矩阵：`decision=avoid` 的视图仍须在 `08-views.md` 拥有视图契约与权限，走简单查询方案；仅 `decision=use` 的视图进入 c11/c12。
 
@@ -73,9 +73,9 @@
 | c19 | cqrs-read-model-impl | `11..12-*.md`,`15-scaffold.md`（+ `owner_layer=read` 蓝图）| `contexts/<ctx>/19-read-impl.md` | 条件执行（存在 `use` 视图）|
 | c20 | ddd-inbound-adapter-impl | `15-scaffold.md`,`04-use-cases.md` | `contexts/<ctx>/20-inbound-impl.md` | |
 | p04 | design-pattern-review | `patterns/03-*` + 对应层实现工件 | `contexts/<ctx>/patterns/04-review.md` | 条件执行（有蓝图）|
-| c21 | ddd-application-review | `04..06-*.md` + `17-application-impl.md` + 测试证据 | `contexts/<ctx>/21-application-review-impl.md` | **G7** 之一 |
+| c21 | ddd-application-review | `04,05,06?-*.md` + `17-application-impl.md` + 测试证据 | `contexts/<ctx>/21-application-review-impl.md` | **G7** 之一 |
 | c22 | cqrs-read-model-acceptance | `11..12-*.md`,`19-read-impl.md` | `contexts/<ctx>/22-read-acceptance.md` | 条件执行（存在 `use` 视图）|
-| c23 | ddd-acceptance | `14-spec.md`,`16..20-*.md` | `contexts/<ctx>/23-acceptance.md` | **G7** |
+| c23 | ddd-acceptance | `14-spec.md`,`16,17,18,19?,20-*.md` | `contexts/<ctx>/23-acceptance.md` | **G7** |
 
 全部上下文完成后，本层汇总 `delivery/acceptance-report.md`（各上下文门禁结果、追踪链核对、遗留项）。
 

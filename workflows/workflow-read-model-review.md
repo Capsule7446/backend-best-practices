@@ -10,7 +10,7 @@
 | 02 | cqrs-domain-read-decoupling | 原输入,`01-review.md` | `02-domain-read-decoupling.md` | 条件执行 |
 | 03 | cqrs-aggregation-view-design | 原输入,`01-review.md` | `03-aggregation-view.md` | 条件执行 |
 | 04 | cqrs-read-model-sync | 原输入,`01-review.md` | `04-read-model-sync.md` | 条件执行 |
-| 05 | cqrs-review | 原输入,`01-review.md`,`02..04-*.md`（已产出的）| `05-recheck.md` | G1，条件执行 |
+| 05 | cqrs-review | 原输入,`01-review.md`,`02?,03?,04?-*.md` | `05-recheck.md` | G1，条件执行 |
 
 ## 2. 条件执行
 

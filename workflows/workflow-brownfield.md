@@ -33,14 +33,14 @@
 | s4 | ddd-application-use-cases | 该片命令/入口 + `<slice>/01..02-*.md` | `<slice>/04-use-cases.md` | |
 | s5 | ddd-application-orchestration | `<slice>/04-use-cases.md`,`01-aggregates.md` | `<slice>/05-orchestration.md` | |
 | s6 | ddd-process-manager-design | `<slice>/05-orchestration.md`（长流程候选）| `<slice>/06-process-managers.md` | 条件执行 |
-| s7 | ddd-application-review | `<slice>/04..06-*.md` | `<slice>/07-application-review.md` | 复用 greenfield G3 |
-| s8 | ddd-spec-bridge | `<slice>/01..06-*.md` | `<slice>/08-spec.md` | |
+| s7 | ddd-application-review | `<slice>/04,05,06?-*.md` | `<slice>/07-application-review.md` | 复用 greenfield G3 |
+| s8 | ddd-spec-bridge | `<slice>/01,02,04,05,06?-*.md` | `<slice>/08-spec.md` | |
 | s9 | ddd-port-scaffold | `<slice>/08-spec.md` + 剖面 | `<slice>/09-scaffold.md` | 复用 greenfield G6 |
 | s10 | ddd-domain-impl | `<slice>/09-scaffold.md`,`08-spec.md` | `<slice>/10-domain-impl.md` | |
 | s11 | ddd-application-impl | `<slice>/09-scaffold.md`,`08-spec.md`,`05-orchestration.md` | `<slice>/11-application-impl.md` | |
 | s12 | ddd-outbound-adapter-impl | `<slice>/09-scaffold.md`,`08-spec.md` | `<slice>/12-outbound-impl.md` | |
 | s13 | ddd-inbound-adapter-impl | `<slice>/09-scaffold.md`,`04-use-cases.md` | `<slice>/13-inbound-impl.md` | |
-| s14 | ddd-application-review | `<slice>/04..06-*.md` + `11-application-impl.md` + 测试证据 | `<slice>/14-application-review-impl.md` | 复用 greenfield G7 |
+| s14 | ddd-application-review | `<slice>/04,05,06?-*.md` + `11-application-impl.md` + 测试证据 | `<slice>/14-application-review-impl.md` | 复用 greenfield G7 |
 | s15 | ddd-acceptance | `<slice>/08-spec.md`,`10..13-*.md`,`00-characterization.md` | `<slice>/15-acceptance.md` | **G3** |
 | s16 | （流量切换+验收，本层）| `<slice>/15-acceptance.md` | 更新 `_manifest.md` | |
 

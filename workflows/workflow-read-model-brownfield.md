@@ -18,10 +18,10 @@
 | 03 | cqrs-fit-check | `02-views.md`,`01-domain-read-decoupling.md` | `03-fit-check.md` | G0 |
 | 04 | cqrs-read-model-design | `01..03-*.md` | `04-read-model-design.md` | 条件执行（`views` 中存在 `use`）|
 | 05 | cqrs-read-model-sync | `04-read-model-design.md` | `05-read-model-sync.md` | 条件执行（同上）|
-| 06 | cqrs-review | `01..05-*.md` | `06-review.md` | G1 |
-| 07 | cqrs-read-model-impl | `02-views.md`,`04..05-*.md` | `07-read-impl.md` | 条件执行（进入落地阶段）|
+| 06 | cqrs-review | `01,02,03,04?,05?-*.md` | `06-review.md` | G1 |
+| 07 | cqrs-read-model-impl | `02-views.md`,`03-fit-check.md`,`04?,05?-*.md` | `07-read-impl.md` | 条件执行（进入落地阶段）|
 | 08 | （迁移执行，本层）| `07-read-impl.md` + 旧查询路径 | `08-migration-log.md` | G2 |
-| 09 | cqrs-read-model-acceptance | `04..05-*.md`,`07-read-impl.md`,`08-migration-log.md` | `09-read-acceptance.md` | G3 |
+| 09 | cqrs-read-model-acceptance | `04?,05?-*.md`,`07-read-impl.md`,`08-migration-log.md` | `09-read-acceptance.md` | G3 |
 
 ## 2. 迁移执行（步骤 08，本层持有）
 

@@ -18,9 +18,9 @@
 | 03 | cqrs-domain-read-decoupling | 用户诉求,`01-views.md` | `03-domain-read-decoupling.md` | |
 | 04 | cqrs-read-model-design | `01..03-*.md` | `04-read-model-design.md` | 条件执行（`views` 中存在 `use`）|
 | 05 | cqrs-read-model-sync | `04-read-model-design.md` | `05-read-model-sync.md` | 条件执行（同上）|
-| 06 | cqrs-review | `01..05-*.md` | `06-review.md` | G1 |
-| 07 | cqrs-read-model-impl | `01-views.md`,`04..05-*.md` | `07-read-impl.md` | 条件执行（用户要求落地实现）|
-| 08 | cqrs-read-model-acceptance | `04..05-*.md`,`07-read-impl.md` | `08-read-acceptance.md` | 条件执行（有 07），G2 |
+| 06 | cqrs-review | `01,02,03,04?,05?-*.md` | `06-review.md` | G1 |
+| 07 | cqrs-read-model-impl | `01-views.md`,`02-fit-check.md`,`04?,05?-*.md` | `07-read-impl.md` | 条件执行（用户要求落地实现）|
+| 08 | cqrs-read-model-acceptance | `04?,05?-*.md`,`07-read-impl.md` | `08-read-acceptance.md` | 条件执行（有 07），G2 |
 
 `02` 输出**逐视图矩阵**：`decision=avoid` 的视图走简单查询方案（DTO / Query Service / DB View），其视图契约与权限已在 `01-views.md`；仅 `decision=use` 的视图进入 04/05 与 07 的投影部分。全部视图 `avoid` 时跳过 04/05，06 审查简化读侧方案。
 
