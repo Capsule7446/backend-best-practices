@@ -188,8 +188,15 @@ def main() -> int:
             hits = [m.group(0) for m in ID_RE.finditer(line) if m.group(1) == "VIEW"]
             if not hits or not STRUCTURED_LINE_RE.match(line):
                 continue
-            window = "\n".join(lines[i : i + 4])
-            if DECISION_RE.search(window):
+            # 窗口 = 本行 + 后续至多 3 行，但遇到下一个 VIEW 条目即截断——
+            # 防止无 decision 的视图"借"到相邻条目的结论。
+            window_lines = [line]
+            for j in range(i + 1, min(i + 4, len(lines))):
+                nxt = lines[j]
+                if any(m.group(1) == "VIEW" for m in ID_RE.finditer(nxt)):
+                    break
+                window_lines.append(nxt)
+            if DECISION_RE.search("\n".join(window_lines)):
                 fit_ids_with_decision.update(hits)
     view_ids = sorted(
         id_ for id_ in seen_in if id_.startswith("VIEW-") and in_home(id_)
