@@ -46,4 +46,4 @@ tags: "[implementation, ports, scaffold, language-agnostic]"
 
 ---
 
-附加文件（按需读取）：`examples.md`（走查示例）、`references/language-profiles/`（分层语言剖面，按目标语言只读一个文件）。
+附加文件（按需读取）：`examples.md`（同目录走查示例）、`references/language-profiles/`（**插件根目录**下的分层语言剖面，按目标语言只读一个文件）。

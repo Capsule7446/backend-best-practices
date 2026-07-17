@@ -1,6 +1,11 @@
 ---
 name: design-pattern-opportunity-scan
 description: "扫描分层契约与代码中的真实变化轴，产出有证据的模式候选关注点清单；没有变化轴时输出空清单是正当结果。"
+risk: safe
+category: tactical
+inputs: "分层契约（domain/application/read/adapter）+ 可选：代码或骨架、已知变体、已承诺变化、约束"
+outputs: "Markdown 扫描说明 + structured_summary（concerns：owner_layer/change_axis/evidence/simpler_alternatives 等）"
+tags: "[design-pattern, scan, change-axis]"
 ---
 
 # Design Pattern Opportunity Scan（模式机会扫描）

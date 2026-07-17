@@ -40,9 +40,9 @@
 | s11 | ddd-application-impl | `<slice>/09-scaffold.md`,`08-spec.md`,`05-orchestration.md` | `<slice>/11-application-impl.md` | |
 | s12 | ddd-outbound-adapter-impl | `<slice>/09-scaffold.md`,`08-spec.md` | `<slice>/12-outbound-impl.md` | |
 | s13 | ddd-inbound-adapter-impl | `<slice>/09-scaffold.md`,`04-use-cases.md` | `<slice>/13-inbound-impl.md` | |
-| s14 | ddd-application-review | `<slice>/04,05,06?-*.md` + `11-application-impl.md` + 测试证据 | `<slice>/14-application-review-impl.md` | 复用 greenfield G7 |
-| s15 | ddd-acceptance | `<slice>/08-spec.md`,`10..13-*.md`,`00-characterization.md` | `<slice>/15-acceptance.md` | **G3** |
-| s16 | （流量切换+验收，本层）| `<slice>/15-acceptance.md` | 更新 `_manifest.md` | |
+| s14 | ddd-acceptance | `<slice>/08-spec.md`,`10..13-*.md`,`00-characterization.md` | `<slice>/14-acceptance.md` | **G3** |
+| s15 | ddd-application-review | `<slice>/04,05,06?-*.md`,`11-application-impl.md`,`14-acceptance.md`（测试证据来源）| `<slice>/15-application-review-impl.md` | 复用 greenfield G7 |
+| s16 | （流量切换+验收，本层）| `<slice>/14-acceptance.md`,`15-application-review-impl.md` | 更新 `_manifest.md` | |
 
 切片验收通过并切流量稳定后取下一片。
 
@@ -55,7 +55,7 @@
 | G0 现状 | `01-survey.md` 后 | 现状模型可解释现有关键行为；坏味道与行为黑盒已列清 |
 | G1 规划 | `03-plan.md` 后 | 切片顺序、回滚策略、特征化测试范围获确认；满足"旧系统始终可运行" |
 | G2 切片安全 | 每片落地前（`<slice>/00-characterization.md`）| 特征化测试已覆盖该片现有行为（无裸切）|
-| G3 切片验收 | 每片 `<slice>/15-acceptance.md` 后 | 通过契约/不变量/编排/幂等测试；行为与旧实现等价；可切流量且可回滚 |
+| G3 切片验收 | 每片 `<slice>/14-acceptance.md` 后 | 通过契约/不变量/编排/幂等测试；行为与旧实现等价；可切流量且可回滚 |
 
 ### 局部模型评估：如何消费 `ddd-model-review`
 
