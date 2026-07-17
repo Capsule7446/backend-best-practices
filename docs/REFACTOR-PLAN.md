@@ -82,7 +82,7 @@
 | 审查 skill 去判定化 | 0.3.0 | `cqrs-review`/`ddd-model-review` 的 `overall`/结论字段与"审查只出证据"纪律不符（当前 workflow 侧已声明结论仅作参考）；统一到 ddd-application-review 的纯证据形态 |
 | design-pattern 家族 frontmatter 统一 | 0.3.0 | 26 个 design-pattern-* skill 补 risk/category/inputs/outputs/tags（opportunity-scan 已补）|
 | spec-bridge 紧凑化 | 0.3.0 | 小系统下 spec 约 80% 是上游复述；改为"引用 ID + 只写增量语义"的组装形态 |
-| ddd-adapter-impl 移除 | 0.3.0 | 兼容包装到期删除；commands/文档同步 |
+| ~~ddd-adapter-impl 移除~~ | ~~0.3.0~~ | **已完成**（提前执行）：技能目录删除，CAPABILITIES 编号 11 标空缺，无 workflow/command 引用（validate_workflow_graph 兜底）|
 | CAPABILITIES 编号重排 | 0.3.0 | 当前新增能力追加编号（48-58），下个破坏性版本统一重排 |
 | Keystone marketplace 发布 | 每版本 | pack.ps1 打包 → dist zip → marketplace by-reference 更新 |
 
