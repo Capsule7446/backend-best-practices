@@ -198,12 +198,21 @@ def extract_returns_section(skill_name: str, cache: dict[str, str]) -> str:
     return text
 
 
-def field_declared(skill_name: str, part: str, cache: dict[str, str]) -> bool:
+def field_declared(
+    skill_name: str, part: str, cache: dict[str, str], anchor: str | None = None
+) -> bool:
     """字段必须以 YAML key（行首/列表项/flow 内的 `part:`）或反引号精确标注
-    出现在「返回什么」段才算声明；散文里的裸子串提及不算。"""
+    出现在「返回什么」段才算声明；散文里的裸子串提及不算。
+    传入 anchor（如 structured_summary）时，字段必须出现在该锚点 key 之后——
+    防止 workflow 依赖 `structured_summary.X` 时被顶层同名字段蒙混过关。"""
     text = extract_returns_section(skill_name, cache)
     if not text:
         return False
+    if anchor:
+        am = re.search(rf"(?m)^\s*{re.escape(anchor)}\s*:", text)
+        if not am:
+            return False
+        text = text[am.start():]
     key_pattern = rf"(?m)(?:^\s*(?:-\s*)?|[{{,]\s*){re.escape(part)}\s*\??\s*:"
     if re.search(key_pattern, text):
         return True
@@ -410,8 +419,11 @@ def check_contract_fields(
             dedup_key = (token, tuple(candidates))
             if dedup_key in reported:
                 continue
-            # 去掉信封层组件（artifact_schema_version、structured_summary.X 的信封部分）
-            parts = [p for p in token.split(".") if p not in ENVELOPE_TOKENS]
+            # 去掉信封层组件（artifact_schema_version、structured_summary.X 的信封部分）；
+            # 但 structured_summary.X 的 X 必须声明在 structured_summary 块内（anchor 约束）
+            raw_parts = token.split(".")
+            parts = [p for p in raw_parts if p not in ENVELOPE_TOKENS]
+            anchor = "structured_summary" if "structured_summary" in raw_parts and parts else None
             if not parts:
                 continue  # 纯信封字段，属架构级契约，不查 skill 声明
             if parts[-1] in FILE_EXTENSIONS:
@@ -426,7 +438,7 @@ def check_contract_fields(
                 continue
             declared_by = [
                 s for s in candidates
-                if all(field_declared(s, p, returns_cache) for p in parts)
+                if all(field_declared(s, p, returns_cache, anchor=anchor) for p in parts)
             ]
             if not declared_by:
                 scope_note = "行内工件血缘" if line_scope else "全 workflow 引用"

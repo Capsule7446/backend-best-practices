@@ -68,7 +68,7 @@
 | :-- | :-- | :-- | :-- | :-- |
 | c15 | ddd-port-scaffold | `contexts/<ctx>/14-spec.md` + 语言剖面 | `contexts/<ctx>/15-scaffold.md` | **G6** |
 | c16 | ddd-domain-impl | `15-scaffold.md`,`14-spec.md`（+ `patterns/03-*` 中 `owner_layer=domain` 的蓝图）| `contexts/<ctx>/16-domain-impl.md` | |
-| c17 | ddd-application-impl | `15-scaffold.md`,`14-spec.md`,`05-orchestration.md`（+ `patterns/03-*` 中 `owner_layer=application` 的蓝图）| `contexts/<ctx>/17-application-impl.md` | |
+| c17 | ddd-application-impl | `15-scaffold.md`,`14-spec.md`,`05-orchestration.md`,`08-views.md`（`avoid` 视图的查询契约）（+ `patterns/03-*` 中 `owner_layer=application` 的蓝图）| `contexts/<ctx>/17-application-impl.md` | |
 | c18 | ddd-outbound-adapter-impl | `15-scaffold.md`,`14-spec.md`（+ `patterns/03-*` 中 `owner_layer=adapter` 的蓝图）| `contexts/<ctx>/18-outbound-impl.md` | |
 | c19 | cqrs-read-model-impl | `08-views.md`,`09-read-fit.md`,`11?,12?-*.md`,`15-scaffold.md`（+ `patterns/03-*` 中 `owner_layer=read` 的蓝图）| `contexts/<ctx>/19-read-impl.md` | 条件执行（存在 `use` 视图）|
 | c20 | ddd-inbound-adapter-impl | `15-scaffold.md`,`04-use-cases.md` | `contexts/<ctx>/20-inbound-impl.md` | |
@@ -76,6 +76,8 @@
 | c21 | ddd-application-review | `04,05,06?-*.md` + `17-application-impl.md` + 测试证据 | `contexts/<ctx>/21-application-review-impl.md` | **G7** 之一 |
 | c22 | cqrs-read-model-acceptance | `11..12-*.md`,`19-read-impl.md` | `contexts/<ctx>/22-read-acceptance.md` | 条件执行（存在 `use` 视图）|
 | c23 | ddd-acceptance | `14-spec.md`,`16,17,18,19?,20-*.md` | `contexts/<ctx>/23-acceptance.md` | **G7** |
+
+`avoid` 视图的查询交付路径：查询契约（`08-views.md`）由 c17 落成 Query Handler / View DTO（权限下推）、c18 落成 Query Port 的读存储访问；其验收由 c23 的查询类测试义务（无副作用、权限过滤、分页/排序、空结果）承担——`avoid` 不建独立读模型，但查询实现与验收不缺席。
 
 全部上下文完成后，本层汇总 `delivery/acceptance-report.md`（各上下文门禁结果、追踪链核对、遗留项）。
 

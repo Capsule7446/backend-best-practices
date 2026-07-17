@@ -20,7 +20,7 @@ tags: "[implementation, application, use-case, orchestration]"
   - 一份含 {应用用例目录, Input Port 清单, Command·Result 契约, 授权分层表, 错误语义表} 的工件。
   - 一份含 {编排设计}（用例步骤、事务边界、领域事件→集成事件映射）的工件。
   - 一份含 {接口骨架, 待实现清单} 的工件；**语言剖面**。
-- **可选**：项目 DI/包结构约定、幂等存储约定。
+- **可选**：视图契约（无独立读模型的视图，其查询字段/权限/分页约束——Query Handler 与 View DTO 按此实现）；项目 DI/包结构约定、幂等存储约定。
 
 ## 怎么做
 
