@@ -46,7 +46,7 @@
 
 切片验收通过并切流量稳定后取下一片。
 
-读侧切片（查询/报表/API 污染类）不走 s4-s6，改走 `workflow-read-model-brownfield` 同款能力序（decoupling → fit-check → view → 条件 read model）；设计模式支线与 greenfield §2.3 相同——`design-pattern-opportunity-scan` 扫 `<slice>/08-spec.md` 与既有代码，`concerns` 非空才进入 fit/蓝图，蓝图由 s10-s13 对应层消费。
+读侧切片（查询/报表/API 污染类）不走 s4-s6，改走 `workflow-read-model-brownfield` 同款能力序（decoupling → 视图契约 → 逐视图 fit-check → 条件 read model 设计/实现）；设计模式支线与 greenfield §2.3 相同——`design-pattern-opportunity-scan` 扫 `<slice>/08-spec.md` 与既有代码，`concerns` 非空才进入 fit/蓝图，蓝图由 s10-s13 对应层消费。
 
 ## 3. 门禁（读产物文件核对）
 
