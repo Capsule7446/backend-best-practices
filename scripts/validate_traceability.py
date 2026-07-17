@@ -160,13 +160,17 @@ def main() -> int:
             if uc in query_ucs or re.search(r"kind:\s*query", chunk):
                 continue
             kinds = {m.group(1) for m in ID_RE.finditer(chunk)}
-            if "INV" not in kinds:  # 追踪链是硬约束：缺环即 ERROR（合法缺席须显式 n/a）
+            # 追踪链是硬约束：缺环即 ERROR；合法缺席须逐环节显式声明
+            # `invariants: n/a(理由)` / `acceptance: n/a(理由)`（一处 n/a 不通杀两环）。
+            na_inv = re.search(r"(?:invariants|不变量)\s*[:：][^\n]{0,60}n/a", chunk, re.I)
+            na_ac = re.search(r"(?:acceptance|验收)\s*[:：][^\n]{0,60}n/a", chunk, re.I)
+            if "INV" not in kinds and not na_inv:
                 errors.append(
-                    f"ERROR: {rel(p)}: `{uc}` 区块内未引用任何 INV——写侧追踪链（UC→INV）缺环"
+                    f"ERROR: {rel(p)}: `{uc}` 区块内未引用任何 INV 且无显式 n/a(理由)——写侧追踪链（UC→INV）缺环"
                 )
-            if "AC" not in kinds:
+            if "AC" not in kinds and not na_ac:
                 errors.append(
-                    f"ERROR: {rel(p)}: `{uc}` 区块内未引用任何 AC——验收追踪（UC→AC）缺环"
+                    f"ERROR: {rel(p)}: `{uc}` 区块内未引用任何 AC 且无显式 n/a(理由)——验收追踪（UC→AC）缺环"
                 )
 
     # --- 3b. 读侧链：每个 VIEW 必须在 fit 矩阵中拥有有效 decision ------------
