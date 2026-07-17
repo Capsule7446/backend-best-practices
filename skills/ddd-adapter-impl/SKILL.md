@@ -1,6 +1,6 @@
 ---
 name: ddd-adapter-impl
-description: "在接口骨架背后实现领域逻辑与基础设施适配器：聚合根行为、领域服务、仓储/外部系统适配器，严格遵守依赖规则（领域只依赖抽象）。"
+description: "[已废弃→0.3.0 移除] 在接口骨架背后实现领域逻辑与基础设施适配器：聚合根行为、领域服务、仓储/外部系统适配器，严格遵守依赖规则（领域只依赖抽象）。"
 risk: caution
 category: implementation
 inputs: "接口骨架 + 待实现清单 + 契约语义与不变量命题 + 所用语言剖面"
@@ -9,6 +9,8 @@ tags: "[implementation, adapter, hexagonal]"
 ---
 
 # Adapter Impl（接口背后的实现）
+
+> **已废弃**：该能力已按层拆分为 `ddd-domain-impl` / `ddd-application-impl` / `ddd-inbound-adapter-impl` / `ddd-outbound-adapter-impl` 四个实现 Skill。本文件仅作兼容入口保留，计划 **0.3.0 移除**——新流程请直接使用按层拆分后的 Skill。
 
 ## 做什么
 
