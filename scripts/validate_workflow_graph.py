@@ -45,6 +45,16 @@ FILE_EXTENSIONS = {"md", "json", "yaml", "yml", "txt"}
 # 不属于任何单个 skill 的「返回什么」声明
 ENVELOPE_TOKENS = {"artifact_schema_version", "structured_summary"}
 
+# `design-pattern-<pattern>` 之类的模板只应匹配"具体模式"能力；
+# 支撑能力（适配判断/实现蓝图/审查/机会扫描）不属于模板取值范围，
+# 混入会污染契约字段校验的候选集，掩盖具体模式 SKILL 的漏声明。
+TEMPLATE_EXCLUDE = {
+    "design-pattern-fit-check",
+    "design-pattern-implementation",
+    "design-pattern-review",
+    "design-pattern-opportunity-scan",
+}
+
 # 非文件输入白名单：输入格里若无任何文件 token，必须能命中其中之一
 NON_FILE_INPUT_WHITELIST = (
     "用户诉求", "代码路径", "代码库", "原输入", "现状描述",
@@ -265,7 +275,9 @@ def check_workflow(
                 row_skills = [cap]
         elif kind == "template":
             regex = template_to_regex(cap)
-            matched = sorted(n for n in skill_names if regex.match(n))
+            matched = sorted(
+                n for n in skill_names if regex.match(n) and n not in TEMPLATE_EXCLUDE
+            )
             if not matched:
                 errors.append(
                     f"ERROR: {loc}:{lineno}: 模板能力 `{cap}` 在 skills/ 下没有任何匹配目录"
@@ -324,12 +336,21 @@ def check_input_lineage(
 
     if len(nums) > 1:  # 范围 / 列表输入：每个编号都要有前缀兼容的更早产出
         for n in nums:
-            if not any(
-                o["num"] == n and prefix_compatible(prefix, o["prefix"]) for o in outputs
-            ):
+            matched = [
+                o for o in outputs
+                if o["num"] == n and prefix_compatible(prefix, o["prefix"])
+            ]
+            if not matched:
                 errors.append(
                     f"ERROR: {loc}:{lineno}: 输入 `{tok}` 中的编号 {n:02d} "
                     f"在更早行没有对应的输出文件（前缀作用域「{prefix or '任意'}」）"
+                )
+            elif not prefix and len({o["prefix"] for o in matched}) > 1:
+                # 空前缀 + 同编号工件散布在多个目录：作用域歧义，可能跨上下文/切片误引用
+                scopes = sorted({o["prefix"] or "（根）" for o in matched})
+                warnings.append(
+                    f"WARNING: {loc}:{lineno}: 输入 `{tok}` 中的编号 {n:02d} 未写前缀，"
+                    f"但多个目录都有同编号工件（{', '.join(scopes)}）——请补前缀消除歧义"
                 )
         return
 
