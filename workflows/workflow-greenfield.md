@@ -23,7 +23,7 @@
 
 ## 2. 逐上下文循环（每个上下文 `<ctx>` 用独立子工作区 `contexts/<ctx>/`）
 
-`shared/04-contexts.md` 的上下文清单驱动循环，核心域优先。
+`shared/04-contexts.md` 的上下文清单驱动循环，核心域优先。**generic/支撑域上下文**若在 contexts 工件中标注为"买/用现成"（如认证用成熟库、通知用 SaaS），不进战术循环——由本层产出一份 `contexts/<ctx>/00-integration.md`（选型、集成点、该能力对用户诉求的交付归属、ACL 落点），其出入站集成由核心上下文的 c18/c20 消费；该决策记入 `_manifest.md`。
 
 ### 2.1 战术建模与 Application 设计
 
@@ -73,11 +73,13 @@
 | c19 | cqrs-read-model-impl | `08-views.md`,`09-read-fit.md`,`11?,12?-*.md`,`15-scaffold.md`（+ `patterns/03-*` 中 `owner_layer=read` 的蓝图）| `contexts/<ctx>/19-read-impl.md` | 条件执行（存在 `use` 视图）|
 | c20 | ddd-inbound-adapter-impl | `15-scaffold.md`,`04-use-cases.md` | `contexts/<ctx>/20-inbound-impl.md` | |
 | p04 | design-pattern-review | `patterns/03-*` + 对应层实现工件 | `contexts/<ctx>/patterns/04-review.md` | 条件执行（有蓝图）|
-| c21 | ddd-application-review | `contexts/<ctx>/04,05,06?-*.md` + `17-application-impl.md` + 测试证据 | `contexts/<ctx>/21-application-review-impl.md` | **G7** 之一 |
-| c22 | cqrs-read-model-acceptance | `11..12-*.md`,`19-read-impl.md` | `contexts/<ctx>/22-read-acceptance.md` | 条件执行（存在 `use` 视图）|
-| c23 | ddd-acceptance | `14-spec.md`,`16,17,18,19?,20-*.md` | `contexts/<ctx>/23-acceptance.md` | **G7** |
+| c21 | ddd-acceptance | `14-spec.md`,`16,17,18,19?,20-*.md` | `contexts/<ctx>/21-acceptance.md` | **G7** 之一 |
+| c22 | cqrs-read-model-acceptance | `11?,12?-*.md`,`19-read-impl.md` | `contexts/<ctx>/22-read-acceptance.md` | 条件执行（存在 `use` 视图）|
+| c23 | ddd-application-review | `contexts/<ctx>/04,05,06?-*.md`,`17-application-impl.md`,`21,22?-*.md`（测试证据来源）| `contexts/<ctx>/23-application-review-impl.md` | **G7** |
 
-`avoid` 视图的查询交付路径：查询契约（`08-views.md`）由 c17 落成 Query Handler / View DTO（权限下推）、c18 落成 Query Port 的读存储访问；其验收由 c23 的查询类测试义务（无副作用、权限过滤、分页/排序、空结果）承担——`avoid` 不建独立读模型，但查询实现与验收不缺席。
+验收先行（c21/c22 产出 test_file+test_name+status 证据），实现态应用审查（c23）消费这些证据——测试证据的生产者由此在流程内闭环。
+
+`avoid` 视图的查询交付路径：查询契约（`08-views.md`）由 c17 落成 Query Handler / View DTO（权限下推）、c18 落成 Query Port 的读存储访问；其验收由 c21 的查询类测试义务（无副作用、权限过滤、分页/排序、空结果）承担——`avoid` 不建独立读模型，但查询实现与验收不缺席。
 
 全部上下文完成后，本层汇总 `delivery/acceptance-report.md`（各上下文门禁结果、追踪链核对、遗留项）。
 
@@ -87,15 +89,15 @@
 | :-- | :-- | :-- | :-- |
 | G1 战略 | `shared/05-context-map.md` 后 | 上下文边界与契约所有权获用户确认；核心域已声明且每个核心上下文有 ACL/隔离 | 停下与用户确认 |
 | G2 模型 | `03-model-review.md` 后 | 不变量表达率 ≥ 60%；无阻断级一致性问题；每条目标有建模覆盖；无未决回溯项 | 停下与用户确认 |
-| G3 应用设计 | `07-application-review.md` 后 | 无硬门禁命中（清单见 `references/application-review-rubric.md`）；按 rubric 设计态判定 ≥ conditional_pass；每个写命令有唯一 UC；`GOAL→CMD→UC→AGG→INV→EVT→AC` 追踪闭合 | |
+| G3 应用设计 | `07-application-review.md` 后 | 无硬门禁命中（清单见 `references/application-review-rubric.md`）；按 rubric 设计态判定 ≥ conditional_pass；每个写命令有唯一 UC；`GOAL→CMD→UC→AGG→INV→EVT→AC` 追踪闭合（环节确实不适用时以显式 `n/a(理由)` 记录视为闭合，如无订阅方的事件）| |
 | G4 读侧 | `13-read-review.md` 后 | 每个 VIEW 在 `09-read-fit.md` 的 `views` 矩阵有结论；`avoid` 视图也有视图契约、查询方案与权限；`use` 视图字段有来源、有同步与重建策略；无 critical/high；无默认事件溯源/微服务/双库 | |
 | G5 契约与模式 | `14-spec.md` 与 `patterns/*` 后 | 规范自洽（用例/端口/事件/读侧互引都在规范内定义）；每个 `PAT` 有真实 `change_axis` 与更简单替代对比；`concerns` 为空时除 `patterns/01-scan.md`（扫描证据）外无 fit/蓝图/审查工件 | 停下与用户确认 |
 | G6 骨架 | `15-scaffold.md` 后 | 端口契约可在目标语言完整表达；依赖只向内——应用层可依赖 Domain 内核，对外部资源只依赖端口抽象；骨架零实现；接口/方法保留不变量与用例编号的契约追踪注释 | 确认落地语言 |
-| G7 实现与验收 | `21..23-*.md` 后 | 实现态 application review 按 rubric 达 **pass**；架构依赖测试通过（领域零基础设施、应用零具体 SDK、入口不直连仓储）；acceptance 全部 INV/AC/测试义务通过并有 test_file+test_name 证据；有读模型时读侧验收通过 | |
+| G7 实现与验收 | `21,22?,23-*.md` 后 | acceptance 全部 INV/AC/测试义务通过并有 test_file+test_name 证据；有读模型时读侧验收通过；实现态 application review 按 rubric 达 **pass**；架构依赖测试通过（领域零基础设施、应用零具体 SDK、入口不直连仓储）| |
 
 ### 门禁如何消费审查类工件
 
-审查类能力（`ddd-model-review`、`ddd-application-review`、`cqrs-review`、`design-pattern-review`）只输出客观发现与证据，**不打总分、不定回溯**。本 workflow 读取其证据表：G3/G7 按 `references/application-review-rubric.md` 计分判定；发现到回溯目标的映射由 §4 决定。
+审查类能力只输出客观发现与证据供本层判定：`ddd-application-review` 不含任何判定字段；`ddd-model-review` / `cqrs-review` / `design-pattern-review` 的结论字段（如 `overall`）**仅作参考输入**——放行、评分与回溯一律以本 workflow 门禁为准，本层可以且应当覆盖其结论。G3/G7 按 `references/application-review-rubric.md` 计分判定；发现到回溯目标的映射由 §4 决定。
 
 ## 4. 回溯矩阵（本层独有；SKILL 不含回溯信息）
 
@@ -127,6 +129,7 @@
 | 蓝图角色与代码位置对不上 | design-pattern-implementation |
 | 端口契约目标语言无法表达 | ddd-spec-bridge |
 | 反复并发竞态 | ddd-aggregates |
+| 设计态 rubric fail | 按短板维度：D1/D7 → ddd-application-use-cases；D3/D4/D6 → ddd-application-orchestration；D8 → ddd-application-use-cases（补验收准则与负例）|
 | 实现态 rubric fail | 对应层实现步骤 + 触发维度的上游设计能力 |
 
 ## 5. 编排纪律
