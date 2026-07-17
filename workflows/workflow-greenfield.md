@@ -48,7 +48,7 @@
 | c12 | cqrs-read-model-sync | `contexts/<ctx>/11-read-models.md`,`contexts/<ctx>/05-orchestration.md`（事件/Outbox 衔接）| `contexts/<ctx>/12-read-model-sync.md` | 条件执行（同上）|
 | c13 | cqrs-review | `contexts/<ctx>/08,09,10,11?,12?-*.md` | `contexts/<ctx>/13-read-review.md` | **G4** |
 
-`c09` 输出逐视图矩阵：`decision=avoid` 的视图仍须在 `08-views.md` 拥有视图契约与权限，走简单查询方案；仅 `decision=use` 的视图进入 c11/c12。
+`c09`（`09-read-fit.md`）输出逐视图矩阵：`decision=avoid` 的视图仍须在 `08-views.md` 拥有视图契约与权限，走简单查询方案；仅 `decision=use` 的视图进入 c11/c12。
 
 ### 2.3 统一契约与（条件）设计模式支线
 
@@ -68,9 +68,9 @@
 | :-- | :-- | :-- | :-- | :-- |
 | c15 | ddd-port-scaffold | `contexts/<ctx>/14-spec.md` + 语言剖面 | `contexts/<ctx>/15-scaffold.md` | **G6** |
 | c16 | ddd-domain-impl | `15-scaffold.md`,`14-spec.md`（+ `patterns/03-*` 中 `owner_layer=domain` 的蓝图）| `contexts/<ctx>/16-domain-impl.md` | |
-| c17 | ddd-application-impl | `15-scaffold.md`,`14-spec.md`,`05-orchestration.md`（+ `owner_layer=application` 蓝图）| `contexts/<ctx>/17-application-impl.md` | |
-| c18 | ddd-outbound-adapter-impl | `15-scaffold.md`,`14-spec.md`（+ `owner_layer=adapter` 蓝图）| `contexts/<ctx>/18-outbound-impl.md` | |
-| c19 | cqrs-read-model-impl | `11..12-*.md`,`15-scaffold.md`（+ `owner_layer=read` 蓝图）| `contexts/<ctx>/19-read-impl.md` | 条件执行（存在 `use` 视图）|
+| c17 | ddd-application-impl | `15-scaffold.md`,`14-spec.md`,`05-orchestration.md`（+ `patterns/03-*` 中 `owner_layer=application` 的蓝图）| `contexts/<ctx>/17-application-impl.md` | |
+| c18 | ddd-outbound-adapter-impl | `15-scaffold.md`,`14-spec.md`（+ `patterns/03-*` 中 `owner_layer=adapter` 的蓝图）| `contexts/<ctx>/18-outbound-impl.md` | |
+| c19 | cqrs-read-model-impl | `08-views.md`,`09-read-fit.md`,`11?,12?-*.md`,`15-scaffold.md`（+ `patterns/03-*` 中 `owner_layer=read` 的蓝图）| `contexts/<ctx>/19-read-impl.md` | 条件执行（存在 `use` 视图）|
 | c20 | ddd-inbound-adapter-impl | `15-scaffold.md`,`04-use-cases.md` | `contexts/<ctx>/20-inbound-impl.md` | |
 | p04 | design-pattern-review | `patterns/03-*` + 对应层实现工件 | `contexts/<ctx>/patterns/04-review.md` | 条件执行（有蓝图）|
 | c21 | ddd-application-review | `04,05,06?-*.md` + `17-application-impl.md` + 测试证据 | `contexts/<ctx>/21-application-review-impl.md` | **G7** 之一 |
@@ -86,7 +86,7 @@
 | G1 战略 | `shared/05-context-map.md` 后 | 上下文边界与契约所有权获用户确认；核心域已声明且每个核心上下文有 ACL/隔离 | 停下与用户确认 |
 | G2 模型 | `03-model-review.md` 后 | 不变量表达率 ≥ 60%；无阻断级一致性问题；每条目标有建模覆盖；无未决回溯项 | 停下与用户确认 |
 | G3 应用设计 | `07-application-review.md` 后 | 无硬门禁命中（清单见 `references/application-review-rubric.md`）；按 rubric 设计态判定 ≥ conditional_pass；每个写命令有唯一 UC；`GOAL→CMD→UC→AGG→INV→EVT→AC` 追踪闭合 | |
-| G4 读侧 | `13-read-review.md` 后 | 每个 VIEW 在 `views` 矩阵有结论；`avoid` 视图也有视图契约、查询方案与权限；`use` 视图字段有来源、有同步与重建策略；无 critical/high；无默认事件溯源/微服务/双库 | |
+| G4 读侧 | `13-read-review.md` 后 | 每个 VIEW 在 `09-read-fit.md` 的 `views` 矩阵有结论；`avoid` 视图也有视图契约、查询方案与权限；`use` 视图字段有来源、有同步与重建策略；无 critical/high；无默认事件溯源/微服务/双库 | |
 | G5 契约与模式 | `14-spec.md` 与 `patterns/*` 后 | 规范自洽（用例/端口/事件/读侧互引都在规范内定义）；每个 `PAT` 有真实 `change_axis` 与更简单替代对比；`concerns` 为空时除 `patterns/01-scan.md`（扫描证据）外无 fit/蓝图/审查工件 | 停下与用户确认 |
 | G6 骨架 | `15-scaffold.md` 后 | 端口契约可在目标语言完整表达；依赖只向内——应用层可依赖 Domain 内核，对外部资源只依赖端口抽象；骨架零实现；接口/方法保留不变量与用例编号的契约追踪注释 | 确认落地语言 |
 | G7 实现与验收 | `21..23-*.md` 后 | 实现态 application review 按 rubric 达 **pass**；架构依赖测试通过（领域零基础设施、应用零具体 SDK、入口不直连仓储）；acceptance 全部 INV/AC/测试义务通过并有 test_file+test_name 证据；有读模型时读侧验收通过 | |

@@ -23,6 +23,8 @@
 | 08 | （迁移执行，本层）| `07-read-impl.md` + 旧查询路径 | `08-migration-log.md` | G2 |
 | 09 | cqrs-read-model-acceptance | `04?,05?-*.md`,`07-read-impl.md`,`08-migration-log.md` | `09-read-acceptance.md` | G3 |
 
+07 按逐视图结论分路实现：`avoid` 视图 → 从 Entity 直出提取 Query Service / View DTO；`use` 视图 → 投影与独立读存储。全 `avoid` 时 04/05 缺席不阻塞 07；09 的验收项按适用性裁剪（无 `use` 视图时投影收敛/重建等价记 N/A 并给理由）。
+
 ## 2. 迁移执行（步骤 08，本层持有）
 
 每个切换的视图按以下顺序推进，全程记录在 `08-migration-log.md`：

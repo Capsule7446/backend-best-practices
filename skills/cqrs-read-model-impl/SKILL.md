@@ -3,7 +3,7 @@ name: cqrs-read-model-impl
 description: "把读模型设计落成可运行实现：Query Handler、View DTO、Read Repository、Projection Handler、读存储结构、权限下推与 freshness 元数据。"
 risk: caution
 category: implementation
-inputs: "读模型设计（类型/字段映射/查询契约/索引） + 同步策略 + 权限约束（租户/行级/字段级） + 目标语言与读存储"
+inputs: "视图契约（含逐视图适配结论）+ 权限约束（租户/行级/字段级）+ [存在 use 视图时] 读模型设计与同步策略 + 目标语言与读存储"
 outputs: "Query Handler / View DTO / Read Repository / Projection Handler / 读存储结构 / Projection Checkpoint / 迁移与重建脚本"
 tags: "[cqrs, read-model, query-handler, projection, authorization, freshness]"
 ---
@@ -12,11 +12,12 @@ tags: "[cqrs, read-model, query-handler, projection, authorization, freshness]"
 
 ## 做什么
 
-把读模型设计落成实现：查询入口、视图 DTO、读仓储、事件投影与读存储结构，权限下推与新鲜度元数据是实现的一等约束，不是事后补丁。
+把读侧设计落成实现，**按逐视图结论分路**：`avoid` 视图落 Query Handler / Query Service / View DTO 简单查询路径；`use` 视图另落事件投影与独立读存储。权限下推与新鲜度元数据是实现的一等约束，不是事后补丁。不得把 `avoid` 视图擅自升级成独立读模型。
 
 ## 需要什么参数
 
-- **必需**：读模型设计（模型类型、字段映射、查询契约、索引）；同步/刷新策略；权限约束（租户/行级/字段级）。
+- **必需**：视图契约（字段/筛选/排序/权限，含逐视图适配结论）；权限约束（租户/行级/字段级）。
+- **必需（仅当存在 `use` 视图）**：读模型设计（模型类型、字段映射、查询契约、索引）；同步/刷新策略。
 - **可选**：目标语言与框架、读存储基础设施（DB/缓存/搜索）、事件流格式与序号语义、性能预算、重建窗口。
 
 ## 怎么做

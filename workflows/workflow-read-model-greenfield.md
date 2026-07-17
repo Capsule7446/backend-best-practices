@@ -22,7 +22,7 @@
 | 07 | cqrs-read-model-impl | `01-views.md`,`02-fit-check.md`,`04?,05?-*.md` | `07-read-impl.md` | 条件执行（用户要求落地实现）|
 | 08 | cqrs-read-model-acceptance | `04?,05?-*.md`,`07-read-impl.md` | `08-read-acceptance.md` | 条件执行（有 07），G2 |
 
-`02` 输出**逐视图矩阵**：`decision=avoid` 的视图走简单查询方案（DTO / Query Service / DB View），其视图契约与权限已在 `01-views.md`；仅 `decision=use` 的视图进入 04/05 与 07 的投影部分。全部视图 `avoid` 时跳过 04/05，06 审查简化读侧方案。
+`02` 输出**逐视图矩阵**：`decision=avoid` 的视图走简单查询方案（DTO / Query Service / DB View），其视图契约与权限已在 `01-views.md`；仅 `decision=use` 的视图进入 04/05 与 07 的投影部分。全部视图 `avoid` 时跳过 04/05，06 审查简化读侧方案。07 按逐视图结论分路实现（`avoid` → Query Service/DTO；`use` → 投影与读存储），全 `avoid` 时 04/05 缺席不阻塞；08 的验收项按适用性裁剪（无 `use` 视图时投影收敛/重建等价记 N/A 并给理由）。
 
 ## 2. 门禁
 

@@ -229,7 +229,7 @@ def check_workflow(
         warnings.append(f"WARNING: {loc}: 未找到文件交接表（表头需含「调用能力/输入文件/输出文件」列）")
 
     referenced_skills: list[str] = []
-    outputs: list[dict] = []  # {prefix, num, basename, full, line}
+    outputs: list[dict] = []  # {prefix, num, basename, full, line, skills}
 
     for row in rows:
         cells, cols, lineno = row["cells"], row["cols"], row["line"]
@@ -241,6 +241,7 @@ def check_workflow(
         # --- 1. 调用能力必须有对应 skill 目录 ---------------------------------
         cap_raw = cell("cap")
         kind, cap = resolve_capability(cap_raw)
+        row_skills: list[str] = []  # 本行产出工件的生产者（用于契约字段血缘收窄）
         if kind == "skill":
             if cap not in skill_names:
                 errors.append(
@@ -252,6 +253,7 @@ def check_workflow(
                 )
             else:
                 referenced_skills.append(cap)
+                row_skills = [cap]
         elif kind == "template":
             regex = template_to_regex(cap)
             matched = sorted(n for n in skill_names if regex.match(n))
@@ -261,6 +263,7 @@ def check_workflow(
                 )
             else:
                 referenced_skills.extend(matched)
+                row_skills = matched
 
         # --- 2. 输入文件必须来自更早行的输出 ----------------------------------
         in_cell = cell("in")
@@ -290,11 +293,12 @@ def check_workflow(
                     f"`{dup['full']}` 在同一目录层级使用相同编号 {num:02d}"
                 )
             outputs.append(
-                {"prefix": prefix, "num": num, "basename": basename, "full": tok, "line": lineno}
+                {"prefix": prefix, "num": num, "basename": basename, "full": tok,
+                 "line": lineno, "skills": row_skills}
             )
 
     # --- 契约字段检查 ----------------------------------------------------------
-    check_contract_fields(wf, lines, referenced_skills, returns_cache, errors, warnings)
+    check_contract_fields(wf, lines, referenced_skills, outputs, returns_cache, errors, warnings)
 
 
 def check_input_lineage(
@@ -349,10 +353,30 @@ def check_input_lineage(
     )
 
 
+def producers_on_line(line: str, outputs: list[dict]) -> set[str]:
+    """解析一行中引用的工件文件，返回其生产者 skill 集合（血缘收窄用）。"""
+    producers: set[str] = set()
+    for tok, m in extract_file_tokens(line):
+        prefix = m.group("prefix") or ""
+        nums = set(parse_nums(m.group("nums")))
+        basename = tok[len(prefix):] if prefix and tok.startswith(prefix) else tok
+        for o in outputs:
+            if not o["skills"]:
+                continue
+            if (
+                o["full"] == tok
+                or o["basename"] == basename
+                or (o["num"] in nums and prefix_compatible(prefix, o["prefix"]))
+            ):
+                producers.update(o["skills"])
+    return producers
+
+
 def check_contract_fields(
     wf: Path,
     lines: list[str],
     referenced_skills: list[str],
+    outputs: list[dict],
     returns_cache: dict[str, str],
     errors: list[str],
     warnings: list[str],
@@ -366,15 +390,25 @@ def check_contract_fields(
             if span.strip() in all_skill_names:
                 skills.add(span.strip())
     skills = sorted(skills)
-    reported: set[str] = set()
+    reported: set[tuple[str, tuple[str, ...]]] = set()
 
     for lineno, line in enumerate(lines, 1):
+        # 血缘收窄：本行引用了具体工件时，候选生产者限定为这些工件的产出 skill
+        # （外加本行反引号点名的 skill）；避免无关 skill 的同名字段掩盖真实断裂。
+        line_scope = producers_on_line(line, outputs)
+        for span in BACKTICK_RE.findall(line):
+            if span.strip() in all_skill_names:
+                line_scope.add(span.strip())
+        candidates = sorted(line_scope) if line_scope else skills
         for span in BACKTICK_RE.findall(line):
             fm = FIELD_TOKEN_RE.fullmatch(span.strip())
             if not fm:
                 continue
             token = fm.group(1)
-            if token in IGNORE_TOKENS or token in reported:
+            if token in IGNORE_TOKENS:
+                continue
+            dedup_key = (token, tuple(candidates))
+            if dedup_key in reported:
                 continue
             # 去掉信封层组件（artifact_schema_version、structured_summary.X 的信封部分）
             parts = [p for p in token.split(".") if p not in ENVELOPE_TOKENS]
@@ -384,21 +418,22 @@ def check_contract_fields(
                 continue  # 文件名
             if all(p in IGNORE_TOKENS for p in parts):
                 continue
-            reported.add(token)
-            if not skills:
+            reported.add(dedup_key)
+            if not candidates:
                 warnings.append(
                     f"WARNING: {loc}:{lineno}: 字段 `{token}` 无法核对——该 workflow 未引用任何已存在的 skill"
                 )
                 continue
             declared_by = [
-                s for s in skills
+                s for s in candidates
                 if all(field_declared(s, p, returns_cache) for p in parts)
             ]
             if not declared_by:
+                scope_note = "行内工件血缘" if line_scope else "全 workflow 引用"
                 errors.append(
                     f"ERROR: {loc}:{lineno}: 契约断裂——workflow 依赖字段 `{token}`，"
-                    f"但它未以 YAML key 或反引号标注形式出现在任何被引用 skill 的"
-                    f"「返回什么」声明中（已核对：{', '.join(skills)}）"
+                    f"但它未以 YAML key 或反引号标注形式出现在候选 skill 的"
+                    f"「返回什么」声明中（收窄范围：{scope_note}；已核对：{', '.join(candidates)}）"
                 )
 
 
