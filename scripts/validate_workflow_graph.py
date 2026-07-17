@@ -198,6 +198,18 @@ def extract_returns_section(skill_name: str, cache: dict[str, str]) -> str:
     return text
 
 
+def field_declared(skill_name: str, part: str, cache: dict[str, str]) -> bool:
+    """字段必须以 YAML key（行首/列表项/flow 内的 `part:`）或反引号精确标注
+    出现在「返回什么」段才算声明；散文里的裸子串提及不算。"""
+    text = extract_returns_section(skill_name, cache)
+    if not text:
+        return False
+    key_pattern = rf"(?m)(?:^\s*(?:-\s*)?|[{{,]\s*){re.escape(part)}\s*\??\s*:"
+    if re.search(key_pattern, text):
+        return True
+    return f"`{part}`" in text
+
+
 # ---------------------------------------------------------------------------
 # 各项检查
 # ---------------------------------------------------------------------------
@@ -380,13 +392,13 @@ def check_contract_fields(
                 continue
             declared_by = [
                 s for s in skills
-                if all(p in extract_returns_section(s, returns_cache) for p in parts)
+                if all(field_declared(s, p, returns_cache) for p in parts)
             ]
             if not declared_by:
                 errors.append(
                     f"ERROR: {loc}:{lineno}: 契约断裂——workflow 依赖字段 `{token}`，"
-                    f"但它未出现在任何被引用 skill 的「返回什么」声明中"
-                    f"（已核对：{', '.join(skills)}）"
+                    f"但它未以 YAML key 或反引号标注形式出现在任何被引用 skill 的"
+                    f"「返回什么」声明中（已核对：{', '.join(skills)}）"
                 )
 
 

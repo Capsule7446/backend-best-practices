@@ -88,7 +88,7 @@
 | G3 应用设计 | `07-application-review.md` 后 | 无硬门禁命中（清单见 `references/application-review-rubric.md`）；按 rubric 设计态判定 ≥ conditional_pass；每个写命令有唯一 UC；`GOAL→CMD→UC→AGG→INV→EVT→AC` 追踪闭合 | |
 | G4 读侧 | `13-read-review.md` 后 | 每个 VIEW 在 `views` 矩阵有结论；`avoid` 视图也有视图契约、查询方案与权限；`use` 视图字段有来源、有同步与重建策略；无 critical/high；无默认事件溯源/微服务/双库 | |
 | G5 契约与模式 | `14-spec.md` 与 `patterns/*` 后 | 规范自洽（用例/端口/事件/读侧互引都在规范内定义）；每个 `PAT` 有真实 `change_axis` 与更简单替代对比；`concerns` 为空时除 `patterns/01-scan.md`（扫描证据）外无 fit/蓝图/审查工件 | 停下与用户确认 |
-| G6 骨架 | `15-scaffold.md` 后 | 端口契约可在目标语言完整表达；依赖只向内且应用层只依赖端口抽象；骨架零实现；接口/方法保留不变量与用例编号的契约追踪注释 | 确认落地语言 |
+| G6 骨架 | `15-scaffold.md` 后 | 端口契约可在目标语言完整表达；依赖只向内——应用层可依赖 Domain 内核，对外部资源只依赖端口抽象；骨架零实现；接口/方法保留不变量与用例编号的契约追踪注释 | 确认落地语言 |
 | G7 实现与验收 | `21..23-*.md` 后 | 实现态 application review 按 rubric 达 **pass**；架构依赖测试通过（领域零基础设施、应用零具体 SDK、入口不直连仓储）；acceptance 全部 INV/AC/测试义务通过并有 test_file+test_name 证据；有读模型时读侧验收通过 | |
 
 ### 门禁如何消费审查类工件
