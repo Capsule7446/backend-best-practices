@@ -91,58 +91,90 @@ def main() -> int:
         if "artifact_schema_version" not in head:
             errors.append(f"ERROR: {rel(p)}: 头部缺少 artifact_schema_version 声明")
 
-    # --- 收集 ID：出现位置（全部） 与 归属工件内出现（定义） -----------------
+    # --- 收集 ID：出现位置（全部） 与 定义位置（归属工件 + 结构化行） ---------
+    # 结构化行 = 表格行 / YAML 键值或列表项 / 标题——散文句子里的提及只算引用，不算定义。
+    STRUCTURED_LINE_RE = re.compile(r"^\s*(\||#|-\s|\*\s|[\w`\"'（(]{1,40}\s*[:：])")
+
+    def is_home_file(prefix: str, p: Path) -> bool:
+        return any(
+            re.search(rf"(?:^|\d+-|-){re.escape(pat)}(?:-|\.|$)", p.name)
+            for pat in HOME_PATTERNS.get(prefix, [])
+        )
+
     seen_in: dict[str, set[Path]] = {}
+    defined: set[str] = set()
     for p, text in texts.items():
-        for m in ID_RE.finditer(text):
-            seen_in.setdefault(m.group(0), set()).add(p)
+        for line in text.splitlines():
+            for m in ID_RE.finditer(line):
+                id_ = m.group(0)
+                seen_in.setdefault(id_, set()).add(p)
+                if is_home_file(m.group(1), p) and STRUCTURED_LINE_RE.match(line):
+                    defined.add(id_)
 
     def in_home(id_: str) -> bool:
-        prefix = id_.split("-", 1)[0]
-        patterns = HOME_PATTERNS.get(prefix, [])
-        return any(
-            any(pat in p.name for pat in patterns) for p in seen_in.get(id_, ())
-        )
+        return id_ in defined
 
     # --- 2. 引用即定义 -----------------------------------------------------
     for id_, places in sorted(seen_in.items()):
         if not in_home(id_):
             where = ", ".join(sorted(rel(p) for p in places))
             errors.append(
-                f"ERROR: ID `{id_}` 被引用（{where}）但未出现在其归属工件"
-                f"（{'/'.join(HOME_PATTERNS.get(id_.split('-', 1)[0], ['?']))}）中——引用未定义"
+                f"ERROR: ID `{id_}` 被引用（{where}）但未在其归属工件"
+                f"（{'/'.join(HOME_PATTERNS.get(id_.split('-', 1)[0], ['?']))}）的结构化行"
+                f"（表格/YAML/标题）中定义——引用未定义"
             )
 
-    # --- 3a. 写侧链：UC 同文件内应携带 INV 与 AC ---------------------------
+    # --- 3a. 写侧链：每个 UC 的区块内应携带 INV 与 AC -----------------------
+    # 区块 = 该 UC 首次出现处到下一个 UC 首次出现处；逐 UC 分别核对，
+    # 防止"同文件另一个用例有 INV/AC"掩盖断链用例。
     for p, text in texts.items():
-        if not any(pat in p.name for pat in HOME_PATTERNS["UC"]):
+        if not is_home_file("UC", p):
             continue
-        ucs = sorted({m.group(0) for m in ID_RE.finditer(text) if m.group(1) == "UC"})
-        if not ucs:
+        # 查询用例（kind: query 或登记在 query_use_cases 行）不守不变量，
+        # 其契约与验收由读侧链承担——跳过写侧 UC→INV/AC 检查。
+        query_ucs: set[str] = set()
+        for line in text.splitlines():
+            if "query_use_cases" in line or re.search(r"kind:\s*query", line):
+                query_ucs.update(
+                    m.group(0) for m in ID_RE.finditer(line) if m.group(1) == "UC"
+                )
+        first_pos: dict[str, int] = {}
+        for m in ID_RE.finditer(text):
+            if m.group(1) == "UC" and m.group(0) not in first_pos:
+                first_pos[m.group(0)] = m.start()
+        if not first_pos:
             continue
-        has_inv = any(m.group(1) == "INV" for m in ID_RE.finditer(text))
-        has_ac = any(m.group(1) == "AC" for m in ID_RE.finditer(text))
-        if not has_inv:
-            warnings.append(
-                f"WARNING: {rel(p)}: 定义了 {len(ucs)} 个 UC 但未引用任何 INV——写侧追踪链（UC→INV）缺环"
-            )
-        if not has_ac:
-            warnings.append(
-                f"WARNING: {rel(p)}: 定义了 {len(ucs)} 个 UC 但未引用任何 AC——验收追踪（UC→AC）缺环"
-            )
+        ordered = sorted(first_pos.items(), key=lambda kv: kv[1])
+        for i, (uc, start) in enumerate(ordered):
+            end = ordered[i + 1][1] if i + 1 < len(ordered) else len(text)
+            chunk = text[start:end]
+            if uc in query_ucs or re.search(r"kind:\s*query", chunk):
+                continue
+            kinds = {m.group(1) for m in ID_RE.finditer(chunk)}
+            if "INV" not in kinds:
+                warnings.append(
+                    f"WARNING: {rel(p)}: `{uc}` 区块内未引用任何 INV——写侧追踪链（UC→INV）缺环"
+                )
+            if "AC" not in kinds:
+                warnings.append(
+                    f"WARNING: {rel(p)}: `{uc}` 区块内未引用任何 AC——验收追踪（UC→AC）缺环"
+                )
 
-    # --- 3b. 读侧链：每个 VIEW 必须进 fit 矩阵 ------------------------------
-    fit_text = "\n".join(
-        t for p, t in texts.items() if any(pat in p.name for pat in FIT_PATTERNS)
-    )
+    # --- 3b. 读侧链：每个 VIEW 必须进 fit 矩阵（精确 ID 成员判断）-----------
+    fit_ids: set[str] = set()
+    has_fit_file = False
+    for p, t in texts.items():
+        if any(pat in p.name for pat in FIT_PATTERNS):
+            has_fit_file = True
+            fit_ids.update(m.group(0) for m in ID_RE.finditer(t))
     view_ids = sorted(
         id_ for id_ in seen_in if id_.startswith("VIEW-") and in_home(id_)
     )
-    if view_ids and not fit_text:
+    if view_ids and not has_fit_file:
         errors.append("ERROR: 存在 VIEW 定义但工作区没有任何 fit 矩阵工件（read-fit/fit-check）")
     else:
         for v in view_ids:
-            if v not in fit_text:
+            if v not in fit_ids:
                 errors.append(f"ERROR: 视图 `{v}` 没有出现在 fit 矩阵工件中——读侧链（VIEW→fit 结论）断裂")
 
     # --- 汇总 ---------------------------------------------------------------
