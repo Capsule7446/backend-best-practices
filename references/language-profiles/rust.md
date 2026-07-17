@@ -29,16 +29,16 @@ trait OrderRepository {
 }
 ```
 
-> 契约语义（单聚合查询、1 聚合/1 事务、不变量编号）以注释随骨架保留。异步项目中 trait 方法为 `async fn`（Rust 1.75+ 原生支持，或 `#[async_trait]`）。
+> 契约语义（单聚合查询、1 聚合/1 事务、不变量编号）以注释随骨架保留。异步 trait 二选一：**泛型静态分发**（`struct Handler<R: OrderRepository>`）可用 Rust 1.75+ 原生 `async fn` in trait；**需要 `dyn` 动态分发**（如 `Arc<dyn OrderRepository>`）时原生 async fn 不满足对象安全，须用 `#[async_trait]`（boxed future）或让 trait 方法显式返回 `Pin<Box<dyn Future<…>>>`。
 
 ## Application（应用层）
 
 | 关注点 | 惯用形状 |
 | :--- | :--- |
-| Command/Query Handler | 每用例一个 struct，端口依赖用泛型参数（`struct ConfirmOrderHandler<R: OrderRepository>`）或 `Arc<dyn OrderRepository>`；单方法 `async fn handle(&self, cmd) -> Result<_, AppError>` |
-| Unit of Work / 事务边界 | sqlx `Transaction<'_>` 显式传入仓储方法，或事务管理器闭包包一层；1 用例 = 1 事务 |
+| Command/Query Handler | 每用例一个 struct，单方法 `async fn handle(&self, cmd) -> Result<_, AppError>`；端口依赖首选泛型静态分发（原生 async fn trait），要 `Arc<dyn Trait>` 则配 `#[async_trait]` |
+| Unit of Work / 事务边界 | 应用层只依赖自定义 `UnitOfWork` 端口 trait（如 `async fn execute(&self, work) -> Result<_>`）；sqlx `Transaction<'_>` 属出站适配器内部实现细节，不出现在应用层签名；1 用例 = 1 事务 |
 | Result/错误映射 | thiserror 定义分层 `AppError`，`#[from] DomainError` + `?` 传播；边缘统一映射 HTTP |
-| 异步语义 | tokio + `async/await`；trait 上用原生 async fn 或 async-trait；跨任务传递注意 `Send + Sync` 约束 |
+| 异步语义 | tokio + `async/await`；泛型端口用原生 async fn in trait，`dyn` 端口用 `#[async_trait]`；跨任务传递注意 `Send + Sync` 约束 |
 | 幂等执行器 | 幂等键表 + 唯一约束，与业务写同一事务；定义为应用层 trait，实现放基础设施 crate |
 
 ## Read（读侧）
