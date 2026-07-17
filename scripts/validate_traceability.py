@@ -162,8 +162,13 @@ def main() -> int:
             kinds = {m.group(1) for m in ID_RE.finditer(chunk)}
             # 追踪链是硬约束：缺环即 ERROR；合法缺席须逐环节显式声明
             # `invariants: n/a(理由)` / `acceptance: n/a(理由)`（一处 n/a 不通杀两环）。
-            na_inv = re.search(r"(?:invariants|不变量)\s*[:：][^\n]{0,60}n/a", chunk, re.I)
-            na_ac = re.search(r"(?:acceptance|验收)\s*[:：][^\n]{0,60}n/a", chunk, re.I)
+            # n/a 必须带非空理由：n/a(…) 或 n/a（…）
+            na_inv = re.search(
+                r"(?:invariants|不变量)\s*[:：][^\n]{0,60}n/a\s*[（(][^）)\s][^）)]*[）)]", chunk, re.I
+            )
+            na_ac = re.search(
+                r"(?:acceptance|验收)\s*[:：][^\n]{0,60}n/a\s*[（(][^）)\s][^）)]*[）)]", chunk, re.I
+            )
             if "INV" not in kinds and not na_inv:
                 errors.append(
                     f"ERROR: {rel(p)}: `{uc}` 区块内未引用任何 INV 且无显式 n/a(理由)——写侧追踪链（UC→INV）缺环"

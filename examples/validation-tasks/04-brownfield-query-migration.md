@@ -14,7 +14,7 @@
 | :-- | :-- |
 | 先定位 Entity 直出与 Domain 污染（decoupling 在前）| 01-domain-read-decoupling |
 | 按现状查询/页面提取视图契约，逐视图 fit（不是全局一刀切）| 02-views + 03-fit-check |
-| 迁移路径含 Backfill → Shadow Read → Parity Diff → 灰度 Cutover → Rollback 开关 | migration-log 设计/工件 |
+| 迁移路径含双跑对比（Shadow Read + Parity Diff）→ 灰度 Cutover → Rollback 开关；**Backfill 仅当 fit 为该视图选择独立物化读存储时要求**（同库 DB View/Query Service 方案无可回填项，不得因缺 Backfill 判失败）| migration-log 设计/工件 + fit 矩阵 |
 | Parity Diff 差异归零或全部有解释才切流 | 迁移门禁 |
 | 旧路径保留至稳定期后退役，退役有登记 | migration 工件 |
 | 新查询出口是 View DTO，不再暴露 Entity | 实现工件 |
