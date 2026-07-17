@@ -75,8 +75,13 @@
 
 | 事项 | 版本 | 说明 |
 | :-- | :-- | :-- |
-| P4 前向验证任务集 | 0.2.x | `examples/validation-tasks/`：简单 CRUD（应 avoid CQRS/Saga/GoF）、复杂订单（应有 Outbox/视图/权限）、跨上下文 Dashboard、Brownfield 查询迁移、多支付供应商（应识别 Adapter/Strategy）、单支付供应商（应拒绝预建模式）；每个带"应出现/不应出现"判据 |
-| validate-traceability 脚本 | 0.2.x | 对 run 工件抽查三条追踪链闭合（依赖工件信封落地后的真实运行样本）|
+| ~~P4 前向验证任务集~~ | ~~0.2.x~~ | **已完成**：`examples/validation-tasks/` 六任务 + 判据；任务 01 已 dogfooding 首跑（判据 10/10 pass，见 `RESULTS-01.md`）；任务 02-06 待执行 |
+| ~~validate-traceability 脚本~~ | ~~0.2.x~~ | **已完成**：`scripts/validate_traceability.py`（信封/引用即定义/UC↔INV·AC/VIEW↔fit），已在真实 run 工件上验证 |
+| **小需求轻量模式** | 0.3.0 | 任务 01 试跑实测：25 个流程工件对单聚合 CRUD 过重，可合并到 ~9 个（方案见 RESULTS-01 引用的摩擦报告 §4）；触发条件：核心上下文 ≤1、聚合 ≤2、无长流程、fit 全 avoid |
+| 实现步骤定位澄清 | 0.3.0 | c16-c20 产"实现说明工件"还是真实工程？G7 的 test status 证据依赖真实工程——需在 ARCHITECTURE 明确两种运行模式（设计交付 / 代码交付）及各自的 G7 判据 |
+| 审查 skill 去判定化 | 0.3.0 | `cqrs-review`/`ddd-model-review` 的 `overall`/结论字段与"审查只出证据"纪律不符（当前 workflow 侧已声明结论仅作参考）；统一到 ddd-application-review 的纯证据形态 |
+| design-pattern 家族 frontmatter 统一 | 0.3.0 | 26 个 design-pattern-* skill 补 risk/category/inputs/outputs/tags（opportunity-scan 已补）|
+| spec-bridge 紧凑化 | 0.3.0 | 小系统下 spec 约 80% 是上游复述；改为"引用 ID + 只写增量语义"的组装形态 |
 | ddd-adapter-impl 移除 | 0.3.0 | 兼容包装到期删除；commands/文档同步 |
 | CAPABILITIES 编号重排 | 0.3.0 | 当前新增能力追加编号（48-58），下个破坏性版本统一重排 |
 | Keystone marketplace 发布 | 每版本 | pack.ps1 打包 → dist zip → marketplace by-reference 更新 |

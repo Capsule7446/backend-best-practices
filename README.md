@@ -63,6 +63,8 @@
 
 说明：`design-pattern-review` 是 `workflow-design-pattern` 内部使用的审查能力，当前没有独立命令入口；需要审查设计模式方案时，从 `design-pattern` 命令进入即可。
 
+说明：`ddd-new` / `ddd-refactor` 全流程已内建 **Application 层**——每个写命令映射唯一用例（Input Port / Command / Result），授权、幂等、事务边界与事件投递在编排设计中显式声明并过门禁；实现阶段按 Domain / Application / 入站适配器 / 出站适配器分层落地。若只想单独体检既有代码的应用层（Service 过厚、Controller 直连仓储、事务或幂等缺失），直接用 `/backend-best-practices:ddd-application-review`。
+
 ### 1. 先读懂系统
 
 先不要改代码，先运行：
@@ -234,6 +236,7 @@ ddd-code-survey
 | 看不懂模块承担什么业务 | `system-model-view-read`，限定关注模块 |
 | 领域对象越来越像数据库表 | `ddd-review` 或 `ddd-refactor` |
 | Service 很厚，规则散落 | `ddd-refactor` |
+| Controller 直连仓储 / 事务、幂等、授权散乱 | `ddd-application-review` |
 | API DTO 直接绑 Entity | `cqrs-read-model-refactor` |
 | 列表页/报表查询复杂 | `cqrs-read-model-refactor` |
 | 同一个行为有多种算法 | `design-pattern`，常见候选 `strategy` |
