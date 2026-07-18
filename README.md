@@ -45,6 +45,13 @@ Backend Best Practices 将后端代码优化从“靠经验判断”变成可重
 
 完整清单见 [`skills/`](skills/)。技能是 Workflow 的可复用步骤，不建议绕过路由直接拼接不相关步骤。
 
+## 安装
+
+```text
+/plugin marketplace add Capsule7446/maker-stack
+/plugin install backend-best-practices@maker-stack
+```
+
 ## 推荐流程
 
 ```text
@@ -52,7 +59,9 @@ system-model-view-read
 → ddd-refactor 或 ddd-new
 → cqrs-read-model-refactor（确有读侧复杂度时）
 → design-pattern（确有稳定变化轴时）
-→ review → spec → scaffold → acceptance
+→ ddd-review / cqrs-read-model-review
+→ ddd-spec → ddd-scaffold
+→ 各 Workflow 内的 acceptance 阶段
 ```
 
 每个切片都应有特征化测试、契约、不变量、灰度切换和回滚路径。目标不是套用架构，而是让代码更容易解释、测试和局部替换。
