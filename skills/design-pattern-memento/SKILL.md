@@ -1,18 +1,9 @@
 ---
 name: design-pattern-memento
 description: "GoF Memento（备忘录）设计模式能力。用于在 撤销、草稿、快照、流程回滚。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
-entrypoint: fixed-pattern
-workflow: workflow-design-pattern
-pattern: memento
-argument-hint: <设计问题或代码路径> [--lang=<语言>]
 ---
 
 
-## 固定模式入口
-
-该 Skill 接收设计问题或代码路径，并交给 `workflow-design-pattern` 编排；候选模式固定为 `memento`。
-
-参数：`<设计问题或代码路径> [--lang=<语言>]`。
 
 # Memento（备忘录）
 

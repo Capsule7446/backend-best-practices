@@ -13,7 +13,7 @@ Backend Best Practices 将后端代码优化从“靠经验判断”变成可重
 
 本插件不再提供独立 Command。直接调用对应 Skill：
 
-- 系统建模：`system-model-view-read`
+- 系统建模：`workflow-system-model-view-read`
 - DDD 新建：`workflow-greenfield`
 - DDD 重构：`workflow-brownfield`
 - CQRS 新建：`workflow-read-model-greenfield`

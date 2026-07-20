@@ -24,7 +24,7 @@ source: self
 
 # Workflow：System Model + View Reading
 
-> 统筹者。用于深度阅读既有系统代码，把代码解释成清楚的业务模型、领域边界、聚合行为和业务视图/读模型。由 `/backend-best-practices:system-model-view-read` 触发。
+> 统筹者。用于深度阅读既有系统代码，把代码解释成清楚的业务模型、领域边界、聚合行为和业务视图/读模型。由 ``workflow-system-model-view-read` Skill` 触发。
 
 ## 0. 入口
 
