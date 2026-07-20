@@ -3,9 +3,11 @@ description: 启动既有系统读模型解耦流程。薄入口：仅启动 wor
 argument-hint: <代码路径或现状描述>
 ---
 
+> Workflow 文件通过同名 `workflow-*` Skill 注册后调用。
+
 # /backend-best-practices:cqrs-read-model-refactor
 
-薄入口。把 `$ARGUMENTS` 交给 **`workflow-read-model-brownfield`**。
+薄入口。相关 Workflow 已作为同名 Skill 注册，把 `$ARGUMENTS` 交给 **`workflow-read-model-brownfield`**。
 
 - `$ARGUMENTS`：代码路径、现状描述、Domain 污染或 Entity-backed API 问题。
 
