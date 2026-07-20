@@ -21,7 +21,7 @@ description: "把选定设计模式转成语言无关蓝图，并按 Java、Type
 3. 依据目标语言选择惯用表达，不机械翻译 Java 类图。
 4. 保留模式的最小结构，避免加入无需求支撑的抽象层。
 5. 给出关键测试点：替换性、扩展性、边界条件、并发或生命周期。
-6. 按需读取 `references/design-pattern-catalog.md` 与 `references/design-pattern-language-profiles.md`。
+6. 按需读取 `../../references/design-pattern-catalog.md` 与 `../../references/design-pattern-language-profiles.md`。
 
 ## 返回什么
 
@@ -65,4 +65,4 @@ structured_summary:
 
 ---
 
-附加参考（按需读取）：`references/design-pattern-catalog.md`、`references/design-pattern-language-profiles.md`。
+附加参考（按需读取）：`../../references/design-pattern-catalog.md`、`../../references/design-pattern-language-profiles.md`。

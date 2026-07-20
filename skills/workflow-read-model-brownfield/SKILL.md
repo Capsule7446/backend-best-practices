@@ -24,7 +24,7 @@ source: self
 
 # Workflow：CQRS Read Model Brownfield
 
-> 统筹者。用于从既有 Entity-backed API、Domain 污染或复杂查询中拆出 Read Model。由 `/backend-best-practices:cqrs-read-model-refactor` 触发。
+> 统筹者。用于从既有 Entity-backed API、Domain 污染或复杂查询中拆出 Read Model。由 `backend-best-practices:workflow-read-model-brownfield` 触发。
 > 第一纪律：旧查询路径全程可用、可回滚；新读侧灰度接管。
 
 ## 0. 入口

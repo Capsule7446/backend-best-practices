@@ -1,6 +1,6 @@
 # 任务 03：跨上下文运营 Dashboard
 
-入口：`/backend-best-practices:cqrs-read-model-new`
+入口：`backend-best-practices:workflow-read-model-greenfield`
 
 ## 任务输入
 

@@ -24,7 +24,7 @@ source: self
 
 # Workflow：CQRS Read Model Greenfield
 
-> 统筹者。用于新建业务聚合展示、dashboard、报表、列表、搜索或查询 API。由 `/backend-best-practices:cqrs-read-model-new` 触发。
+> 统筹者。用于新建业务聚合展示、dashboard、报表、列表、搜索或查询 API。由 `backend-best-practices:workflow-read-model-greenfield` 触发。
 > 顺序纪律：**视图先行**——先明确业务视图与字段需求，再逐视图判断是否需要独立读模型。
 
 ## 0. 入口

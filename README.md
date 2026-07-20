@@ -9,21 +9,19 @@ Backend Best Practices 将后端代码优化从“靠经验判断”变成可重
 - 判断是否需要 CQRS、读模型、聚合视图或设计模式。
 - 审查领域模型、应用层、契约、骨架和迁移切片。
 
-## Command
+## Skill 入口
 
-### 系统与 DDD
+本插件不再提供独立 Command。直接调用对应 Skill：
 
-`system-model-view-read`、`ddd-new`、`ddd-refactor`、`ddd-review`、`ddd-application-review`、`ddd-spec`、`ddd-scaffold`。
+- 系统建模：`system-model-view-read`
+- DDD 新建：`workflow-greenfield`
+- DDD 重构：`workflow-brownfield`
+- CQRS 新建：`workflow-read-model-greenfield`
+- CQRS 重构：`workflow-read-model-brownfield`
+- CQRS 审查：`workflow-read-model-review`
+- 设计模式：`workflow-design-pattern` 或具体 `design-pattern-<pattern>` Skill
 
-### CQRS 读模型
-
-`cqrs-read-model-new`、`cqrs-read-model-refactor`、`cqrs-read-model-review`。
-
-### 设计模式
-
-`design-pattern` 负责模式适配性判断；另有 23 个 `design-pattern-<pattern>` 命令，覆盖创建型、结构型和行为型 GoF 模式。
-
-完整入口见 [`commands/`](commands/)。
+完整入口见 [`skills/`](skills/)。
 
 ## Workflow
 
@@ -56,12 +54,10 @@ Backend Best Practices 将后端代码优化从“靠经验判断”变成可重
 
 ```text
 system-model-view-read
-→ ddd-refactor 或 ddd-new
-→ cqrs-read-model-refactor（确有读侧复杂度时）
-→ design-pattern（确有稳定变化轴时）
-→ ddd-review / cqrs-read-model-review
-→ ddd-spec → ddd-scaffold
-→ 各 Workflow 内的 acceptance 阶段
+→ workflow-brownfield 或 workflow-greenfield
+→ workflow-read-model-brownfield（确有读侧复杂度时）
+→ workflow-design-pattern（确有稳定变化轴时）
+→ 各 Workflow 内的 review / spec / scaffold / acceptance 阶段
 ```
 
 每个切片都应有特征化测试、契约、不变量、灰度切换和回滚路径。目标不是套用架构，而是让代码更容易解释、测试和局部替换。
