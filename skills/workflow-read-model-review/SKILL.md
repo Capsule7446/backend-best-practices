@@ -24,7 +24,7 @@ source: self
 
 # Workflow：CQRS Read Model Review
 
-> 统筹者。用于审查现有 CQRS Read Model 设计或代码。由 `backend-best-practices:workflow-read-model-review` 触发。
+> 统筹者。用于审查现有 CQRS Read Model 设计或代码。由 `/backend-best-practices:workflow-read-model-review` 触发。
 
 ## 1. 文件交接
 

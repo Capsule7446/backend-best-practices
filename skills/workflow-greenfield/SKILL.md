@@ -24,7 +24,7 @@ source: self
 
 # Workflow：Greenfield（0→1 新建）
 
-> 统筹者。本文件是**唯一**掌握顺序、文件交接、门禁与回溯的地方；被调用的 SKILL 都是纯能力，对流程一无所知。由 `backend-best-practices:workflow-greenfield` 触发。
+> 统筹者。本文件是**唯一**掌握顺序、文件交接、门禁与回溯的地方；被调用的 SKILL 都是纯能力，对流程一无所知。由 `/backend-best-practices:workflow-greenfield` 触发。
 > 交付链路：战略 DDD → 战术 Domain → **Application 用例编排** → **业务视图/读侧** → 统一契约 → （条件）设计模式 → 分层实现 → 验收。
 
 ## 0. 入口路由（原 mode-router 职责，已并入本层）

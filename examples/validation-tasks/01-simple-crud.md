@@ -1,6 +1,6 @@
 # 任务 01：简单 CRUD（个人书签管理）
 
-入口：`backend-best-practices:workflow-greenfield`
+入口：`/backend-best-practices:workflow-greenfield`
 
 ## 任务输入
 

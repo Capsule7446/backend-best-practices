@@ -24,7 +24,7 @@ source: self
 
 # Workflow：Brownfield（既有项目改造）
 
-> 统筹者。本文件**唯一**掌握顺序、文件交接、门禁与回溯；被调用的 SKILL 都是纯能力。由 `backend-best-practices:workflow-brownfield` 触发。
+> 统筹者。本文件**唯一**掌握顺序、文件交接、门禁与回溯；被调用的 SKILL 都是纯能力。由 `/backend-best-practices:workflow-brownfield` 触发。
 > 第一纪律：**旧系统全程可运行、可回滚，绝不一次性重写。**
 
 ## 0. 入口路由（原 mode-router 职责，已并入本层）
