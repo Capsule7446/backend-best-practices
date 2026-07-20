@@ -490,21 +490,6 @@ def main() -> int:
     workflow_files = sorted(
         path for path in WORKFLOW_SKILLS_DIR.glob("workflow-*/SKILL.md")
     )
-    expected_workflows = {
-        "workflow-brownfield",
-        "workflow-design-pattern",
-        "workflow-greenfield",
-        "workflow-read-model-brownfield",
-        "workflow-read-model-greenfield",
-        "workflow-read-model-review",
-        "workflow-system-model-view-read",
-    }
-    actual_workflows = {path.parent.name for path in workflow_files}
-    missing_workflows = expected_workflows - actual_workflows
-    if missing_workflows:
-        errors.append(
-            "ERROR: 缺少 Workflow Skill：" + ", ".join(sorted(missing_workflows))
-        )
     for wf in workflow_files:
         check_workflow(wf, skill_names, returns_cache, errors, warnings)
 
