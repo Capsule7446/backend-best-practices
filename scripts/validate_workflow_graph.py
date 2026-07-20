@@ -23,7 +23,7 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = REPO_ROOT / "skills"
-WORKFLOWS_DIR = REPO_ROOT / "workflows"
+WORKFLOWS_DIR = REPO_ROOT / "skills"
 
 # ---------------------------------------------------------------------------
 # 契约字段扫描的忽略清单（可维护：新增误报 token 时加到这里）
@@ -478,7 +478,7 @@ def main() -> int:
     warnings: list[str] = []
 
     if not WORKFLOWS_DIR.is_dir():
-        print(f"ERROR: 找不到 workflows 目录：{WORKFLOWS_DIR}")
+        print(f"ERROR: 找不到 skills 目录：{WORKFLOWS_DIR}")
         return 1
     if not SKILLS_DIR.is_dir():
         print(f"ERROR: 找不到 skills 目录：{SKILLS_DIR}")
@@ -487,7 +487,9 @@ def main() -> int:
     skill_names = {d.name for d in SKILLS_DIR.iterdir() if d.is_dir()}
     returns_cache: dict[str, str] = {}
 
-    workflow_files = sorted(WORKFLOWS_DIR.glob("*.md"))
+    workflow_files = sorted(
+        path for path in WORKFLOWS_DIR.glob("workflow-*/SKILL.md")
+    )
     for wf in workflow_files:
         check_workflow(wf, skill_names, returns_cache, errors, warnings)
 

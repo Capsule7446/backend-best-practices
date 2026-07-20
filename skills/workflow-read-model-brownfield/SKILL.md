@@ -1,27 +1,26 @@
 ---
 name: workflow-read-model-brownfield
-description: 执行 workflow-read-model-brownfield 编排流程；这是由 Command 或其他 Skill 调用的注册 Workflow。
+description: 执行 workflow-read-model-brownfield 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+risk: caution
+source: self
 ---
 
 ## 做什么
 
-执行 `workflow-read-model-brownfield` 的完整编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+执行 `workflow-read-model-brownfield` 的完整编排流程。
 
 ## 需要什么参数
 
-- **必需**：与该流程对应的项目路径、目标和当前上下文。
-- **可选**：目标语言、约束、工单号和已有运行工件路径。
+- **必需**：项目路径、目标和当前上下文。
+- **可选**：技术栈、约束、工单号和已有运行工件。
 
 ## 怎么做
 
-1. 读取当前上下文并确认流程适用性。
-2. 按本文定义的阶段顺序调用已注册的领域 Skill。
-3. 在每个门禁检查输入输出和用户确认，失败时按回溯矩阵处理。
-4. 记录每个阶段的工件，直到流程完成或明确停止。
+按下方流程执行阶段、门禁和回溯。
 
 ## 返回什么
 
-返回流程路由、阶段工件、门禁结果、未解决风险和下一步建议；具体文件结构以本文后续编排定义为准。
+返回阶段工件、门禁结果、未解决风险和下一步建议。
 
 # Workflow：CQRS Read Model Brownfield
 
@@ -54,11 +53,11 @@ description: 执行 workflow-read-model-brownfield 编排流程；这是由 Comm
 
 每个切换的视图按以下顺序推进，全程记录在 `08-migration-log.md`：
 
-1. **Backfill**：从真源全量回填读存储，记录回填水位与校验和。
-2. **Shadow Read**：新读侧只读不服务，与旧查询并行运行。
-3. **Parity Diff**：对同一请求比对新旧结果（抽样 + 关键用例全量），差异归零或差异原因全部解释（如格式化口径）前不切换。
+1. 对 `use` 视图执行 **Backfill**：从真源回填读存储，记录水位与校验和。`avoid` 视图不创建读存储，此项标记 N/A。
+2. 对 `use` 视图执行 **Shadow Read**；`avoid` 视图直接验证 Query Service / View DTO。
+3. 执行 **Parity Diff**：`use` 视图比对新旧结果；`avoid` 视图通过契约和关键用例验证。
 4. **Cutover**：按视图灰度切换调用方；保留旧路径开关。
-5. **Rollback 预案**：切换后出现差异/延迟超标时一键回旧路径；读存储可从真源重建。
+5. **Rollback 预案**：切换后出现差异/延迟超标时一键回旧路径；`use` 视图的读存储可从真源重建。
 6. **退役**：稳定期后删除旧查询路径与 Domain 中的展示字段，登记退役日期。
 
 ## 3. 门禁
@@ -67,7 +66,7 @@ description: 执行 workflow-read-model-brownfield 编排流程；这是由 Comm
 | :-- | :-- | :-- |
 | G0 适配 | `03-fit-check.md` 后 | 每个视图在 `views` 矩阵有结论；简单 DTO/Query Service 足够时不升级（`avoid`）；`use` 视图有明确驱动 |
 | G1 审查 | `06-review.md` 后 | 迁移路径可分步；旧行为可验证；字段来源和刷新策略齐全；`avoid` 视图有查询方案与权限 |
-| G2 迁移 | `08-migration-log.md` 每视图切换前 | Backfill 水位可核对；Parity Diff 差异归零或全部有解释；回滚开关已演练 |
+| G2 迁移 | `08-migration-log.md` 每视图切换前 | `use` 视图的 Backfill 水位可核对；`avoid` 视图的 Backfill 标记 N/A；Parity Diff 或 Query Service 契约验证通过；回滚开关已演练 |
 | G3 读侧验收 | `09-read-acceptance.md` 后 | 权限隔离、投影收敛、重建等价、read-your-writes、性能预算全部有测试证据且通过 |
 
 ## 4. 回溯
