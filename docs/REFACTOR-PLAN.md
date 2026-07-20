@@ -57,7 +57,6 @@
 
 ### 校验基建
 - `scripts/validate_skills.py` / `validate_plugin.py` + GitHub Actions `validate.yml`。
-- `validate_workflow_graph` 专门捕捉"workflow 依赖的字段上游 Skill 不产出"这类断裂。
 
 ## 4. 统一门禁总览（greenfield 主流程）
 
