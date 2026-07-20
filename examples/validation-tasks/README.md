@@ -11,7 +11,7 @@
 
 ## 执行方法
 
-1. 按任务文件标注的入口启动（如 `//backend-best-practices:workflow-greenfield <任务输入>`）。
+1. 按任务文件标注的入口启动（如 `/backend-best-practices:workflow-greenfield <任务输入>`）。
 2. 执行完成后，评审人打开 run 工作区，按判据表逐条核对，记录每条 pass/fail 与证据（工件路径）。
 3. 任一"不应出现"命中即该任务 fail——过度设计与漏设计同罪。
 4. 可配合 `python scripts/validate_traceability.py <workdir>` 检查追踪链闭合。

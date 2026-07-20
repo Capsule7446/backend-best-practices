@@ -1,6 +1,6 @@
 # 任务 06：单支付供应商（反向任务）
 
-入口：`/backend-best-practices:design-pattern`
+入口：`/backend-best-practices:workflow-design-pattern`
 
 ## 任务输入
 
