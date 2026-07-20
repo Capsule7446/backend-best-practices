@@ -3,11 +3,10 @@ description: 深度阅读既有系统，调度 DDD + CQRS Read Model workflow，
 argument-hint: <代码路径> [--focus=<模块/API/页面/报表>]
 ---
 
-> Workflow 文件通过同名 `workflow-*` Skill 注册后调用。
 
 # /backend-best-practices:system-model-view-read
 
-薄入口。相关 Workflow 已作为同名 Skill 注册，把 `$ARGUMENTS` 交给 **`workflow-system-model-view-read`**。
+薄入口。把 `$ARGUMENTS` 交给 **`workflow-system-model-view-read`**。
 
 - `$ARGUMENTS`：代码路径或系统现状描述。
 - `--focus`：可选，限定关注模块、API、页面、报表或业务流程。
