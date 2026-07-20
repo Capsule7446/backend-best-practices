@@ -69,14 +69,16 @@ def check_plugin_json(errors: list[str]) -> None:
 
 
 def check_commands(errors: list[str]) -> list[str]:
-    if not COMMANDS_DIR.is_dir():
-        return []
     names: list[str] = []
-    for cmd in sorted(COMMANDS_DIR.glob("*.md")):
-        names.append(cmd.stem)
-        if not cmd.read_text(encoding="utf-8").strip():
-            errors.append(f"ERROR: {rel(cmd)}: 命令文件为空")
-    return names
+    if COMMANDS_DIR.is_dir():
+        for cmd in sorted(COMMANDS_DIR.glob("*.md")):
+            names.append(cmd.stem)
+            if not cmd.read_text(encoding="utf-8").strip():
+                errors.append(f"ERROR: {rel(cmd)}: 命令文件为空")
+    skill_names = [
+        path.parent.name for path in sorted((REPO_ROOT / "skills").glob("*/SKILL.md"))
+    ]
+    return sorted(set(names + skill_names))
 
 
 def check_readme_commands(command_names: list[str], warnings: list[str]) -> None:
