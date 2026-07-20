@@ -1,30 +1,26 @@
 ---
 name: design-pattern-prototype
-description: 使用 GoF Prototype（原型）模式处理设计问题。薄入口：仅启动 workflow-design-pattern 并指定 prototype。
+description: 提供 GoF prototype 模式的语言无关设计指南、适用边界和实现要点。
 risk: caution
 source: self
 ---
 
 ## 做什么
 
-执行 `design-pattern-prototype` 的任务入口，处理参数并完成该能力定义的工作。
+提供 `prototype` 模式的独立设计指南，供 `workflow-design-pattern` 读取，避免模式指南 Skill 反向调用编排流程。
 
 ## 需要什么参数
 
-- **必需**：<设计问题或代码路径> [--lang=<语言>]
+- 设计问题或代码路径。
+- 可选目标语言和现有约束。
 
 ## 怎么做
 
-1. 读取输入并确认目标范围。
-2. 按本 Skill 正文定义的步骤执行。
-3. 对关键结论和修改进行验证。
+1. 解释模式意图、参与角色和协作关系。
+2. 判断适用场景、变化轴、收益与代价。
+3. 给出语言无关结构、目标语言惯用实现注意事项和案例。
+4. 明确不适用场景及更简单替代方案。
 
 ## 返回什么
 
-返回执行结果、产物路径、验证结果、未解决风险和下一步建议。
-
-# design-pattern-prototype
-
-薄入口。把 $ARGUMENTS 交给 **workflow-design-pattern**，并固定候选能力为 design-pattern-prototype。
-
-动作：启动 workflow；命令本身不实现模式、不选择语言细节。
+返回可供实现阶段使用的模式指南、角色关系、适用性边界、多语言实现要点和案例。

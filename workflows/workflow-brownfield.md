@@ -79,7 +79,7 @@
 | 新旧行为不等价（非预期）| ddd-code-survey |
 | 端口契约语言无法表达 | ddd-spec-bridge |
 
-> 进入局部战术建模后，`workflow-greenfield` §3 回溯矩阵中与 aggregates/interactions/review/spec 相关的条目同样适用。
+> 进入局部战术建模后，`workflow-greenfield` §4 回溯矩阵中与 aggregates/interactions/review/spec 相关的条目同样适用。
 
 ## 5. 编排纪律
 
