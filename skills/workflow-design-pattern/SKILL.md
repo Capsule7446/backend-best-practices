@@ -3,6 +3,26 @@ name: workflow-design-pattern
 description: 执行 workflow-design-pattern 编排流程；这是由 Command 或其他 Skill 调用的注册 Workflow。
 ---
 
+## 做什么
+
+执行 `workflow-design-pattern` 的完整编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+
+## 需要什么参数
+
+- **必需**：与该流程对应的项目路径、目标和当前上下文。
+- **可选**：目标语言、约束、工单号和已有运行工件路径。
+
+## 怎么做
+
+1. 读取当前上下文并确认流程适用性。
+2. 按本文定义的阶段顺序调用已注册的领域 Skill。
+3. 在每个门禁检查输入输出和用户确认，失败时按回溯矩阵处理。
+4. 记录每个阶段的工件，直到流程完成或明确停止。
+
+## 返回什么
+
+返回流程路由、阶段工件、门禁结果、未解决风险和下一步建议；具体文件结构以本文后续编排定义为准。
+
 # Workflow：Design Pattern
 
 > 统筹者。用于从设计问题选择 GoF 设计模式，路由到对应的独立模式 SKILL，并生成语言惯用实现。由 `/backend-best-practices:design-pattern` 或 `/backend-best-practices:design-pattern-<pattern>` 触发。
