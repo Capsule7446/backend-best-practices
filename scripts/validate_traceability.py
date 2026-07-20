@@ -13,7 +13,6 @@
 3. 链路覆盖——每个 UC 同文件内应携带 INV 与 AC 引用（写侧链）；
    每个 VIEW 必须在 fit 矩阵工件中有结论（读侧链）。
 
-结构/契约字段校验属 validate_workflow_graph.py，此处不重复。
 """
 
 from __future__ import annotations

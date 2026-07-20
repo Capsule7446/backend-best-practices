@@ -56,7 +56,7 @@
 - greenfield/brownfield 在契约稳定后接条件模式支线：scan → fit → 蓝图 → 层内实现 → pattern review；`workflow-design-pattern` 保留独立入口。
 
 ### 校验基建
-- `scripts/validate_skills.py` / `validate_workflow_graph.py` / `validate_plugin.py` + GitHub Actions `validate.yml`。
+- `scripts/validate_skills.py` / `validate_plugin.py` + GitHub Actions `validate.yml`。
 - `validate_workflow_graph` 专门捕捉"workflow 依赖的字段上游 Skill 不产出"这类断裂。
 
 ## 4. 统一门禁总览（greenfield 主流程）
@@ -82,7 +82,7 @@
 | 审查 skill 去判定化 | 0.3.0 | `cqrs-review`/`ddd-model-review` 的 `overall`/结论字段与"审查只出证据"纪律不符（当前 workflow 侧已声明结论仅作参考）；统一到 ddd-application-review 的纯证据形态 |
 | design-pattern 家族 frontmatter 统一 | 0.3.0 | 26 个 design-pattern-* skill 补 risk/category/inputs/outputs/tags（opportunity-scan 已补）|
 | spec-bridge 紧凑化 | 0.3.0 | 小系统下 spec 约 80% 是上游复述；改为"引用 ID + 只写增量语义"的组装形态 |
-| ~~ddd-adapter-impl 移除~~ | ~~0.3.0~~ | **已完成**（提前执行）：技能目录删除，CAPABILITIES 编号 11 标空缺，无 workflow/command 引用（validate_workflow_graph 兜底）|
+| ~~ddd-adapter-impl 移除~~ | ~~0.3.0~~ | **已完成**（提前执行）：技能目录删除，CAPABILITIES 编号 11 标空缺，无 workflow/command 引用|
 | CAPABILITIES 编号重排 | 0.3.0 | 当前新增能力追加编号（48-58），下个破坏性版本统一重排 |
 | Keystone marketplace 发布 | 每版本 | pack.ps1 打包 → dist zip → marketplace by-reference 更新 |
 
@@ -91,5 +91,5 @@
 1. 门禁阈值、评分、回溯映射只写在 workflow / references（rubric），SKILL 只产证据。
 2. SKILL 输入一律数据形状（"一份含 {…} 的工件"），禁止"来自 X skill"。
 3. SKILL.md 只留四段 + 指路，大 YAML 模板与走查进 `examples.md`/`reference.md`。
-4. workflow 依赖的每个 `structured_summary` 字段必须出现在对应 SKILL 的"返回什么"里（validate_workflow_graph 强制）。
+4. workflow 依赖的每个 `structured_summary` 字段必须出现在对应 SKILL 的"返回什么"里。
 5. 新增 workflow 必须声明专属默认工作区 `./run/<flow>/` 并独占 `_manifest.md`。
