@@ -1,7 +1,18 @@
 ---
 name: design-pattern-decorator
 description: "GoF Decorator（装饰器）设计模式能力。用于在 缓存、重试、限流、日志、权限、压缩等横切增强可组合。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
+entrypoint: fixed-pattern
+workflow: workflow-design-pattern
+pattern: decorator
+argument-hint: <设计问题或代码路径> [--lang=<语言>]
 ---
+
+
+## 固定入口
+
+该 Skill 同时承担固定模式入口：将输入交给 `workflow-design-pattern` 编排，并将候选模式固定为 `decorator`。
+
+参数：`<设计问题或代码路径> [--lang=<语言>]`
 
 # Decorator（装饰器）
 
