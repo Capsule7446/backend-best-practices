@@ -3,6 +3,8 @@ name: design-pattern-proxy
 description: "GoF Proxy（代理）设计模式能力。用于在 远程调用、懒加载、权限、缓存、事务、审计。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Proxy（代理）
 
 ## 做什么

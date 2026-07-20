@@ -3,6 +3,8 @@ name: design-pattern-composite
 description: "GoF Composite（组合）设计模式能力。用于在 菜单、组织、文件目录、权限规则、表达式树等层级对象。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Composite（组合）
 
 ## 做什么

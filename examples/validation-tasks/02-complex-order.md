@@ -1,6 +1,6 @@
 # 任务 02：复杂订单
 
-入口：`/backend-best-practices:ddd-new`
+入口：`/backend-best-practices:workflow-greenfield`
 
 ## 任务输入
 

@@ -3,7 +3,7 @@
 
 检查项：
 1. .claude-plugin/plugin.json 可解析；version 是 semver；skills 路径存在。
-2. commands/*.md 每个文件非空。
+2. commands/*.md 存在时逐个检查非空；允许插件完全使用 skills/ 作为入口。
 3. README.md 中出现的 /backend-best-practices:<cmd> 命令若无对应
    commands/<cmd>.md 文件则 WARNING（<pattern> 等模板按通配匹配）。
 
@@ -69,17 +69,16 @@ def check_plugin_json(errors: list[str]) -> None:
 
 
 def check_commands(errors: list[str]) -> list[str]:
-    if not COMMANDS_DIR.is_dir():
-        errors.append(f"ERROR: 缺少 commands/ 目录")
-        return []
     names: list[str] = []
-    for cmd in sorted(COMMANDS_DIR.glob("*.md")):
-        names.append(cmd.stem)
-        if not cmd.read_text(encoding="utf-8").strip():
-            errors.append(f"ERROR: {rel(cmd)}: 命令文件为空")
-    if not names:
-        errors.append("ERROR: commands/ 目录下没有任何 .md 命令文件")
-    return names
+    if COMMANDS_DIR.is_dir():
+        for cmd in sorted(COMMANDS_DIR.glob("*.md")):
+            names.append(cmd.stem)
+            if not cmd.read_text(encoding="utf-8").strip():
+                errors.append(f"ERROR: {rel(cmd)}: 命令文件为空")
+    skill_names = [
+        path.parent.name for path in sorted((REPO_ROOT / "skills").glob("*/SKILL.md"))
+    ]
+    return sorted(set(names + skill_names))
 
 
 def check_readme_commands(command_names: list[str], warnings: list[str]) -> None:

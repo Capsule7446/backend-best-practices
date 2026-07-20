@@ -3,6 +3,8 @@ name: design-pattern-adapter
 description: "GoF Adapter（适配器）设计模式能力。用于在 接入第三方 API、遗留系统、防腐层，或统一多个供应商接口。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Adapter（适配器）
 
 ## 做什么

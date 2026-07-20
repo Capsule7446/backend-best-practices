@@ -1,6 +1,30 @@
+---
+name: workflow-design-pattern
+description: 执行 workflow-design-pattern 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+risk: caution
+source: self
+---
+
+## 做什么
+
+执行 `workflow-design-pattern` 的完整编排流程。
+
+## 需要什么参数
+
+- **必需**：项目路径、目标和当前上下文。
+- **可选**：技术栈、约束、工单号和已有运行工件。
+
+## 怎么做
+
+按下方流程执行阶段、门禁和回溯。
+
+## 返回什么
+
+返回阶段工件、门禁结果、未解决风险和下一步建议。
+
 # Workflow：Design Pattern
 
-> 统筹者。用于从设计问题选择 GoF 设计模式，路由到对应的独立模式 SKILL，并生成语言惯用实现。由 `/backend-best-practices:design-pattern` 或 `/backend-best-practices:design-pattern-<pattern>` 触发。
+> 统筹者。用于从设计问题选择 GoF 设计模式，路由到对应的独立模式 SKILL，并生成语言惯用实现。由 `design-pattern` Skill 或 `design-pattern-<pattern>` Skill 触发。
 
 ## 0. 入口
 
@@ -16,7 +40,7 @@
 | 01 | design-pattern-fit-check | 用户诉求/代码路径 | `01-design-pattern-fit.md` | G0 |
 | 02 | selected `design-pattern-<pattern>` | 用户诉求,`01-design-pattern-fit.md` | `02-pattern-guide.md` | G1 |
 
-02 的 selected pattern 取 `01-design-pattern-fit.md` 中 `structured_summary.primary_pattern`；若命令入口已固定模式，则校验两者一致，不一致时停下让用户裁决。
+02 的 selected pattern 由 `design-pattern-<pattern>` Skill 提供，取 `01-design-pattern-fit.md` 中 `structured_summary.primary_pattern`；若命令入口已固定模式，则校验两者一致，不一致时停下让用户裁决。
 | 03 | design-pattern-implementation | 用户诉求,`01-design-pattern-fit.md`,`02-pattern-guide.md` | `03-design-pattern-implementation.md` | |
 | 04 | design-pattern-review | `01..03-*.md` + 代码/方案 | `04-design-pattern-review.md` | G2 |
 

@@ -1,6 +1,30 @@
+---
+name: workflow-read-model-review
+description: 执行 workflow-read-model-review 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+risk: caution
+source: self
+---
+
+## 做什么
+
+执行 `workflow-read-model-review` 的完整编排流程。
+
+## 需要什么参数
+
+- **必需**：项目路径、目标和当前上下文。
+- **可选**：技术栈、约束、工单号和已有运行工件。
+
+## 怎么做
+
+按下方流程执行阶段、门禁和回溯。
+
+## 返回什么
+
+返回阶段工件、门禁结果、未解决风险和下一步建议。
+
 # Workflow：CQRS Read Model Review
 
-> 统筹者。用于审查现有 CQRS Read Model 设计或代码。由 `/backend-best-practices:cqrs-read-model-review` 触发。
+> 统筹者。用于审查现有 CQRS Read Model 设计或代码。由 `/backend-best-practices:workflow-read-model-review` 触发。
 
 ## 1. 文件交接
 

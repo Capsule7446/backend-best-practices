@@ -3,6 +3,8 @@ name: design-pattern-chain-of-responsibility
 description: "GoF Chain of Responsibility（责任链）设计模式能力。用于在 校验链、过滤器、中间件、审批流、规则流水线。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Chain of Responsibility（责任链）
 
 ## 做什么

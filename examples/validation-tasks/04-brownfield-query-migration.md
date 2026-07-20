@@ -1,6 +1,6 @@
 # 任务 04：Brownfield 查询迁移
 
-入口：`/backend-best-practices:cqrs-read-model-refactor`
+入口：`/backend-best-practices:workflow-read-model-brownfield`
 
 ## 任务输入
 

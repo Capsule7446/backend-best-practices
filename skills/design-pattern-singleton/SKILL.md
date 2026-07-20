@@ -3,6 +3,8 @@ name: design-pattern-singleton
 description: "GoF Singleton（单例）设计模式能力。用于在 进程级共享资源且生命周期稳定，例如配置快照、指标注册表。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Singleton（单例）
 
 ## 做什么

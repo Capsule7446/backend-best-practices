@@ -3,6 +3,8 @@ name: design-pattern-factory-method
 description: "GoF Factory Method（工厂方法）设计模式能力。用于在 框架固定流程，但某一步需要由扩展方决定具体对象。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Factory Method（工厂方法）
 
 ## 做什么

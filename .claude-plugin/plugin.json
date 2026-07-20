@@ -1,6 +1,6 @@
 {
   "name": "backend-best-practices",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "后端最佳实践插件：把 DDD 建模、Application 用例编排、CQRS 读模型、GoF 设计模式、系统读码和架构审查固化为 Agent 可重复执行、可门禁、可回溯的开发工序。",
   "author": {
     "name": "Pauly",

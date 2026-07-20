@@ -3,6 +3,8 @@ name: design-pattern-flyweight
 description: "GoF Flyweight（享元）设计模式能力。用于在 大量重复值对象、样式、规则元数据、地理区划、字符对象。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Flyweight（享元）
 
 ## 做什么

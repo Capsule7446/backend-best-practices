@@ -3,6 +3,8 @@ name: design-pattern-interpreter
 description: "GoF Interpreter（解释器）设计模式能力。用于在 简单规则表达式、查询 DSL、权限策略、公式。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Interpreter（解释器）
 
 ## 做什么

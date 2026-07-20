@@ -3,6 +3,8 @@ name: design-pattern-bridge
 description: "GoF Bridge（桥接）设计模式能力。用于在 两个以上变化维度会造成类爆炸，例如消息类型 x 发送渠道。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Bridge（桥接）
 
 ## 做什么

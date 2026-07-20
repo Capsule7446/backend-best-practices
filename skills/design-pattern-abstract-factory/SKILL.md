@@ -3,6 +3,8 @@ name: design-pattern-abstract-factory
 description: "GoF Abstract Factory（抽象工厂）设计模式能力。用于在 存在多个产品族，且产品族内对象必须配套变化，例如支付渠道、UI 主题、云厂商 SDK。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Abstract Factory（抽象工厂）
 
 ## 做什么

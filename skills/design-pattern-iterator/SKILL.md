@@ -3,6 +3,8 @@ name: design-pattern-iterator
 description: "GoF Iterator（迭代器）设计模式能力。用于在 自定义集合、分页游标、流式读取、树遍历。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Iterator（迭代器）
 
 ## 做什么

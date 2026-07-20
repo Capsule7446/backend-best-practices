@@ -3,6 +3,8 @@ name: design-pattern-mediator
 description: "GoF Mediator（中介者）设计模式能力。用于在 UI 控件协作、模块间网状依赖、流程协调。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Mediator（中介者）
 
 ## 做什么

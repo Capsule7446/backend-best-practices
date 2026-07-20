@@ -3,6 +3,8 @@ name: design-pattern-strategy
 description: "GoF Strategy（策略）设计模式能力。用于在 定价、排序、路由、风控、推荐等算法可替换。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Strategy（策略）
 
 ## 做什么

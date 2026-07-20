@@ -1,6 +1,30 @@
+---
+name: workflow-greenfield
+description: 执行 workflow-greenfield 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+risk: caution
+source: self
+---
+
+## 做什么
+
+执行 `workflow-greenfield` 的完整编排流程。
+
+## 需要什么参数
+
+- **必需**：项目路径、目标和当前上下文。
+- **可选**：技术栈、约束、工单号和已有运行工件。
+
+## 怎么做
+
+按下方流程执行阶段、门禁和回溯。
+
+## 返回什么
+
+返回阶段工件、门禁结果、未解决风险和下一步建议。
+
 # Workflow：Greenfield（0→1 新建）
 
-> 统筹者。本文件是**唯一**掌握顺序、文件交接、门禁与回溯的地方；被调用的 SKILL 都是纯能力，对流程一无所知。由 `/backend-best-practices:ddd-new` 触发。
+> 统筹者。本文件是**唯一**掌握顺序、文件交接、门禁与回溯的地方；被调用的 SKILL 都是纯能力，对流程一无所知。由 `/backend-best-practices:workflow-greenfield` 触发。
 > 交付链路：战略 DDD → 战术 Domain → **Application 用例编排** → **业务视图/读侧** → 统一契约 → （条件）设计模式 → 分层实现 → 验收。
 
 ## 0. 入口路由（原 mode-router 职责，已并入本层）

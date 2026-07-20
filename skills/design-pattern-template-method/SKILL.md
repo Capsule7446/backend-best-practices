@@ -3,6 +3,8 @@ name: design-pattern-template-method
 description: "GoF Template Method（模板方法）设计模式能力。用于在 流程顺序稳定，部分步骤因场景变化。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Template Method（模板方法）
 
 ## 做什么

@@ -3,6 +3,8 @@ name: design-pattern-visitor
 description: "GoF Visitor（访问者）设计模式能力。用于在 对象结构稳定，但需要频繁新增操作，如 AST、报表导出、规则树分析。 时，输出语言无关思想、适用场景、最佳实践范式、多语言实现差异和案例。"
 ---
 
+
+
 # Visitor（访问者）
 
 ## 做什么

@@ -1,6 +1,30 @@
+---
+name: workflow-brownfield
+description: 执行 workflow-brownfield 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+risk: caution
+source: self
+---
+
+## 做什么
+
+执行 `workflow-brownfield` 的完整编排流程。
+
+## 需要什么参数
+
+- **必需**：项目路径、目标和当前上下文。
+- **可选**：技术栈、约束、工单号和已有运行工件。
+
+## 怎么做
+
+按下方流程执行阶段、门禁和回溯。
+
+## 返回什么
+
+返回阶段工件、门禁结果、未解决风险和下一步建议。
+
 # Workflow：Brownfield（既有项目改造）
 
-> 统筹者。本文件**唯一**掌握顺序、文件交接、门禁与回溯；被调用的 SKILL 都是纯能力。由 `/backend-best-practices:ddd-refactor` 触发。
+> 统筹者。本文件**唯一**掌握顺序、文件交接、门禁与回溯；被调用的 SKILL 都是纯能力。由 `/backend-best-practices:workflow-brownfield` 触发。
 > 第一纪律：**旧系统全程可运行、可回滚，绝不一次性重写。**
 
 ## 0. 入口路由（原 mode-router 职责，已并入本层）
@@ -79,7 +103,7 @@
 | 新旧行为不等价（非预期）| ddd-code-survey |
 | 端口契约语言无法表达 | ddd-spec-bridge |
 
-> 进入局部战术建模后，`workflow-greenfield` §3 回溯矩阵中与 aggregates/interactions/review/spec 相关的条目同样适用。
+> 进入局部战术建模后，`workflow-greenfield` §4 回溯矩阵中与 aggregates/interactions/review/spec 相关的条目同样适用。
 
 ## 5. 编排纪律
 
