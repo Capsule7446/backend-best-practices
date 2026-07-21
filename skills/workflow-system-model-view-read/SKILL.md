@@ -1,6 +1,6 @@
 ---
 name: workflow-system-model-view-read
-description: 执行 workflow-system-model-view-read 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+description: 从既有后端代码逆向建立系统模型和业务视图：绘制入口地图、子域与限界上下文，追踪写侧与读侧边界，并输出风险清单和最小改造路径。
 risk: caution
 source: self
 ---

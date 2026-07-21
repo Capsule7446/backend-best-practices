@@ -1,6 +1,6 @@
 ---
 name: workflow-greenfield
-description: 执行 workflow-greenfield 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+description: 从业务需求开始建立新的 DDD 后端上下文：依次完成范围、上下文、聚合、用例、应用编排、端口适配器、契约骨架、实现和验收。
 risk: caution
 source: self
 ---
