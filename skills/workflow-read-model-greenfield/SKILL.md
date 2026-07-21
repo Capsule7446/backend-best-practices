@@ -1,6 +1,6 @@
 ---
 name: workflow-read-model-greenfield
-description: 执行 workflow-read-model-greenfield 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+description: 为新业务设计 CQRS 读侧：从视图和字段来源出发判断是否需要读模型，建立聚合视图、查询契约、同步策略、实现方案和验收证据。
 risk: caution
 source: self
 ---

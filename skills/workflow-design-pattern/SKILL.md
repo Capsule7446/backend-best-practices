@@ -1,6 +1,6 @@
 ---
 name: workflow-design-pattern
-description: 执行 workflow-design-pattern 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+description: 评估设计问题是否需要 GoF 设计模式，选择并审查最小必要模式，生成语言无关指南和目标语言实现方案；支持固定模式入口与自动模式适配判断。
 risk: caution
 source: self
 ---

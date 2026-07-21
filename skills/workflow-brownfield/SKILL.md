@@ -1,6 +1,6 @@
 ---
 name: workflow-brownfield
-description: 执行 workflow-brownfield 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+description: 对既有后端系统执行渐进式 DDD 重构：先逆向梳理现状、识别接缝并制定绞杀式迁移计划，再按切片完成特征化测试、建模、实现、验收和回滚控制。
 risk: caution
 source: self
 ---

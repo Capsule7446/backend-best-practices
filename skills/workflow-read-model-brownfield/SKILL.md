@@ -1,6 +1,6 @@
 ---
 name: workflow-read-model-brownfield
-description: 执行 workflow-read-model-brownfield 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+description: 将既有 Entity-backed API、复杂查询或领域模型展示污染渐进拆分为查询服务、View DTO 或独立读模型，并通过适配性判断、Parity Diff、灰度切换和回滚完成迁移。
 risk: caution
 source: self
 ---

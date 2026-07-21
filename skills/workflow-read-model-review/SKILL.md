@@ -1,6 +1,6 @@
 ---
 name: workflow-read-model-review
-description: 执行 workflow-read-model-review 编排流程，负责阶段顺序、输入输出交接、门禁和回溯。
+description: 审查 CQRS Read Model、聚合视图和同步方案，检查字段真源、权限、刷新一致性、重建能力、性能预算和迁移风险，输出可执行的审查结论。
 risk: caution
 source: self
 ---
